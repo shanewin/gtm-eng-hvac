@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Dossier · Clark Heating and Cooling LLC</title>
+<style>
+* { box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #1a1a1a;
+  background: #eceef2;
+  margin: 0;
+  padding: 32px 16px;
+  line-height: 1.55;
+}
+.dossier {
+  max-width: 860px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 14px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  overflow: hidden;
+}
+.header {
+  padding: 28px 36px 24px;
+  background: linear-gradient(180deg, #fafbfd 0%, #f2f4f8 100%);
+  border-bottom: 1px solid #e0e4eb;
+  border-left: 8px solid #d8dce3;
+}
+.header.accent-pain { border-left-color: #c4332b; }
+.header.accent-growth { border-left-color: #e6a700; }
+.header.accent-demand { border-left-color: #7c4dff; }
+.header.accent-none { border-left-color: #d8dce3; }
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 12px 0 0;
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  white-space: nowrap;
+  border: 1px solid transparent;
+}
+.chip .chip-val {
+  background: rgba(255,255,255,0.55);
+  color: inherit;
+  padding: 1px 6px;
+  border-radius: 999px;
+  font-size: 9px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.chip-pain    { background: #fde8e8; color: #8f1a1a; border-color: #f5c2c2; }
+.chip-growth  { background: #fff4d6; color: #7a4d00; border-color: #f0d896; }
+.chip-demand  { background: #efe8ff; color: #4a2a9a; border-color: #d8c8ff; }
+.chip-nofsm   { background: #eceff4; color: #3d4656; border-color: #d0d6e0; }
+.chip-hiring  { background: #4a0808; color: #ffdcdc; border-color: #4a0808; }
+.chip-hiring .chip-val { color: #ffdcdc; background: rgba(255,255,255,0.15); }
+.chip-warn    { background: #fff9d6; color: #7a5c00; border-color: #f0d896; }
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+.biz-name {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.4px;
+  margin: 0 0 4px;
+  color: #0a0a1a;
+}
+.biz-meta {
+  color: #666;
+  font-size: 13px;
+  margin: 0 0 8px;
+}
+.links {
+  font-size: 13px;
+  margin: 6px 0 0;
+}
+.links a {
+  color: #0066cc;
+  text-decoration: none;
+  margin-right: 14px;
+  font-weight: 500;
+}
+.links a:hover { text-decoration: underline; }
+.tier-badge {
+  display: inline-block;
+  padding: 7px 14px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  white-space: nowrap;
+}
+.tier-high { background: #fde8e8; color: #9a1a1a; }
+.tier-strong { background: #fff4d6; color: #8a5a00; }
+.tier-emerging { background: #e6f2ff; color: #003b7a; }
+
+.card {
+  padding: 24px 36px;
+  border-bottom: 1px solid #f0f2f5;
+}
+.card:last-child { border-bottom: none; }
+.card-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.4px;
+  color: #888;
+  font-weight: 700;
+  margin: 0 0 6px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.card-label .tag {
+  background: #fde8e8;
+  color: #9a1a1a;
+  padding: 2px 7px;
+  border-radius: 3px;
+  font-size: 9px;
+  letter-spacing: 0.6px;
+}
+.card-label .tag-amber {
+  background: #fff4d6;
+  color: #8a5a00;
+}
+.card-headline {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 10px;
+  letter-spacing: -0.2px;
+}
+.card-subtitle {
+  font-size: 13px;
+  color: #666;
+  margin: 0 0 12px;
+}
+.card-stats {
+  display: flex;
+  gap: 28px;
+  margin: 12px 0 16px;
+  flex-wrap: wrap;
+}
+.stat { flex: 0 0 auto; }
+.stat .val {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1a1a1a;
+  line-height: 1;
+  display: block;
+  font-variant-numeric: tabular-nums;
+}
+.stat .lbl {
+  font-size: 11px;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 4px;
+  display: block;
+}
+
+blockquote.evidence {
+  margin: 10px 0;
+  padding: 12px 16px;
+  background: #fafbfd;
+  border-left: 3px solid #0066cc;
+  border-radius: 3px;
+  font-style: italic;
+  font-size: 14px;
+  color: #333;
+  line-height: 1.55;
+}
+blockquote.evidence .cite {
+  display: block;
+  margin-top: 8px;
+  font-style: normal;
+  font-size: 11px;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+blockquote.evidence.negative { border-left-color: #c4332b; }
+blockquote.evidence.positive { border-left-color: #1a8c4a; }
+blockquote.evidence.warning { background: #fff8e1; border-left-color: #e6a700; }
+blockquote.evidence.grouped {
+  font-style: normal;
+  padding: 10px 16px 12px;
+}
+blockquote.evidence.grouped .review-cite {
+  font-size: 11px;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+blockquote.evidence.grouped .review-cite .obs-count {
+  background: rgba(0,0,0,0.06);
+  color: #555;
+  padding: 1px 7px;
+  border-radius: 999px;
+  font-size: 10px;
+}
+blockquote.evidence.grouped .obs {
+  font-style: italic;
+  padding: 6px 0;
+  border-top: 1px dashed rgba(0,0,0,0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+blockquote.evidence.grouped .obs:first-of-type { border-top: none; padding-top: 2px; }
+blockquote.evidence.grouped .obs .obs-label {
+  flex: 0 0 auto;
+  font-style: normal;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #888;
+  background: rgba(0,0,0,0.05);
+  padding: 2px 8px;
+  border-radius: 999px;
+  margin-top: 2px;
+}
+
+.job-list { margin: 8px 0 0; padding: 0; list-style: none; }
+.job-list li {
+  padding: 12px 14px;
+  margin-bottom: 8px;
+  background: #fafbfd;
+  border: 1px solid #e8ebf0;
+  border-radius: 6px;
+  font-size: 14px;
+}
+.job-list li.buyer-role {
+  border-left: 3px solid #c4332b;
+  background: #fff8f5;
+}
+.job-list .title {
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 2px;
+}
+.job-list .buyer-flag {
+  display: inline-block;
+  background: #c4332b;
+  color: white;
+  padding: 1px 7px;
+  border-radius: 3px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  margin-left: 8px;
+  vertical-align: 2px;
+}
+.job-list .meta {
+  font-size: 12px;
+  color: #666;
+  margin-top: 3px;
+}
+.job-list .meta a {
+  color: #0066cc;
+  text-decoration: none;
+  margin-left: 8px;
+}
+.job-list .meta a:hover { text-decoration: underline; }
+
+.contact-card {
+  background: #f8f9fb;
+  border: 1px solid #e8ebf0;
+  border-radius: 8px;
+  padding: 18px 22px;
+}
+.contact-card .owner-line {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 0 2px;
+  color: #0a0a1a;
+}
+.contact-card .owner-source {
+  font-size: 12px;
+  color: #1a8c4a;
+  margin: 0 0 16px;
+  font-weight: 500;
+}
+.contact-card .owner-source::before { content: "✓ "; }
+.contact-card dl {
+  margin: 0;
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: 10px 16px;
+}
+.contact-card dt {
+  font-size: 11px;
+  color: #666;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.contact-card dd {
+  font-size: 14px;
+  margin: 0;
+  color: #1a1a1a;
+}
+.contact-card dd a { color: #0066cc; text-decoration: none; }
+.contact-card dd a:hover { text-decoration: underline; }
+.contact-card .note {
+  font-size: 12px;
+  color: #666;
+  display: block;
+  margin-top: 2px;
+}
+
+.tech-row {
+  display: flex;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid #f2f4f8;
+  align-items: baseline;
+}
+.tech-row:last-child { border-bottom: none; }
+.tech-row .k {
+  width: 180px;
+  font-size: 12px;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+.tech-row .v { font-size: 14px; color: #1a1a1a; }
+.tech-row .v.yes { color: #1a8c4a; font-weight: 600; }
+.tech-row .v.no { color: #c4332b; font-weight: 600; }
+
+.footer {
+  padding: 16px 36px;
+  background: #fafbfd;
+  color: #888;
+  font-size: 11px;
+  text-align: center;
+}
+
+.why-card {
+  background: linear-gradient(180deg, #fffbea 0%, #fff8e1 100%);
+  border-bottom: 2px solid #e6a700;
+}
+.why-card .card-label { color: #8a5a00; }
+.why-card .card-headline { color: #5c4a00; }
+.why-list {
+  margin: 4px 0 0;
+  padding-left: 0;
+  list-style: none;
+}
+.why-list li {
+  padding: 10px 0 10px 28px;
+  border-bottom: 1px solid rgba(230, 167, 0, 0.18);
+  font-size: 14px;
+  color: #2a2a2a;
+  line-height: 1.55;
+  position: relative;
+}
+.why-list li:last-child { border-bottom: none; }
+.why-list li::before {
+  content: "▸";
+  position: absolute;
+  left: 8px;
+  top: 9px;
+  color: #e6a700;
+  font-weight: 700;
+  font-size: 14px;
+}
+</style>
+</head>
+<body>
+<div class="dossier">
+
+    <div class="header accent-growth">
+      <div class="header-top">
+        <div>
+          <h1 class="biz-name">Clark Heating and Cooling LLC</h1>
+          <p class="biz-meta">Peoria, AZ · 15 years licensed in AZ · 427 Google reviews · 4.9★</p>
+          <p class="links"><a href="http://www.clarkheatandcool.com/" target="_blank" rel="noopener">Company website ↗</a><a href="https://www.google.com/maps/place/?q=place_id:ChIJu-mmg9hpK4cRM8d2NbMMJ58" target="_blank" rel="noopener">Google Business Profile ↗</a></p>
+          <div class="chips"><span class="chip chip-growth">GROWTH<span class="chip-val">12</span></span><span class="chip chip-nofsm">NO FSM</span></div>
+        </div>
+        <div><span class="tier-badge tier-emerging">EMERGING INTENT</span></div>
+      </div>
+    </div>
+    
+    <div class="card why-card">
+      <p class="card-label">Why this is a good lead</p>
+      <h3 class="card-headline">4 signals fired</h3>
+      <ul class="why-list"><li>No field service platform detected. Bookings happen via phone only (Joomla site).</li><li>David Byron Clark is named directly in 8 of 38 cached reviews (21%). Business runs on one person&#x27;s personal reputation.</li><li>Currently executing fast dispatch (100% same-day, 24h median). Strong execution — for a small shop this is proof the responsiveness lives in the owner, not a system.</li><li>Review velocity surge: 20 reviews in the last 90 days versus 7 in the prior 90 (3x). Business is accelerating fast.</li></ul>
+    </div>
+    
+    <div class="card">
+      <p class="card-label">Technology stack gap</p>
+      <h3 class="card-headline">What we can see about how they operate</h3>
+      <p class="card-subtitle">Fingerprinted from their public website.</p>
+      <div style="margin:12px 0 0;"><div class="tech-row"><div class="k">Field service platform</div><div class="v no">Not detected</div></div><div class="tech-row"><div class="k">Phone-only bookings</div><div class="v yes">Yes — bookings happen by phone</div></div><div class="tech-row"><div class="k">CMS</div><div class="v ">Joomla</div></div><div class="tech-row"><div class="k">All detected tech</div><div class="v ">Apache HTTP Server; Bootstrap; Joomla; PHP</div></div></div>
+    </div>
+    
+    <div class="card">
+      <p class="card-label">Decision maker</p>
+      <h3 class="card-headline">Who to call</h3>
+      <div class="contact-card">
+        <p class="owner-line">David Byron Clark</p>
+        <p class="owner-source">Verified via AZ contractor license (public record)</p>
+        <dl><dt>Booking phone</dt><dd><a href="tel:6027932477">(602) 793-2477</a> — ask for David<span class="note">Same number their customers call to schedule.</span></dd><dt>Web form</dt><dd><a href="http://www.clarkheatandcool.com/" target="_blank" rel="noopener">http://www.clarkheatandcool.com/</a><span class="note">Same channel their customers use to book.</span></dd><dt>Social</dt><dd><a href="https://www.facebook.com/clarkheatingandcooling/" target="_blank" rel="noopener">Facebook ↗</a> · <a href="https://www.linkedin.com/company/clark-heating-and-cooling" target="_blank" rel="noopener">LinkedIn company ↗</a></dd></dl>
+      </div>
+    </div>
+    
+    <div class="card">
+      <p class="card-label">One-person operation</p>
+      <h3 class="card-headline">David is named directly in 8 of 38 cached reviews (21%)</h3>
+      <p class="card-subtitle">When the owner shows up in a meaningful share of positive reviews, the business runs on personal reputation. Growth past that person's capacity requires systems.</p>
+      
+        <blockquote class="evidence">
+          David was excellent. He did a thorough job troubleshooting my issue, gave me honest advice on what needed to be done immediately and what could wait.
+          <span class="cite">2026-03-28 · 5★</span>
+        </blockquote>
+        
+        <blockquote class="evidence">
+          David Clark and crew (Gabe and Robert) did a great job installing an air conditioning unit in the upper floor of our 1948 historic home. We really appreciated their professionalism and timeliness in completing the work.
+          <span class="cite">2026-03-04 · 5★</span>
+        </blockquote>
+        
+        <blockquote class="evidence">
+          David, the owner was thorough in explaining what they were doing, he was upfront about costs, and open about what would work best for our home.
+          <span class="cite">2026-01-18 · 5★</span>
+        </blockquote>
+        
+    </div>
+    
+    <div class="card">
+      <p class="card-label">Dispatch distribution</p>
+      <h3 class="card-headline">Currently executing fast on every job we can measure</h3>
+      <p class="card-body" style="margin:8px 0 12px;">Fast dispatch is not a pain signal — it is proof this contractor is winning deals by being responsive. For a one-person or small shop, that responsiveness lives in a human, not a system. The ceiling is capacity, not quality.</p>
+      <p class="card-subtitle">Every dot is a real cached review from the last 6 months. Hours estimated from review text.</p>
+      
+    <div class="card-stats">
+      <div class="stat"><span class="val">24h</span><span class="lbl">Median response</span></div>
+      <div class="stat"><span class="val">24h</span><span class="lbl">Slowest job</span></div>
+      <div class="stat"><span class="val">100%</span><span class="lbl">Same-day</span></div>
+      <div class="stat"><span class="val">2</span><span class="lbl">Reviews with data</span></div>
+    </div>
+    
+      <div style="margin:16px 0;"><svg width="740" height="140" viewBox="0 0 740 140"><line x1="20" y1="88" x2="720" y2="88" stroke="#cfd3dc" stroke-width="2"/><line x1="20.0" y1="83" x2="20.0" y2="93" stroke="#9aa2b0" stroke-width="1"/><text x="20.0" y="110" text-anchor="middle" font-size="11" fill="#666">0h</text><line x1="36.666666666666664" y1="83" x2="36.666666666666664" y2="93" stroke="#9aa2b0" stroke-width="1"/><text x="36.666666666666664" y="110" text-anchor="middle" font-size="11" fill="#666">4h</text><line x1="53.33333333333333" y1="83" x2="53.33333333333333" y2="93" stroke="#9aa2b0" stroke-width="1"/><text x="53.33333333333333" y="110" text-anchor="middle" font-size="11" fill="#666">8h</text><line x1="120.0" y1="83" x2="120.0" y2="93" stroke="#9aa2b0" stroke-width="1"/><text x="120.0" y="110" text-anchor="middle" font-size="11" fill="#666">24h</text><line x1="220.0" y1="83" x2="220.0" y2="93" stroke="#9aa2b0" stroke-width="1"/><text x="220.0" y="110" text-anchor="middle" font-size="11" fill="#666">48h</text><line x1="320.0" y1="83" x2="320.0" y2="93" stroke="#9aa2b0" stroke-width="1"/><text x="320.0" y="110" text-anchor="middle" font-size="11" fill="#666">72h</text><line x1="720.0" y1="83" x2="720.0" y2="93" stroke="#9aa2b0" stroke-width="1"/><text x="720.0" y="110" text-anchor="middle" font-size="11" fill="#666">1 week</text><circle cx="120.0" cy="57.0" r="8" fill="#1a8c4a" stroke="white" stroke-width="2" opacity="0.92"/><circle cx="120.0" cy="71.0" r="8" fill="#1a8c4a" stroke="white" stroke-width="2" opacity="0.92"/><circle cx="28" cy="125" r="6" fill="#1a8c4a"/><text x="40" y="129" font-size="11" fill="#555">positive</text><circle cx="110" cy="125" r="6" fill="#9aa2b0"/><text x="122" y="129" font-size="11" fill="#555">neutral</text><circle cx="188" cy="125" r="6" fill="#c4332b"/><text x="200" y="129" font-size="11" fill="#555">negative</text><text x="720" y="129" text-anchor="end" font-size="11" fill="#888">each dot = one review</text></svg></div>
+      <div style="margin-top:18px;">
+        <p class="card-subtitle" style="margin-bottom:8px;">Verbatim dispatch quotes:</p>
+        
+        <blockquote class="evidence positive">
+          Clark had someone out to my house in less than 24 hours.
+          <span class="cite" style="color:#1a8c4a;">
+            24h response · 5★ · positive · 2026-03-21
+          </span>
+        </blockquote>
+        
+        <blockquote class="evidence positive">
+          My heater broke yesterday and they were able to fix it the next day.
+          <span class="cite" style="color:#1a8c4a;">
+            24h response · 5★ · positive · 2025-12-07
+          </span>
+        </blockquote>
+        
+      </div>
+    </div>
+    
+    <div class="card">
+      <p class="card-label">Review velocity</p>
+      <h3 class="card-headline">Review volume is accelerating</h3>
+      <p class="card-subtitle">Reviews per month over the last 12 months. Each bar is the count of cached Google reviews with dates in that month.</p>
+      
+    <div class="card-stats">
+      <div class="stat"><span class="val">20</span><span class="lbl">Reviews last 90d</span></div>
+      <div class="stat"><span class="val">7</span><span class="lbl">Reviews prior 90d</span></div>
+      <div class="stat"><span class="val">2.9x</span><span class="lbl">Velocity ratio</span></div>
+    </div>
+    
+      <div style="margin:14px 0;"><svg width="740" height="200" viewBox="0 0 740 200"><line x1="40" y1="154.0" x2="720" y2="154.0" stroke="#eef0f3" stroke-width="1"/><text x="34" y="158.0" text-anchor="end" font-size="10" fill="#888">0</text><line x1="40" y1="119.0" x2="720" y2="119.0" stroke="#eef0f3" stroke-width="1"/><text x="34" y="123.0" text-anchor="end" font-size="10" fill="#888">2</text><line x1="40" y1="84.0" x2="720" y2="84.0" stroke="#eef0f3" stroke-width="1"/><text x="34" y="88.0" text-anchor="end" font-size="10" fill="#888">5</text><line x1="40" y1="49.0" x2="720" y2="49.0" stroke="#eef0f3" stroke-width="1"/><text x="34" y="53.0" text-anchor="end" font-size="10" fill="#888">7</text><line x1="40" y1="14.0" x2="720" y2="14.0" stroke="#eef0f3" stroke-width="1"/><text x="34" y="18.0" text-anchor="end" font-size="10" fill="#888">10</text><rect x="40.0" y="154.0" width="51.166666666666664" height="2" fill="#e5e8ee" rx="2"/><text x="65.58333333333333" y="170" text-anchor="middle" font-size="10" fill="#666">05</text><text x="65.58333333333333" y="184" text-anchor="middle" font-size="10" fill="#999" font-weight="600">2025</text><rect x="97.16666666666666" y="154.0" width="51.166666666666664" height="2" fill="#e5e8ee" rx="2"/><text x="122.74999999999999" y="170" text-anchor="middle" font-size="10" fill="#666">06</text><rect x="154.33333333333331" y="154.0" width="51.166666666666664" height="2" fill="#e5e8ee" rx="2"/><text x="179.91666666666666" y="170" text-anchor="middle" font-size="10" fill="#666">07</text><rect x="211.5" y="154.0" width="51.166666666666664" height="2" fill="#e5e8ee" rx="2"/><text x="237.08333333333334" y="170" text-anchor="middle" font-size="10" fill="#666">08</text><rect x="268.66666666666663" y="126.0" width="51.166666666666664" height="28.0" fill="#0066cc" rx="2"/><text x="294.24999999999994" y="122.0" text-anchor="middle" font-size="11" fill="#333" font-weight="600">2</text><text x="294.24999999999994" y="170" text-anchor="middle" font-size="10" fill="#666">09</text><rect x="325.8333333333333" y="112.0" width="51.166666666666664" height="42.0" fill="#0066cc" rx="2"/><text x="351.41666666666663" y="108.0" text-anchor="middle" font-size="11" fill="#333" font-weight="600">3</text><text x="351.41666666666663" y="170" text-anchor="middle" font-size="10" fill="#666">10</text><rect x="383.0" y="112.0" width="51.166666666666664" height="42.0" fill="#0066cc" rx="2"/><text x="408.5833333333333" y="108.0" text-anchor="middle" font-size="11" fill="#333" font-weight="600">3</text><text x="408.5833333333333" y="170" text-anchor="middle" font-size="10" fill="#666">11</text><rect x="440.16666666666663" y="126.0" width="51.166666666666664" height="28.0" fill="#0066cc" rx="2"/><text x="465.74999999999994" y="122.0" text-anchor="middle" font-size="11" fill="#333" font-weight="600">2</text><text x="465.74999999999994" y="170" text-anchor="middle" font-size="10" fill="#666">12</text><rect x="497.3333333333333" y="112.0" width="51.166666666666664" height="42.0" fill="#0066cc" rx="2"/><text x="522.9166666666666" y="108.0" text-anchor="middle" font-size="11" fill="#333" font-weight="600">3</text><text x="522.9166666666666" y="170" text-anchor="middle" font-size="10" fill="#666">01</text><text x="522.9166666666666" y="184" text-anchor="middle" font-size="10" fill="#999" font-weight="600">2026</text><rect x="554.5" y="126.0" width="51.166666666666664" height="28.0" fill="#0066cc" rx="2"/><text x="580.0833333333334" y="122.0" text-anchor="middle" font-size="11" fill="#333" font-weight="600">2</text><text x="580.0833333333334" y="170" text-anchor="middle" font-size="10" fill="#666">02</text><rect x="611.6666666666666" y="14.0" width="51.166666666666664" height="140.0" fill="#0066cc" rx="2"/><text x="637.25" y="10.0" text-anchor="middle" font-size="11" fill="#333" font-weight="600">10</text><text x="637.25" y="170" text-anchor="middle" font-size="10" fill="#666">03</text><rect x="668.8333333333333" y="84.0" width="51.166666666666664" height="70.0" fill="#0066cc" rx="2"/><text x="694.4166666666666" y="80.0" text-anchor="middle" font-size="11" fill="#333" font-weight="600">5</text><text x="694.4166666666666" y="170" text-anchor="middle" font-size="10" fill="#666">04</text></svg></div>
+    </div>
+    
+<div class="footer">Rank 17 · Generated 2026-04-11 · HVAC Signals pipeline</div>
+</div>
+</body>
+</html>

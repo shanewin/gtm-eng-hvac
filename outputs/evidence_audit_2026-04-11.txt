@@ -1,0 +1,1773 @@
+
+==================================================================================
+RANK  1  Maximum Comfort Specialist LLC  (Phoenix)
+==================================================================================
+score=56.5  narrative=active_pain  confidence=medium  domain=mcsofaz.net
+
+── JOB POSTINGS ────────────────────────────────────────────────────────
+  (none)
+
+── DISPATCH EVIDENCE ──────────────────────────────────────────────────
+  category=dispatch_strained  extractions=3  median=8h  max=144h  same_day=67%  negative=33%
+
+  per-review extractions:
+    [review #2] rating=5.0 delay=8h cat=same_day sentiment=positive
+       "she had someone come the same day. This was after 2pm and she still
+       made it happen on the Friday before a holiday weekend."
+    [review #5] rating=1.0 delay=144h cat=same_week sentiment=negative
+       "They came on the 3rd, did nothing but clean up a bit and said they
+       would be back on Monday with the necessary part. Monday (the 7th)
+       turned into Wednesday the 9th."
+    [review #6] rating=5.0 delay=8h cat=same_day sentiment=positive
+       "This company picked up our work order and scheduled us quickly."
+
+  dispatch quotes (from scored CSV):
+    fastest: "she had someone come the same day. This was after 2pm and she still made it happen on the Friday before a holiday weekend."
+    slowest: "They came on the 3rd, did nothing but clean up a bit and said they would be back on Monday with the necessary part. Monday (the 7th) turned into Wednesday the 9th."
+
+── REVIEW LLM ANALYSIS ────────────────────────────────────────────────
+  buying_category=active_pain  pain=6/10  momentum=3/10  smooth_ops=0/10
+  founder_involvement=moderate  key_person_dep=heavy  refugees=1
+
+  one-sentence summary:
+    Maximum Comfort Specialists has strong technician quality and can execute
+    fast turnarounds, but suffers from inconsistent service delivery, job
+    abandonment, and lack of follow-up systems that create warranty claim
+    complications and customer safety risks.
+
+  pain evidence quote:
+    "They disabled my AC units and didn't even come back to fix it!!!! Matt
+    Pryer is totally dishonest, greedy, and not worth your precious time or
+    money when you need help."
+
+  momentum evidence quote:
+    "After assigning it to someone else who told us they couldn't come for 5
+    more days, I called the warranty company back and asked for it to be
+    switched back to maximum comfort. I then called Melissa at maximum comfort
+    and told her what was going on, she had someone come the same day."
+
+── REVIEW BURSTS ──────────────────────────────────────────────────────
+  category=low_data  total=0  negative=0  positive=0  baseline=0.00/wk
+
+── REVIEWS CACHED ─────────────────────────────────────────────────────
+  8 reviews cached
+  date range: 2024-10-08 → 2026-03-18
+
+── TECH STACK ──────────────────────────────────────────────────────────
+  site_builder=WebsiteBuilder  cms=—  page_builder=—
+  form_builders=—
+  fsm_detected=NO
+  all_tech: Google Cloud; Google Cloud CDN; HSTS; HTTP/3; React; WebsiteBuilder; Wix
+
+── WEBSITE + APOLLO CACHE ─────────────────────────────────────────────
+  website pages fetched: 3
+    - https://www.mcsofaz.net
+    - https://www.mcsofaz.net/
+    - https://www.mcsofaz.net/about
+  website-extracted people: 1
+    - Matthew | Founder
+  website general: email=maximumcomfortspecialists@gmail.com phone=623-544-0527
+  apollo matched_people: 0  search_people: 0
+
+==================================================================================
+RANK  2  Reliable Air Conditioning Inc  (Mesa)
+==================================================================================
+score=48.0  narrative=active_pain  confidence=low  domain=reliableairconditioning.com
+
+── JOB POSTINGS ────────────────────────────────────────────────────────
+  (none)
+
+── DISPATCH EVIDENCE ──────────────────────────────────────────────────
+  category=dispatch_low_data  extractions=2  median=252h  max=504h  same_day=50%  negative=50%
+
+  per-review extractions:
+    [review #2] rating=1.0 delay=504h cat=2_plus_weeks sentiment=negative
+       "my 75 year old aunt has been without air since June 4th"
+    [review #6] rating=5.0 delay=1h cat=emergency sentiment=positive
+       "I called him on a Saturday afternoon. Jacob was at our house within
+       an hour"
+
+  dispatch quotes (from scored CSV):
+    fastest: "I called him on a Saturday afternoon. Jacob was at our house within an hour"
+    slowest: "my 75 year old aunt has been without air since June 4th"
+
+── REVIEW LLM ANALYSIS ────────────────────────────────────────────────
+  buying_category=active_pain  pain=8/10  momentum=0/10  smooth_ops=0/10
+  founder_involvement=moderate  key_person_dep=heavy  refugees=1
+
+  one-sentence summary:
+    Reliable Air Conditioning exhibits severe operational pain including no-
+    shows, unanswered phones, missed commitments, and poor communication, with
+    heavy dependence on a single technician (Jake) masking systemic failures.
+
+  pain evidence quote:
+    "my 75 year old aunt has been without air since June 4th. A couple of
+    weeks ago I was told the part was in the van/truck and would be fixed that
+    day. They only put me off or don't answer phone. Avoidance or
+    misrepresentation seems to be the way they do business. Recently, I was
+    told on Tuesday the part finally arrived. Also, that people waiting on
+    parts come before service calls. It is now Thursday evening and no call or
+    repair."
+
+── REGEX NLP SAMPLE QUOTES ─────────────────────────────────────────────
+  positive_key_person:
+    "Jake is the best AC / Mini split repair guy I have ever met in my 30
+    years living here.   I own 3 rental properties and will definitely be
+    using reliable and Jacob to maintain the AC systems on all of them along
+    with my own home. Reliable was outstanding in every aspect of interaction.
+    I called him on a Saturday afternoon.  Jacob was at our house within an
+    hour and had diagnosed a blown powerboard due to an electrical storm. I
+    had another AC repair outfit come and they were unable to diagnose the
+    issue and left because they had to get to a new install. This is a company
+    that is locally owned, family owned and really cares about the customer.
+    All the others I talked to just wanted to install new equipmen and
+    couldn't be bothered with actually repairing anything. Stay away from the
+    big AC companies who charge way more and have high turnover of techs.
+    Jake was thorough and found the problem after checking out the boards on
+    the outside and inside units. They then found 1 of 2 power boards in
+    Maricopa County that were available and drove out to Buckeye to obtain one
+    of them and get my Mini split working again. I now have 54ﾟ cold air
+    coming out after weeks  of nothing but problems with other AC repair
+    companies.  I just wish I had found Reliable and Jake sooner but now we'll
+    use them for all of my properties. The pricing was very fair compared to
+    all the others and they actually  have a good outcome.They gave me
+    estimates and kept to the estimates and were cheaper than all of the other
+    AC repair companies."
+
+── REVIEW BURSTS ──────────────────────────────────────────────────────
+  category=low_data  total=0  negative=0  positive=0  baseline=0.00/wk
+
+── REVIEWS CACHED ─────────────────────────────────────────────────────
+  8 reviews cached
+  date range: 2021-09-15 → 2025-08-24
+
+── TECH STACK ──────────────────────────────────────────────────────────
+  site_builder=—  cms=WordPress  page_builder=—
+  form_builders=—
+  fsm_detected=NO
+  all_tech: Apache HTTP Server; Google Tag Manager; MySQL; PHP; PHP 7.4.33; WP Rocket; WordPress; Yoast SEO
+
+── WEBSITE + APOLLO CACHE ─────────────────────────────────────────────
+  website pages fetched: 4
+    - https://reliableairconditioning.com
+    - https://reliableairconditioning.com/
+    - https://reliableairconditioning.com/about
+    - https://reliableairconditioning.com/about-us
+  website-extracted people: 0
+  website general: email=None phone=480-639-6993
+  apollo matched_people: 0  search_people: 0
+
+==================================================================================
+RANK  3  Tropical Companies LLC  (Chandler)
+==================================================================================
+score=47.5  narrative=mixed  confidence=high  domain=tropicalcompanies.com
+
+── JOB POSTINGS ────────────────────────────────────────────────────────
+  (none)
+
+── DISPATCH EVIDENCE ──────────────────────────────────────────────────
+  category=dispatch_bimodal  extractions=6  median=10h  max=336h  same_day=67%  negative=17%
+
+  per-review extractions:
+    [review #3] rating=5.0 delay=12h cat=same_day sentiment=positive
+       "they came promptly within the timeframe outlined"
+    [review #9] rating=5.0 delay=1h cat=emergency sentiment=positive
+       "They had my motor replaced and cold air coming within an hour"
+    [review #13] rating=1.0 delay=336h cat=1_to_2_weeks sentiment=negative
+       "It took them 3 tries till it worked, over the course of two weeks"
+    [review #24] rating=5.0 delay=8h cat=same_day sentiment=positive
+       "They came out quickly once the ticket was opened"
+    [review #29] rating=5.0 delay=2h cat=emergency sentiment=positive
+       "a technician named Cam (or Kam) arrived on short notice around
+       dinnertime and worked well past 10 PM"
+    [review #33] rating=5.0 delay=24h cat=next_day sentiment=positive
+       "get my AC unit up within 24hrs"
+
+  dispatch quotes (from scored CSV):
+    fastest: "They had my motor replaced and cold air coming within an hour"
+    slowest: "It took them 3 tries till it worked, over the course of two weeks"
+
+── REVIEW LLM ANALYSIS ────────────────────────────────────────────────
+  buying_category=low_signal  pain=2/10  momentum=3/10  smooth_ops=0/10
+  founder_involvement=moderate  key_person_dep=heavy  refugees=1
+
+  one-sentence summary:
+    Tropical Companies LLC is a technician-driven shop with strong individual
+    performer reputation (especially Kam) but shows signs of quality control
+    and organizational issues that emerge post-sale; founder involvement
+    suggests scaling challenges but insufficient evidence of operational pain
+    driving FSM adoption.
+
+  pain evidence quote:
+    "The people that work for this HVAC company are very nice and pleasant.
+    Unfortunately they are not very organized and reliable... They installed
+    the unit, but it would not cool the office. It took them 3 tries till it
+    worked, over the course of two weeks."
+
+  momentum evidence quote:
+    "Kam came out on weak end and did a very good i would highly recommended
+    them"
+
+── REVIEW BURSTS ──────────────────────────────────────────────────────
+  category=recent_crisis  total=7  negative=1  positive=6  baseline=0.30/wk
+
+  negative burst sample (2026-02-10):
+    "The people that work for this HVAC company are very nice and pleasant.
+    Unfortunately they are not very organized and reliable. I rent a
+    commercial office and the AC stopped working. The property manager who is
+    also very nice called Tropical to install a new AC unit. They installed
+    the unit, but it would not cool the office. It took them 3 tries till it
+    worked, over the course of two weeks. Devin the owner came out the third
+    time and got it running. Devin is also a very nice guy. After One month it
+    went out again. I am amazed. They are really nice people, but I truly do
+    not think they really know what they are doing."
+
+  positive burst sample (2026-04-08):
+    "This company came out to repair my ac unit and they came  promptly within
+    the timeframe outlined! I really appreciated the technician Cam was very
+    efficient and clear! Will be recommending this company to others!"
+
+── REVIEWS CACHED ─────────────────────────────────────────────────────
+  38 reviews cached
+  date range: 2023-11-08 → 2026-04-09
+
+── TECH STACK ──────────────────────────────────────────────────────────
+  site_builder=WebsiteBuilder  cms=—  page_builder=—
+  form_builders=—
+  fsm_detected=NO
+  all_tech: Google Cloud; Google Cloud CDN; HSTS; HTTP/3; React; WebsiteBuilder; Wix
+
+── WEBSITE + APOLLO CACHE ─────────────────────────────────────────────
+  website pages fetched: 4
+    - http://www.tropicalcompanies.com
+    - http://www.tropicalcompanies.com/
+    - http://www.tropicalcompanies.com/about
+    - http://www.tropicalcompanies.com/contact-us
+  website-extracted people: 1
+    - Devin Duke | Owner
+  website general: email=None phone=480-848-0924
+  apollo matched_people: 0  search_people: 0
+
+==================================================================================
+RANK  4  Grand Canyon Home Services LLC  (Peoria)
+==================================================================================
+score=44.0  narrative=scaling_strain  confidence=high  domain=grandcanyonac.com
+
+── JOB POSTINGS ────────────────────────────────────────────────────────
+  10 cached:
+  ▶ HVAC and Plumbing Dispatcher (via Indeed) · Youngtown, AZ
+      https://www.indeed.com/viewjob?jk=ba38806312668422&utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic
+    HVAC Technicians (via WayUp) · Youngtown, AZ
+      https://www.wayup.com/i-j-HVAC-Technician-s-Grand-Canyon-Home-Services-LLC-247905807677535/?utm_campaign=google_jobs_apply&utm_source=google
+  ▶ Dispatcher (via Indeed) · Youngtown, AZ
+      https://www.indeed.com/viewjob?jk=05bfa63aef484dda&utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic
+  ▶ HVAC Dispatcher (via Indeed) · Youngtown, AZ · posted 27 days ago
+      https://www.indeed.com/viewjob?jk=ad359cbd3e13d504&utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic
+    Air Conditioning Technician & Apprentices (via Indeed) · Youngtown, AZ
+      https://www.indeed.com/viewjob?jk=cbbfb3f796b180af&utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic
+  ▶ Dispatchers (via ZipRecruiter) · Youngtown, AZ
+      https://www.ziprecruiter.com/c/Grand-Canyon-Home-Services-LLC/Job/Dispatchers/-in-Youngtown,AZ?jid=8076c292cf63b049&utm_campaign=google_jobs
+    Call-by-Call Manager (via Indeed) · Youngtown, AZ
+      https://www.indeed.com/viewjob?jk=c6d185df53c57183&utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic
+    HVAC INSTALLER (via ZipRecruiter) · Youngtown, AZ
+      https://www.ziprecruiter.com/c/Grand-Canyon-Home-Services-LLC/Job/HVAC-Installer/-in-Youngtown,AZ?jid=fb78faecf33a1ea1&utm_campaign=google_j
+    HVAC Technician (via ZipRecruiter) · Youngtown, AZ
+      https://www.ziprecruiter.com/c/Grand-Canyon-Home-Services/Job/HVAC-Technician(s)/-in-Youngtown,AZ?jid=7dd573b0308a619c&utm_campaign=google_j
+    Air Conditioning Technicians (via ZipRecruiter) · Youngtown, AZ
+      https://www.ziprecruiter.com/c/Grand-Canyon-Home-Services/Job/Air-Conditioning-Technicians/-in-Youngtown,AZ?jid=cac8e1f3f7764f96&utm_campaig
+
+  hiring classification (from scored CSV):
+    ops_pain sample title: HVAC and Plumbing Dispatcher
+    capacity sample title: Air Conditioning Technician & Apprentices
+    sources: Indeed; WayUp; ZipRecruiter
+
+── DISPATCH EVIDENCE ──────────────────────────────────────────────────
+  category=dispatch_low_data  extractions=2  median=8h  max=16h  same_day=50%  negative=0%
+
+  per-review extractions:
+    [review #6] rating=5.0 delay=16h cat=next_day sentiment=positive
+       "Discovered our AC was out after 8pm. Called Grand Canyon and was
+       scheduled for first thing in the morning."
+    [review #22] rating=5.0 delay=0.33h cat=emergency sentiment=positive
+       "Tyler was here quickly evaluated the situation had the unit back in
+       heat in less than 20 minutes."
+
+  dispatch quotes (from scored CSV):
+    fastest: "Tyler was here quickly evaluated the situation had the unit back in heat in less than 20 minutes."
+    slowest: "Discovered our AC was out after 8pm. Called Grand Canyon and was scheduled for first thing in the morning."
+
+── REVIEW LLM ANALYSIS ────────────────────────────────────────────────
+  buying_category=low_signal  pain=1/10  momentum=0/10  smooth_ops=2/10
+  founder_involvement=moderate  key_person_dep=heavy  refugees=1
+
+  one-sentence summary:
+    Grand Canyon Home Services is a well-established, family-owned HVAC
+    contractor with strong technician quality and customer satisfaction, but
+    shows no operational pain or scaling strain signals; one pricing complaint
+    suggests potential invoice transparency issues.
+
+  pain evidence quote:
+    "Way over charged me for a capacitor replacement. Knew I was in Colorado
+    (snowbird), so charged me $1,264 to replace the capacitor. Wasn't much I
+    could do after he was already on site. I now have an honest company on a
+    service contract so that won't happen again."
+
+  smooth-ops evidence quote:
+    "They let me know when they would arrive, they arrived on time, and they
+    were quick and informative."
+
+── REGEX NLP SAMPLE QUOTES ─────────────────────────────────────────────
+  positive_key_person:
+    "We always request Mike S. He’s knowledgeable and respectful at our home.
+    We use Grand Canyon for anything AC and trust them."
+  control_positive:
+    "Tyler and Jesus were here to perform my semi-annual inspection and tune
+    up for Furnace and Air Conditioner and did a great job. They let me know
+    when they would arrive, they arrived on time, and they were quick and
+    informative. They showed me pictures of the important details including
+    test equipment readings. We initially chose Grand Canyon Home Services
+    because they were willing to do the semi-annual work on my new build home
+    (many of the heat & a/c companies refused because the unit wasn't old
+    enough), we stay with them because the technicians (like Tyler and Jesus)
+    are honest and knowledgeable."
+
+── REVIEW BURSTS ──────────────────────────────────────────────────────
+  category=scaling_surge  total=6  negative=0  positive=6  baseline=0.17/wk
+
+  positive burst sample (2026-03-26):
+    "Rylan did a thorough AC inspection and maintenence. He was professional
+    and knowledgeable. He took time to explain service provided and ensured
+    our system was operating properly. He and Grand Canyon Home Services can
+    be trusted as qualified hvac pros."
+
+── REVIEWS CACHED ─────────────────────────────────────────────────────
+  38 reviews cached
+  date range: 2021-12-10 → 2026-04-08
+
+── TECH STACK ──────────────────────────────────────────────────────────
+  site_builder=—  cms=—  page_builder=—
+  form_builders=—
+  fsm_detected=NO
+  all_tech: HTTP/3; LiteSpeed
+
+==================================================================================
+RANK  5  CMK Heating and Cooling LLC  (Phoenix)
+==================================================================================
+score=40.0  narrative=active_pain  confidence=low  domain=cmkheatingandcooling.com
+
+── JOB POSTINGS ────────────────────────────────────────────────────────
+  1 cached:
+    HVAC Installers (via Craigslist) · Scottsdale, AZ · posted 17 days ago
+      https://phoenix.craigslist.org/nph/trd/d/scottsdale-hvac-multi-family-service/7923292453.html?utm_campaign=google_jobs_apply&utm_source=goog
+
+  hiring classification (from scored CSV):
+    sources: Craigslist
+
+── DISPATCH EVIDENCE ──────────────────────────────────────────────────
+  category=dispatch_low_data  extractions=1  median=8h  max=8h  same_day=100%  negative=0%
+
+  per-review extractions:
+    [review #4] rating=5.0 delay=8h cat=same_day sentiment=positive
+       "CMK was Prompt, professional, thorough and on time. We were very
+       pleased with the response time."
+
+  dispatch quotes (from scored CSV):
+    fastest: "CMK was Prompt, professional, thorough and on time. We were very pleased with the response time."
+    slowest: "CMK was Prompt, professional, thorough and on time. We were very pleased with the response time."
+
+── REVIEW LLM ANALYSIS ────────────────────────────────────────────────
+  buying_category=active_pain  pain=8/10  momentum=0/10  smooth_ops=0/10
+  founder_involvement=  key_person_dep=moderate  refugees=0
+
+  one-sentence summary:
+    CMK Heating and Cooling delivers excellent service quality when jobs are
+    completed, but suffers from severe communication and quote-management
+    failures that leave customers waiting days without response.
+
+  pain evidence quote:
+    "Over the past week and a half, I made numerous phone calls and sent
+    multiple emails and kept getting told they would like someone else know
+    and they would reach back out to me. I still haven't received a phone
+    call, text message or email from them."
+
+── REVIEW BURSTS ──────────────────────────────────────────────────────
+  category=low_data  total=0  negative=0  positive=0  baseline=0.00/wk
+
+── REVIEWS CACHED ─────────────────────────────────────────────────────
+  8 reviews cached
+  date range: 2023-07-18 → 2026-04-09
+
+── TECH STACK ──────────────────────────────────────────────────────────
+  site_builder=—  cms=WordPress 6.9.4  page_builder=WordPress Block Editor
+  form_builders=—
+  fsm_detected=NO
+  all_tech: Google Tag Manager; MySQL; Nginx; PHP; WordPress; WordPress 6.9.4; WordPress Block Editor; Yoast SEO
+
+==================================================================================
+RANK  6  America's Pride Cooling And Heating LLC  (Glendale)
+==================================================================================
+score=39.5  narrative=active_pain  confidence=low  domain=americasprideair.com
+
+── JOB POSTINGS ────────────────────────────────────────────────────────
+  (none)
+
+── DISPATCH EVIDENCE ──────────────────────────────────────────────────
+  category=dispatch_low_data  extractions=2  median=6h  max=8h  same_day=100%  negative=0%
+
+  per-review extractions:
+    [review #1] rating=5.0 delay=8h cat=same_day sentiment=positive
+       "They came out the same day I submitted my request through my home
+       warranty company, which was even sooner than the warranty company
+       offered and on Labor day."
+    [review #4] rating=5.0 delay=3h cat=emergency sentiment=positive
+       "they understood not having AC in the Arizona heat and came out within
+       hours of reaching out to them"
+
+  dispatch quotes (from scored CSV):
+    fastest: "they understood not having AC in the Arizona heat and came out within hours of reaching out to them"
+    slowest: "They came out the same day I submitted my request through my home warranty company, which was even sooner than the warranty company offered and on Labor day."
+
+── REVIEW LLM ANALYSIS ────────────────────────────────────────────────
+  buying_category=active_pain  pain=7/10  momentum=3/10  smooth_ops=0/10
+  founder_involvement=  key_person_dep=moderate  refugees=0
+
+  one-sentence summary:
+    America's Pride shows strong technical capability and fast response times
+    on warranty calls, but suffers from critical operational failures
+    including misdiagnosis, poor follow-up communication, and unanswered phone
+    calls that leave customers stranded without AC.
+
+  pain evidence quote:
+    "Now, myself and my warranty company are unable to reach APC for almost
+    4-5 days now. They are not responding and as per the warranty, they have
+    not submitted a diagnosis either. We are without a/c in one floor for a
+    week now."
+
+  momentum evidence quote:
+    "came out within hours of reaching out to them"
+
+── REGEX NLP SAMPLE QUOTES ─────────────────────────────────────────────
+  positive_key_person:
+    "These guys are great. They came out the same day I submitted my request
+    through my home warranty company, which was even sooner than the warranty
+    company offered and on Labor day. They identified that the issue was the
+    capacitor and replaced it, all within 10 minutes. I highly recommend Jason
+    and this company."
+
+── REVIEW BURSTS ──────────────────────────────────────────────────────
+  category=low_data  total=0  negative=0  positive=0  baseline=0.00/wk
+
+── REVIEWS CACHED ─────────────────────────────────────────────────────
+  8 reviews cached
+  date range: 2024-05-24 → 2025-09-01
+
+── TECH STACK ──────────────────────────────────────────────────────────
+  site_builder=—  cms=—  page_builder=—
+  form_builders=—
+  fsm_detected=NO
+  all_tech: AngularJS; HSTS; Nginx; Varnish 5.2
+
+==================================================================================
+RANK  7  Comfort Experts LLC  (Mesa)
+==================================================================================
+score=39.0  narrative=scaling_strain  confidence=high  domain=azcomfortexperts.com
+
+── JOB POSTINGS ────────────────────────────────────────────────────────
+  5 cached:
+    Heating, Ventilation, and Air Conditioning Technician (via Indeed) · Mesa, AZ · posted 22 days ago
+      https://www.indeed.com/viewjob?jk=2d68ecdb959f6bd7&utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic
+    Customer Service Representative/Scheduling Coordinator at Comfort Experts, LLC. Mesa, AZ (via Wertman Development Corporation) · Mesa, AZ · posted 10 days ago
+      https://wertmandevelopment.com/vacancy/job/customer-service-representativescheduling-coordinator-at-comfort-experts-llc-mesa-az-bDJGUms1RGpM
+    HVAC Install Technician (via Glassdoor) · Mesa, AZ
+      https://www.glassdoor.com/job-listing/hvac-install-technician-proskill-JV_IC1133897_KO0,23_KE24,32.htm?jl=1010049546095&utm_campaign=google_
+    Lead Mechanical/Refrigeration Installation Tech - HVAC (via EarnBetter) · Phoenix, AZ
+      https://earnbetter.com/app/job/01KHQ6WB0DZBQ4X6BYWPW8ZAHW/?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic
+    HVAC Install Lead (via SimplyHired) · Tempe, AZ · posted 15 days ago
+      https://www.simplyhired.com/job/-dRbuyRfq4Qn1UgxZGykOrwof9X9rPWKjzi83uACjpHR0vuJF0EmXQ?utm_campaign=google_jobs_apply&utm_source=google_jobs
+
+  hiring classification (from scored CSV):
+    ops_pain sample title: Customer Service Representative/Scheduling Coordinator at Comfort Experts, LLC. Mesa, AZ
+    capacity sample title: Heating, Ventilation, and Air Conditioning Technician
+    sources: Indeed; Wertman Development Corporation
+
+── DISPATCH EVIDENCE ──────────────────────────────────────────────────
+  category=dispatch_fast  extractions=3  median=4h  max=8h  same_day=100%  negative=0%
+
+  per-review extractions:
+    [review #14] rating=5.0 delay=2h cat=emergency sentiment=positive
+       "I called Comfort Experts today for a second opinion on an HVAC system
+       repair and was extremely happy with how responsive and professional
+       the team was in quickly getting a technician to evaluate the system"
+    [review #16] rating=5.0 delay=8h cat=same_day sentiment=positive
+       "We had no heat from either of our systems during this cold snap and
+       they came out same day!"
+    [review #17] rating=5.0 delay=4h cat=emergency sentiment=positive
+       "Their responsiveness and turnaround time is AMAZING!"
+
+  dispatch quotes (from scored CSV):
+    fastest: "I called Comfort Experts today for a second opinion on an HVAC system repair and was extremely happy with how responsive and professional the team was in quickly getting a technician to evaluate the s"
+    slowest: "We had no heat from either of our systems during this cold snap and they came out same day!"
+
+── REVIEW LLM ANALYSIS ────────────────────────────────────────────────
+  buying_category=low_signal  pain=1/10  momentum=2/10  smooth_ops=0/10
+  founder_involvement=  key_person_dep=moderate  refugees=2
+
+  one-sentence summary:
+    Comfort Experts LLC operates smoothly with strong technician quality and
+    customer satisfaction, but shows minimal operational pain or scaling
+    strain signals that would drive FSM software purchases.
+
+  pain evidence quote:
+    "We reached out numerous times for a refund. We were denied."
+
+  momentum evidence quote:
+    "We were in need of a new HVAC company due to problems/ineptness w our
+    previous company. COMFORT EXPERTS were prompt, courteous, EXTREMELY
+    knowledgeable, willing to show and explain our unit to us. Their
+    responsiveness and turnaround time is AMAZING!"
+
+── REGEX NLP SAMPLE QUOTES ─────────────────────────────────────────────
+  positive_key_person:
+    "For my ac follow up, Connor, the service tech is the best. He is very
+    respectful, patient and takes time to explain everything in details. It's
+    nice when theres a ac company you can depend on and honest. The prior ac
+    company i had, not so. I would like to have Conner as my assigned ac tech.
+    Thx Comfort Experts!"
+  positive_switch:
+    "We were in need of a new HVAC company due to problems/ineptness w our
+    previous company.  COMFORT EXPERTS were prompt,  courteous, EXTREMELY
+    knowledgeable,  willing to show and explain our unit to us.  They took
+    time and did not try to oversell us. Our home is now very comfortable and
+    moving forward, we will be using Comfort Experts as well as HIGHLY
+    recommending them to our friends and neighbors.  Their responsiveness  and
+    turnaround time is AMAZING!"
+  control_positive:
+    "I am very pleased with the Comfort Experts service I had today.  The
+    technician, Tom, arrived on time. Not only did he service the air
+    conditioner, he assisted me with setting the thermostat and replaced the
+    air filters.  He was professional and personable. He took extra time to
+    ensure the air conditioning system was running efficiently."
+
+── REVIEW BURSTS ──────────────────────────────────────────────────────
+  category=scaling_surge  total=6  negative=0  positive=5  baseline=0.15/wk
+
+  positive burst sample (2026-04-03):
+    "Peter was my tech!  Friendly and helpful.  I scheduled a tuneup to see
+    how the unit was performing."
+
+── REVIEWS CACHED ─────────────────────────────────────────────────────
+  38 reviews cached
+  date range: 2021-06-17 → 2026-04-09
+
+── TECH STACK ──────────────────────────────────────────────────────────
+  site_builder=—  cms=WordPress 6.9.4  page_builder=—
+  form_builders=—
+  fsm_detected=NO
+  all_tech: Cloudflare; HTTP/3; LiteSpeed; LiteSpeed Cache; Litespeed Cache; MySQL; PHP; PHP 8.4.16; WordPress 6.9.4
+
+==================================================================================
+RANK  8  North Wind Mechanical LLC  (Mesa)
+==================================================================================
+score=39.0  narrative=active_pain  confidence=low  domain=northwindhvacaz.com
+
+── JOB POSTINGS ────────────────────────────────────────────────────────
+  (none)
+
+── DISPATCH EVIDENCE ──────────────────────────────────────────────────
+  category=dispatch_low_data  extractions=1  median=2h  max=2h  same_day=100%  negative=0%
+
+  per-review extractions:
+    [review #5] rating=5.0 delay=2h cat=emergency sentiment=positive
+       "As usual North Wind Mechanical was on time"
+
+  dispatch quotes (from scored CSV):
+    fastest: "As usual North Wind Mechanical was on time"
+    slowest: "As usual North Wind Mechanical was on time"
+
+── REVIEW LLM ANALYSIS ────────────────────────────────────────────────
+  buying_category=active_pain  pain=9/10  momentum=0/10  smooth_ops=1/10
+  founder_involvement=moderate  key_person_dep=moderate  refugees=0
+
+  one-sentence summary:
+    North Wind Mechanical is experiencing severe operational and customer
+    service pain, with multiple customers reporting unresponsiveness, warranty
+    disputes, installation defects, and owner non-engagement despite
+    significant customer lifetime value.
+
+  pain evidence quote:
+    "I tried in good faith to give you a chance to make it right and I asked
+    your owner to give me a call to discuss. I haven't heard back."
+
+  smooth-ops evidence quote:
+    "Ashley cheerfully handles your call and is always very responsive and
+    really keeps you in the loop about the timing of the service call."
+
+── REVIEW BURSTS ──────────────────────────────────────────────────────
+  category=low_data  total=0  negative=0  positive=0  baseline=0.00/wk
+
+── REVIEWS CACHED ─────────────────────────────────────────────────────
+  8 reviews cached
+  date range: 2019-11-08 → 2025-03-12
+
+── TECH STACK ──────────────────────────────────────────────────────────
+  site_builder=—  cms=WordPress  page_builder=—
+  form_builders=—
+  fsm_detected=NO
+  all_tech: Cloudflare; Cloudflare Bot Management; HTTP/3; MySQL; PHP; Sucuri; WordPress; Yoast SEO
+
+==================================================================================
+RANK  9  Grizzly Mechanical LLC  (Peoria)
+==================================================================================
+score=38.0  narrative=active_pain  confidence=low  domain=grizzlyair.com
+
+── JOB POSTINGS ────────────────────────────────────────────────────────
+  (none)
+
+── DISPATCH EVIDENCE ──────────────────────────────────────────────────
+  category=dispatch_low_data  extractions=1  median=24h  max=24h  same_day=0%  negative=0%
+
+  per-review extractions:
+    [review #1] rating=5.0 delay=24h cat=next_day sentiment=positive
+       "repair to the thermostat wire outside that I accidentally cut
+       yesterday and he fixed today"
+
+  dispatch quotes (from scored CSV):
+    fastest: "repair to the thermostat wire outside that I accidentally cut yesterday and he fixed today"
+    slowest: "repair to the thermostat wire outside that I accidentally cut yesterday and he fixed today"
+
+── REVIEW LLM ANALYSIS ────────────────────────────────────────────────
+  buying_category=active_pain  pain=7/10  momentum=0/10  smooth_ops=0/10
+  founder_involvement=  key_person_dep=moderate  refugees=1
+
+  one-sentence summary:
+    Grizzly Mechanical shows strong technical capability and customer loyalty
+    among satisfied clients, but faces serious operational pain around pricing
+    transparency, estimate communication, and service follow-through that is
+    damaging repeat business.
+
+  pain evidence quote:
+    "Didn't bother to call me with the estimate - if they had, I would've told
+    em to pound sand. Really difficult to find honest HVAC guys here in
+    Phoenix - so, IF you're looking for one that won't rip you off or take
+    advantage of you, probably best to keep looking."
+
+── REVIEW BURSTS ──────────────────────────────────────────────────────
+  category=low_data  total=0  negative=0  positive=0  baseline=0.00/wk
+
+── REVIEWS CACHED ─────────────────────────────────────────────────────
+  8 reviews cached
+  date range: 2025-04-22 → 2025-10-15
+
+── TECH STACK ──────────────────────────────────────────────────────────
+  site_builder=—  cms=—  page_builder=—
+  form_builders=—
+  fsm_detected=NO
+
+==================================================================================
+RANK 10  D W Plumbing Heating & Cooling Inc  (Phoenix)
+==================================================================================
+score=35.0  narrative=scaling_strain  confidence=high  domain=dwplumbing.com
+
+── JOB POSTINGS ────────────────────────────────────────────────────────
+  (none)
+
+── DISPATCH EVIDENCE ──────────────────────────────────────────────────
+  category=dispatch_fast  extractions=7  median=2h  max=8h  same_day=100%  negative=0%
+
+  per-review extractions:
+    [review #1] rating=5.0 delay=4h cat=same_day sentiment=positive
+       "They consistently accommodate our schedule, even on short notice, and
+       address issues in a prompt and efficient manner."
+    [review #6] rating=5.0 delay=2h cat=emergency sentiment=positive
+       "Ivan from D.W. Plumbing came out and had it flowing perfectly in no
+       time."
+    [review #13] rating=5.0 delay=8h cat=same_day sentiment=positive
+       "Ivan was kind and did a great job cleaning up the kitchen drain and
+       even came out to work on a Sunday."
+    [review #14] rating=5.0 delay=2h cat=emergency sentiment=positive
+       "Very quick to response super recommend."
+    [review #35] rating=5.0 delay=1h cat=emergency sentiment=positive
+       "they return your call immediately during after hours for
+       emergencies."
+    [review #36] rating=5.0 delay=1h cat=emergency sentiment=positive
+       "David was quick and friendly. Found the issue and fixed it
+       immediately!"
+    [review #37] rating=5.0 delay=2h cat=emergency sentiment=positive
+       "They could have come with the worst attitude. The situation they were
+       coming in to late at night... He was so quick and efficient."
+
+  dispatch quotes (from scored CSV):
+    fastest: "they return your call immediately during after hours for emergencies."
+    slowest: "Ivan was kind and did a great job cleaning up the kitchen drain and even came out to work on a Sunday."
+
+── REVIEW LLM ANALYSIS ────────────────────────────────────────────────
+  buying_category=low_signal  pain=0/10  momentum=0/10  smooth_ops=0/10
+  founder_involvement=  key_person_dep=heavy  refugees=0
+
+  one-sentence summary:
+    D W Plumbing Heating & Cooling Inc operates with strong technician quality
+    and customer service excellence, but reviews provide no evidence of
+    operational pain, scaling strain, or implemented FSM systems.
+
+── REGEX NLP SAMPLE QUOTES ─────────────────────────────────────────────
+  positive_key_person:
+    "Montana on Butler would like to give a special thx to DW plumbing great
+    customer service great price on weekend call is the best thx again Rachel
+    & Bree!!"
+  control_positive:
+    "Ivan came out late at night to fix a leaking pipe under our sink. He
+    arrived promptly, quickly identified the problem, and repaired it
+    efficiently with no mess left behind. He was professional, friendly, and
+    took the time to explain what caused the leak and how to prevent it in the
+    future.  Highly recommend Ivan—reliable and knowledgeable."
+
+── REVIEW BURSTS ──────────────────────────────────────────────────────
+  category=scaling_surge  total=3  negative=0  positive=3  baseline=3.71/wk
+
+  positive burst sample (2026-02-24):
+    "Pleasant to work with, quick to schedule, they return your call
+    immediately during after hours for emergencies."
+
+── REVIEWS CACHED ─────────────────────────────────────────────────────
+  108 reviews cached
+  date range: 2025-09-16 → 2026-04-09
+
+── TECH STACK ──────────────────────────────────────────────────────────
+  site_builder=—  cms=—  page_builder=—
+  form_builders=—
+  fsm_detected=NO
+
+==================================================================================
+RANK 11  Arizona Cooling and Heating Specialists LLC  (Queen Creek)
+==================================================================================
+score=32.0  narrative=scaling_strain  confidence=medium  domain=arizonacoolingandheatingspecialistsllc.com
+
+── JOB POSTINGS ────────────────────────────────────────────────────────
+  (none)
+
+── DISPATCH EVIDENCE ──────────────────────────────────────────────────
+  category=dispatch_fast  extractions=4  median=16h  max=48h  same_day=50%  negative=25%
+
+  per-review extractions:
+    [review #6] rating=5.0 delay=1.0h cat=emergency sentiment=positive
+       "got my ac back up and running in less than an HOUR!!"
+    [review #16] rating=5.0 delay=8.0h cat=same_day sentiment=positive
+       "The repair was completed the same day, and our home was back to a
+       comfortable temperature within hours."
+    [review #19] rating=5.0 delay=24.0h cat=next_day sentiment=positive
+       "Our AC stopped working, and they came out the very next day."
+    [review #28] rating=1.0 delay=48.0h cat=next_day sentiment=negative
+       "Says he will be coming the morning of, on day 1 than lied and made
+       excuses and comes 2 days later"
+
+  dispatch quotes (from scored CSV):
+    fastest: "got my ac back up and running in less than an HOUR!!"
+    slowest: "Says he will be coming the morning of, on day 1 than lied and made excuses and comes 2 days later"
+
+── REVIEW LLM ANALYSIS ────────────────────────────────────────────────
+  buying_category=low_signal  pain=1/10  momentum=0/10  smooth_ops=0/10
+  founder_involvement=moderate  key_person_dep=heavy  refugees=0
+
+  one-sentence summary:
+    Arizona Cooling and Heating Specialists operates with strong technician
+    quality and customer satisfaction, but one scheduling failure (2-day delay
+    in 120° heat) suggests emerging operational friction that could worsen as
+    demand grows.
+
+  pain evidence quote:
+    "DANIEL lies.. Says he will be coming the morning of, on day 1 than lied
+    and made excuses and comes 2 days later full of all his excuses.. When
+    temps are 120 and u have kids n animals this is UNACCEPTABLE.."
+
+── REGEX NLP SAMPLE QUOTES ─────────────────────────────────────────────
+  control_positive:
+    "I had a frustrating experience with my AC not blowing any air. I tried to
+    fix it myself, but it was no use. I was then recommended by a trusted
+    friend to contact Arizona Cooling. Josh arrived promptly, diagnosed the
+    problem, and fixed it efficiently. He was transparent about the issue and
+    even demonstrated it to me. I’m incredibly grateful for his hard work and
+    the peace of mind I now have with a reliable AC service provider. Thank
+    you once again."
+
+── REVIEW BURSTS ──────────────────────────────────────────────────────
+  category=scaling_surge  total=5  negative=0  positive=5  baseline=1.13/wk
+
+  positive burst sample (2026-03-26):
+    "Can’t recommend enough"
+
+── REVIEWS CACHED ─────────────────────────────────────────────────────
+  48 reviews cached
+  date range: 2025-06-11 → 2026-04-06
+
+── TECH STACK ──────────────────────────────────────────────────────────
+  site_builder=—  cms=—  page_builder=—
+  form_builders=—
+  fsm_detected=NO
+  all_tech: Cloudflare; HSTS; HTTP/3
+
+==================================================================================
+RANK 12  True Home Maintenance Air Conditioning & Heating LLC  (Mesa)
+==================================================================================
+score=31.0  narrative=scaling_strain  confidence=medium  domain=truehomeac.com
+
+── JOB POSTINGS ────────────────────────────────────────────────────────
+  10 cached:
+    HVAC Install Lead (via ZipRecruiter) · Mesa, AZ · posted 16 days ago
+      https://www.ziprecruiter.com/c/True-Home-Maintenance-Air-Conditioning-&-Heating/Job/HVAC-Install-Lead/-in-Mesa,AZ?jid=deac19b5e00321bd&utm_c
+    Appliance Service Technician (via Talents By Vaia) · Mesa, AZ
+      https://talents.vaia.com/companies/true-home-maintenance-air-conditioning-heating-llc/appliance-service-technician-36465799/?utm_campaign=go
+    HVAC Maintenance Technician (via ZipRecruiter) · Gilbert, AZ · posted 22 days ago
+      https://www.ziprecruiter.com/c/AC-Doctors/Job/HVAC-Maintenance-Technician/-in-Gilbert,AZ?jid=c561903a077749b1&utm_campaign=google_jobs_apply
+    Appliance & Refrigeration Repair Tech - Full & Part Time (via ZipRecruiter) · Mesa, AZ
+      https://www.ziprecruiter.com/c/Labor-Finders/Job/Appliance-&-Refrigeration-Repair-Tech-Full-&-Part-Time/-in-Mesa,AZ?jid=ec6b3bd3c9910328&utm
+    Service Technician / Installer / Construction Tech (via ZipRecruiter) · Gilbert, AZ
+      https://www.ziprecruiter.com/c/Hicken-Air/Job/Service-Technician-Installer-Construction-Tech/-in-Gilbert,AZ?jid=27655d6c0524b82b&utm_campaig
+    High End and Sealed System Appliance Repair Technician (4+YEARS EXPERIENCE REQ) NOT A HVAC POSITION (via SimplyHired) · Scottsdale, AZ
+      https://www.simplyhired.com/job/xdRipwv6O88N0K-oxFjF6aFrb7iw4c4FHv6uluLr_UH9QQqVab5dIQ?utm_campaign=google_jobs_apply&utm_source=google_jobs
+    Wind Engineering Lead (via Talent.com) · Gilbert, AZ · posted 3 days ago
+      https://www.talent.com/view?id=614099715497658649&utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic
+    Solar Service Technician - Commercial and Residential (via ZipRecruiter) · Chandler, AZ
+      https://www.ziprecruiter.com/c/Career-Search/Job/Solar-Service-Technician-Commercial-and-Residential/-in-Chandler,AZ?jid=7dadfa8cbd22b11e&ut
+    Tecnici Elettrici per il Collaudo di Sistemi Frigoriferi (via Talent.com) · Mesa, AZ (+1 other) · posted 18 days ago
+      https://www.talent.com/view?id=611879852526150049&utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic
+    General Openings (via ZipRecruiter) · Chandler, AZ
+      https://www.ziprecruiter.com/c/Comfort-Systems-USA/Job/General-Openings/-in-Chandler,AZ?jid=be47a6fb95396aed&utm_campaign=google_jobs_apply&
+
+  hiring classification (from scored CSV):
+    capacity sample title: Appliance Service Technician
+    sources: Talents By Vaia; ZipRecruiter
+
+── DISPATCH EVIDENCE ──────────────────────────────────────────────────
+  category=dispatch_low_data  extractions=1  median=8h  max=8h  same_day=100%  negative=0%
+
+  per-review extractions:
+    [review #11] rating=5.0 delay=8h cat=same_day sentiment=positive
+       "Once the issue was found Jared fixed it the same day, even though he
+       had to drive to get a part."
+
+  dispatch quotes (from scored CSV):
+    fastest: "Once the issue was found Jared fixed it the same day, even though he had to drive to get a part."
+    slowest: "Once the issue was found Jared fixed it the same day, even though he had to drive to get a part."
+
+── REVIEW LLM ANALYSIS ────────────────────────────────────────────────
+  buying_category=low_signal  pain=0/10  momentum=0/10  smooth_ops=0/10
+  founder_involvement=  key_person_dep=heavy  refugees=1
+
+  one-sentence summary:
+    True Home Maintenance demonstrates strong technician quality and customer
+    satisfaction with no operational pain signals, but reviews reveal heavy
+    dependency on named technicians (Sammi, Jared, Scott, Joel, Chris) rather
+    than systematic operations, and no evidence of scaling strain or FSM
+    software adoption.
+
+── REVIEW BURSTS ──────────────────────────────────────────────────────
+  category=scaling_surge  total=2  negative=0  positive=2  baseline=0.18/wk
+
+  positive burst sample (2026-03-24):
+    "We needed somebody to check our AC, and Sammi did a good job , explaining
+    what we need"
+
+── REVIEWS CACHED ─────────────────────────────────────────────────────
+  18 reviews cached
+  date range: 2024-04-23 → 2026-03-27
+
+── TECH STACK ──────────────────────────────────────────────────────────
+  site_builder=—  cms=WordPress  page_builder=—
+  form_builders=—
+  fsm_detected=NO
+  all_tech: MySQL; Nginx; PHP; Site Kit 1.175.0; SiteGround; WordPress; Yoast SEO
+
+==================================================================================
+RANK 13  Total Care Heating & Cooling LLC  (Peoria)
+==================================================================================
+score=31.0  narrative=scaling_strain  confidence=medium  domain=totalcareheatingandcoolingaz.com
+
+── JOB POSTINGS ────────────────────────────────────────────────────────
+  (none)
+
+── DISPATCH EVIDENCE ──────────────────────────────────────────────────
+  category=dispatch_fast  extractions=4  median=9h  max=24h  same_day=75%  negative=0%
+
+  per-review extractions:
+    [review #12] rating=5.0 delay=16h cat=next_day sentiment=positive
+       "Our AC broke on a Friday night after 7 PM, I left a message at about
+       7:30 PM and they called me back within 20 minutes. They were here
+       first thing in the morning on Saturday"
+    [review #14] rating=5.0 delay=24h cat=same_day sentiment=positive
+       "He really helped me out in an emergency with a pump for an HVAC unit
+       within a day of calling him"
+    [review #15] rating=5.0 delay=1h cat=emergency sentiment=positive
+       "called and reached Sammy, and he was on site within an hour to
+       inspect our malfunctioning condensing unit"
+    [review #18] rating=5.0 delay=2h cat=emergency sentiment=positive
+       "one of my units unexpectedly failed. My wife called Sammy, and he had
+       it up and running within two hours"
+
+  dispatch quotes (from scored CSV):
+    fastest: "called and reached Sammy, and he was on site within an hour to inspect our malfunctioning condensing unit"
+    slowest: "He really helped me out in an emergency with a pump for an HVAC unit within a day of calling him"
+
+── REVIEW LLM ANALYSIS ────────────────────────────────────────────────
+  buying_category=low_signal  pain=0/10  momentum=3/10  smooth_ops=2/10
+  founder_involvement=heavy  key_person_dep=heavy  refugees=4
+
+  one-sentence summary:
+    Total Care is a small, owner-operated HVAC shop built entirely on Sammy's
+    personal reputation and responsiveness; no operational pain signals
+    detected, but heavy founder dependency and customer-refugee status suggest
+    the business may face scaling challenges if demand grows beyond Sammy's
+    capacity.
+
+  momentum evidence quote:
+    "Our AC broke on a Friday night after 7 PM, I left a message at about 7:30
+    PM and they called me back within 20 minutes. They were here first thing
+    in the morning on Saturday"
+
+  smooth-ops evidence quote:
+    "He communicated clearly leading up to the appointment and throughout the
+    service. He was punctual, friendly, courteous, and knowledgeable."
+
+── REGEX NLP SAMPLE QUOTES ─────────────────────────────────────────────
+  positive_founder:
+    "I had a fantastic experience with Total Care for my AC tune-up and
+    maintenance, having decided to try them for the first time this spring
+    based on their great reviews. Sammy, the owner and operator, was excellent
+    from start to finish. He communicated clearly leading up to the
+    appointment and throughout the service. He was punctual, friendly,
+    courteous, and knowledgeable. Most importantly, there was no pressure to
+    buy anything extra—just honest, professional service.  A couple of weeks
+    after the tune-up, one of my units unexpectedly failed. My wife called
+    Sammy, and he had it up and running within two hours! He only charged for
+    the part, explaining that he considered the system “under warranty”
+    because of his recent visit. That level of integrity and customer care
+    makes Sammy and Total Care stand out. Highly recommend Total Care!"
+  positive_key_person:
+    "Sammy is the best.  I went through quite a few A/C companies before I
+    finally found Total Care. Outstanding service & professionalism."
+  positive_switch:
+    "Sammy is the best.  I went through quite a few A/C companies before I
+    finally found Total Care. Outstanding service & professionalism."
+  control_positive:
+    "Sammy arrived promptly to perform my spring checkup. He is very
+    professional, friendly and thorough. He was highly recommended to me last
+    year on Nextdoor where I was looking since I was new to Phoenix. I now
+    highly recommend him to anyone looking for ac/heating service from a small
+    locally owned company with great service."
+
+── REVIEW BURSTS ──────────────────────────────────────────────────────
+  category=scaling_surge  total=1  negative=0  positive=1  baseline=0.33/wk
+
+  positive burst sample (2026-04-02):
+    "Sammy is the best.  I went through quite a few A/C companies before I
+    finally found Total Care. Outstanding service & professionalism."
+
+── REVIEWS CACHED ─────────────────────────────────────────────────────
+  18 reviews cached
+  date range: 2025-03-24 → 2026-04-08
+
+── TECH STACK ──────────────────────────────────────────────────────────
+  site_builder=—  cms=WordPress  page_builder=Elementor 4.0.1
+  form_builders=—
+  fsm_detected=NO
+  all_tech: Elementor 4.0.1; HSTS; HTTP/3; MySQL; PHP; Redis; Redis Object Cache; WordPress
+
+==================================================================================
+RANK 14  All Day Heating & Air Conditioning LLC  (Mesa)
+==================================================================================
+score=30.0  narrative=scaling_strain  confidence=medium  domain=alldayac.com
+
+── JOB POSTINGS ────────────────────────────────────────────────────────
+  (none)
+
+── DISPATCH EVIDENCE ──────────────────────────────────────────────────
+  (none)
+
+── REVIEW LLM ANALYSIS ────────────────────────────────────────────────
+  buying_category=low_signal  pain=0/10  momentum=0/10  smooth_ops=1/10
+  founder_involvement=  key_person_dep=heavy  refugees=0
+
+  one-sentence summary:
+    All Day Heating & Air Conditioning receives consistently high praise for
+    technician quality and service delivery, with no evidence of operational
+    pain, scaling strain, or existing FSM adoption.
+
+  smooth-ops evidence quote:
+    "Scheduling with this company was easy and convenient."
+
+── REVIEW BURSTS ──────────────────────────────────────────────────────
+  category=scaling_surge  total=2  negative=0  positive=2  baseline=0.59/wk
+
+  positive burst sample (2026-03-19):
+    "Steve was very prompt, friendly and efficient. He completed the
+    compressor repair in under 2 hours and we are very grateful."
+
+── REVIEWS CACHED ─────────────────────────────────────────────────────
+  18 reviews cached
+  date range: 2025-09-07 → 2026-04-08
+
+── TECH STACK ──────────────────────────────────────────────────────────
+  site_builder=—  cms=—  page_builder=—
+  form_builders=—
+  fsm_detected=NO
+  all_tech: Google Tag Manager; HSTS; Nuxt.js; Vue.js
+
+==================================================================================
+RANK 15  AZ Trusted Air LLC  (Phoenix)
+==================================================================================
+score=28.0  narrative=scaling_strain  confidence=low  domain=aztrusted.com
+
+── JOB POSTINGS ────────────────────────────────────────────────────────
+  (none)
+
+── DISPATCH EVIDENCE ──────────────────────────────────────────────────
+  category=dispatch_low_data  extractions=2  median=26h  max=48h  same_day=50%  negative=0%
+
+  per-review extractions:
+    [review #2] rating=5.0 delay=4h cat=same_day sentiment=positive
+       "I called you last minute & you took care of us even though we've
+       never done business with you before"
+    [review #4] rating=5.0 delay=48h cat=next_day sentiment=positive
+       "he came out within a couple of days of a very busy season for him"
+
+  dispatch quotes (from scored CSV):
+    fastest: "I called you last minute & you took care of us even though we've never done business with you before"
+    slowest: "he came out within a couple of days of a very busy season for him"
+
+── REVIEW LLM ANALYSIS ────────────────────────────────────────────────
+  buying_category=scaling_strain  pain=0/10  momentum=7/10  smooth_ops=0/10
+  founder_involvement=heavy  key_person_dep=heavy  refugees=2
+
+  one-sentence summary:
+    AZ Trusted Air is a founder-led, high-demand shop experiencing scaling
+    strain; Tom personally handles jobs and is explicitly named as the reason
+    customers choose them, while competitors are losing customers to this shop
+    due to poor warranty practices and high labor costs.
+
+  momentum evidence quote:
+    "even though they had a busy schedule, they promised they would at least
+    take a look at our unit"
+
+── REGEX NLP SAMPLE QUOTES ─────────────────────────────────────────────
+  positive_demand:
+    "My AC unit stopped working in the middle of the day (on a record breaking
+    day of course) while me & my husband were both at work & our kids were at
+    school. We came home to what felt like a sauna. We called multiple AC
+    companies, none of which were able to fit us into their schedule until the
+    following day & some companies couldn’t get to us for 2-3 days afterwards.
+    A friend of my husband suggested AZ trusted air & even though they had a
+    busy schedule, they promised they would at least take a look at our unit.
+    They offered to put us up in a hotel if they weren’t able to fix the issue
+    but luckily that wasn’t necessary. I cannot thank you enough Tom for you &
+    your amazing team. I called you last minute & you took care of us even
+    though we’ve never done business with you before. I’ll be calling you for
+    all my AC issues moving forward."
+
+── REVIEW BURSTS ──────────────────────────────────────────────────────
+  category=low_data  total=0  negative=0  positive=0  baseline=0.00/wk
+
+── REVIEWS CACHED ─────────────────────────────────────────────────────
+  8 reviews cached
+  date range: 2024-06-28 → 2026-03-30
+
+── TECH STACK ──────────────────────────────────────────────────────────
+  site_builder=—  cms=—  page_builder=—
+  form_builders=—
+  fsm_detected=NO
+  all_tech: HSTS; HTTP/3; LiteSpeed
+
+==================================================================================
+RANK 16  Cooling & Plumbing Co LLC  (Mesa)
+==================================================================================
+score=27.0  narrative=scaling_strain  confidence=low  domain=azcpg.com
+
+── JOB POSTINGS ────────────────────────────────────────────────────────
+  (none)
+
+── DISPATCH EVIDENCE ──────────────────────────────────────────────────
+  category=dispatch_low_data  extractions=2  median=1h  max=2h  same_day=100%  negative=0%
+
+  per-review extractions:
+    [review #17] rating=5.0 delay=2h cat=emergency sentiment=positive
+       "Jay and his team were quick to assist when we discovered a slab leak
+       on Christmas Day."
+    [review #29] rating=5.0 delay=0.5h cat=emergency sentiment=positive
+       "Patrick texted he would arrive in 30 minutes and did."
+
+  dispatch quotes (from scored CSV):
+    fastest: "Patrick texted he would arrive in 30 minutes and did."
+    slowest: "Jay and his team were quick to assist when we discovered a slab leak on Christmas Day."
+
+── REVIEW LLM ANALYSIS ────────────────────────────────────────────────
+  buying_category=low_signal  pain=0/10  momentum=0/10  smooth_ops=3/10
+  founder_involvement=heavy  key_person_dep=heavy  refugees=1
+
+  one-sentence summary:
+    Cooling & Plumbing Co is a high-performing, owner-led operation with
+    exceptional customer satisfaction and strong founder involvement, but
+    shows no evidence of operational pain or scaling strain that would drive
+    FSM software adoption.
+
+  smooth-ops evidence quote:
+    "Patrick texted he would arrive in 30 minutes and did."
+
+── REGEX NLP SAMPLE QUOTES ─────────────────────────────────────────────
+  positive_founder:
+    "This company is it!!! My water heater broke & The Cooling & Plumbing
+    Company really took care of it professionally. Honest, affordable, and
+    quality work really showed with profeasionizm. Technicians are very polite
+    & knows what they are doing.  They took time to make sure all work is done
+    appropriately and explained thoroughly on what will be done, how the work
+    will be completed and what is recommended. The owner explained it easy to
+    understand and what maintenance may be required in the future. I've asked
+    for a full maintenance while the technician is here with both my plumbing
+    & cooling. As expected, thorough job was done & let me know the updates.
+    The technician also went out of his way to check my roof because I
+    suspected a leak above the heater. I can't imagine any company going out
+    of their way to do additional work with no complaint. All the companies
+    are too busy to rush out to the next job, but this company is tryluly a
+    legitimate honest & friendly company & people. I would recommend this
+    company to anyone, if not, at least give them a try. You will not be
+    disappointed!!! Thank you very much for a phenomenal job & for taking care
+    of us!!!"
+  positive_key_person:
+    "4/14/2026 Update: The Cooling and Plumbing Co continues to provide
+    excellent service. Jay is always there when I reach out to request
+    service. Shoutout to Patrick who did my service today. Another great
+    addition to the team.  Jay and team have been amazing! They have done two
+    jobs for me and both went extremely well as they work to achieve
+    perfection. Shout out to Damian who does exceptional work. Jay is there
+    for you no matter the day or time."
+  positive_growth:
+    "I was introduced to this company after my employer purchased a new
+    building and after dealing with them from a business standpoint point I
+    knew I could trust having them service my home repairs. Top notch customer
+    service from beginning to end!! From response time, schedule courtesy,
+    expertise, service techs cleanliness…so well done!  Won’t call anyone
+    else!  And Jay, thank you for your patience in helping get this scheduled
+    correctly to what was needed and a special thank you for your service to
+    our country!"
+  control_positive:
+    "I had a kick ass experience with The Cooling & Plumbing Co. The
+    technician was friendly, knowledgeable, and very honest about what needed
+    to be done. They showed up on time, worked efficiently, and made sure
+    everything was working perfectly before leaving. It’s hard to find
+    trustworthy companies these days, but I would definitely recommend
+    them!!!"
+
+── REVIEW BURSTS ──────────────────────────────────────────────────────
+  category=scaling_surge  total=8  negative=0  positive=8  baseline=0.31/wk
+
+  positive burst sample (2026-03-31):
+    "I highly recommend The Cooling and Plumbing Company for yearly HVAC
+    maintenance. From start to finish, the service is always professional,
+    reliable, and stress-free.  Owner Jay Monday runs an honest and fair
+    business, which is something I truly appreciate. It’s clear he values both
+    quality work and customer trust.  Patrick, the service technician, is
+    outstanding. He always texts ahead to let me know when he’s on his way,
+    arrives promptly, and keeps me informed throughout the entire visit. He
+    clearly explains what he’s doing, points out any issues, and is upfront
+    about costs—no surprises.  He’s friendly, professional, and very
+    efficient—everything you want in someone working in your home.  If you’re
+    looking for a trustworthy, dependable company for HVAC service, I wouldn’t
+    hesitate to recommend them. Consistently excellent experience!"
+
+── REVIEWS CACHED ─────────────────────────────────────────────────────
+  78 reviews cached
+  date range: 2021-05-27 → 2026-04-02
+
+── TECH STACK ──────────────────────────────────────────────────────────
+  site_builder=Webflow  cms=—  page_builder=—
+  form_builders=—
+  fsm_detected=NO
+  all_tech: Cloudflare; Google Tag Manager; HSTS; HTTP/3; Webflow
+
+==================================================================================
+RANK 17  Clark Heating and Cooling LLC  (Peoria)
+==================================================================================
+score=26.0  narrative=scaling_strain  confidence=low  domain=clarkheatandcool.com
+
+── JOB POSTINGS ────────────────────────────────────────────────────────
+  (none)
+
+── DISPATCH EVIDENCE ──────────────────────────────────────────────────
+  category=dispatch_low_data  extractions=2  median=24h  max=24h  same_day=100%  negative=0%
+
+  per-review extractions:
+    [review #12] rating=5.0 delay=24h cat=same_day sentiment=positive
+       "My A/C unit died this weekend while it's 105 degrees. Clark had
+       someone out to my house in less than 24 hours."
+    [review #25] rating=5.0 delay=24h cat=same_day sentiment=positive
+       "My heater broke yesterday and they were able to fix it the next day."
+
+  dispatch quotes (from scored CSV):
+    fastest: "My A/C unit died this weekend while it's 105 degrees. Clark had someone out to my house in less than 24 hours."
+    slowest: "My heater broke yesterday and they were able to fix it the next day."
+
+── REVIEW LLM ANALYSIS ────────────────────────────────────────────────
+  buying_category=low_signal  pain=0/10  momentum=0/10  smooth_ops=1/10
+  founder_involvement=heavy  key_person_dep=heavy  refugees=1
+
+  one-sentence summary:
+    Clark Heating and Cooling is a well-established, family-owned HVAC
+    contractor with consistently excellent customer satisfaction, strong
+    founder involvement, and no detectable operational pain or scaling strain
+    signals in the review set.
+
+  smooth-ops evidence quote:
+    "I received a 30min courtesy notification before he arrived."
+
+── REGEX NLP SAMPLE QUOTES ─────────────────────────────────────────────
+  positive_founder:
+    "This was a great company to work with. David, the owner was thorough in
+    explaining what they were doing, he was upfront about costs, and open
+    about what would work best for our home. His team was also professional
+    and they did a great job with the install of our new AC. I’m glad I went
+    with their company."
+  control_positive:
+    "Had my ductwork and AC unit replaced recently, and David was great. From
+    start to finish, they were super detail-oriented. The crew showed up on
+    time, walked me through everything, and handled the whole job with total
+    professionalism. The install was with intake was clean, the airflow in my
+    house is way better now, and the new unit runs smooth. Highly recommend."
+
+── REVIEW BURSTS ──────────────────────────────────────────────────────
+  category=scaling_surge  total=3  negative=0  positive=3  baseline=0.24/wk
+
+  positive burst sample (2026-04-01):
+    "Clark AC installed a new AC unit. The experience from start to finish was
+    outstanding. Clark has been servicing our 3 units for years. I highly
+    recommend Clark AC. Their entire team is terrific."
+
+── REVIEWS CACHED ─────────────────────────────────────────────────────
+  38 reviews cached
+  date range: 2023-04-12 → 2026-04-08
+
+── TECH STACK ──────────────────────────────────────────────────────────
+  site_builder=—  cms=Joomla  page_builder=—
+  form_builders=—
+  fsm_detected=NO
+  all_tech: Apache HTTP Server; Bootstrap; Joomla; PHP
+
+==================================================================================
+RANK 18  JDL Refrigeration LLC  (Mesa)
+==================================================================================
+score=26.0  narrative=light_signal  confidence=medium  domain=jdlrefrigeration.com
+
+── JOB POSTINGS ────────────────────────────────────────────────────────
+  2 cached:
+    Commercial Service Tech/Startup Tech (via ZipRecruiter) · Mesa, AZ, United States
+      https://www.ziprecruiter.com/c/JDL-Refrigeration/Job/Commercial-Service-Tech-Startup-Tech/-in-Mesa,AZ?jid=63269efdcaf75f90&utm_campaign=goog
+    HVAC Sheet Metal Fabricator at JDL Refrigeration LLC Mesa, AZ (via CaribTix) · Mesa, AZ, United States · posted 29 days ago
+      https://dev.caribtix.com/work/job/hvac-sheet-metal-fabricator-at-jdl-refrigeration-llc-mesa-az-cERCcjJ6bjhiK0hZM1MyekN3WVVxMDhqeHc9PQ==?utm_
+
+  hiring classification (from scored CSV):
+    capacity sample title: Commercial Service Tech/Startup Tech
+    sources: CaribTix; ZipRecruiter
+
+── DISPATCH EVIDENCE ──────────────────────────────────────────────────
+  (none)
+
+── REVIEW LLM ANALYSIS ────────────────────────────────────────────────
+  buying_category=low_signal  pain=0/10  momentum=0/10  smooth_ops=0/10
+  founder_involvement=moderate  key_person_dep=moderate  refugees=0
+
+  one-sentence summary:
+    JDL Refrigeration receives consistently positive reviews for technician
+    professionalism and service quality, but reviews contain no evidence of
+    operational pain, scaling strain, or already-implemented FSM systems.
+
+── REGEX NLP SAMPLE QUOTES ─────────────────────────────────────────────
+  control_positive:
+    "JDL Refrigeration did and excellent job installing a new mini split AC in
+    my garage. The technician Francisco showed up on time and did a great
+    quality job with the installation."
+
+── REVIEW BURSTS ──────────────────────────────────────────────────────
+  category=low_data  total=0  negative=0  positive=0  baseline=0.00/wk
+
+── REVIEWS CACHED ─────────────────────────────────────────────────────
+  8 reviews cached
+  date range: 2022-11-14 → 2026-04-09
+
+── TECH STACK ──────────────────────────────────────────────────────────
+  site_builder=—  cms=WordPress  page_builder=Elementor 3.33.0
+  form_builders=—
+  fsm_detected=NO
+  all_tech: Cloudflare; Cloudflare Bot Management; Draftpress HFCM; Elementor 3.33.0; Google Tag Manager; HTTP/3; MySQL; PHP; WP Engine; WordPress; Yoast SEO
+
+==================================================================================
+RANK 19  Greenwood Air LLC  (Buckeye)
+==================================================================================
+score=25.0  narrative=scaling_strain  confidence=low  domain=greenwoodair.com
+
+── JOB POSTINGS ────────────────────────────────────────────────────────
+  (none)
+
+── DISPATCH EVIDENCE ──────────────────────────────────────────────────
+  category=dispatch_low_data  extractions=2  median=1h  max=2h  same_day=100%  negative=0%
+
+  per-review extractions:
+    [review #10] rating=5.0 delay=0.5h cat=emergency sentiment=positive
+       "AC went out Tuesday. I called and Stephen was there within 30
+       minutes."
+    [review #11] rating=5.0 delay=2h cat=emergency sentiment=positive
+       "Our AC stopped working yesterday and he was out within hours to fix
+       it."
+
+  dispatch quotes (from scored CSV):
+    fastest: "AC went out Tuesday. I called and Stephen was there within 30 minutes."
+    slowest: "Our AC stopped working yesterday and he was out within hours to fix it."
+
+── REVIEW LLM ANALYSIS ────────────────────────────────────────────────
+  buying_category=low_signal  pain=0/10  momentum=0/10  smooth_ops=0/10
+  founder_involvement=heavy  key_person_dep=heavy  refugees=2
+
+  one-sentence summary:
+    Greenwood Air is a small, founder-led HVAC shop with exceptional customer
+    loyalty built on honesty and fair pricing, but shows no operational pain,
+    scaling strain, or evidence of FSM software adoption.
+
+── REGEX NLP SAMPLE QUOTES ─────────────────────────────────────────────
+  positive_key_person:
+    "I had been using Greenwood air for 7 years now.  It is the best company
+    for all your HVAC needs.  I love having a company I can trust."
+
+── REVIEW BURSTS ──────────────────────────────────────────────────────
+  category=scaling_surge  total=2  negative=0  positive=2  baseline=0.12/wk
+
+  positive burst sample (2026-03-21):
+    "I had been using Greenwood air for 7 years now.  It is the best company
+    for all your HVAC needs.  I love having a company I can trust."
+
+── REVIEWS CACHED ─────────────────────────────────────────────────────
+  18 reviews cached
+  date range: 2023-06-09 → 2026-04-01
+
+── TECH STACK ──────────────────────────────────────────────────────────
+  site_builder=—  cms=WordPress  page_builder=—
+  form_builders=—
+  fsm_detected=NO
+  all_tech: Bootstrap; Google Tag Manager; MySQL; Nginx; PHP; SiteGround; WordPress; Yoast SEO; reCAPTCHA
+
+==================================================================================
+RANK 20  Platinum Refrigeration Inc  (Avondale)
+==================================================================================
+score=23.5  narrative=light_signal  confidence=low  domain=platinumrefrigeration.com
+
+── JOB POSTINGS ────────────────────────────────────────────────────────
+  5 cached:
+    HVAC Centrifugal Chiller Technician (via TradesmenUp) · Phoenix, AZ · posted 4 days ago
+      https://www.tradesmenup.com/jobs/439504574-hvac-centrifugal-chiller-technician?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&u
+    Commercial HVAC Contractor is hiring Pipefitter Foreman (via TradesmenUp) · Phoenix, AZ
+      https://www.tradesmenup.com/jobs/331861264-commercial-hvac-contractor-is-hiring-pipefitter-foreman?utm_campaign=google_jobs_apply&utm_source
+    HVAC Sheet Metal Foreman (via TradesmenUp) · Glendale, AZ
+      https://www.tradesmenup.com/jobs/230558132-hvac-sheet-metal-foreman?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=o
+    Sheet Metal Worker (via TradesmenUp) · Surprise, AZ
+      https://www.tradesmenup.com/jobs/326658856-sheet-metal-worker?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic
+    HVAC Service Technician - Residential (via TradesmenUp) · Tempe, AZ
+      https://www.tradesmenup.com/jobs/287825324-hvac-service-technician-residential?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&u
+
+── DISPATCH EVIDENCE ──────────────────────────────────────────────────
+  category=dispatch_fast  extractions=3  median=8h  max=120h  same_day=67%  negative=0%
+
+  per-review extractions:
+    [review #5] rating=5.0 delay=120h cat=same_week sentiment=positive
+       "they had my ac fixed within under 5 days during peak season when most
+       people wait weeks"
+    [review #6] rating=5.0 delay=6h cat=same_day sentiment=positive
+       "I contacted Platinum this morning and they had a tech available and
+       out at my house by 3 PM"
+    [review #21] rating=5.0 delay=8h cat=same_day sentiment=positive
+       "The turnaround time was quick to get a technician to our location and
+       once he arrived he informed us that he would be able to fix the issue
+       the same day"
+
+  dispatch quotes (from scored CSV):
+    fastest: "I contacted Platinum this morning and they had a tech available and out at my house by 3 PM"
+    slowest: "they had my ac fixed within under 5 days during peak season when most people wait weeks"
+
+── REVIEW LLM ANALYSIS ────────────────────────────────────────────────
+  buying_category=low_signal  pain=2/10  momentum=3/10  smooth_ops=0/10
+  founder_involvement=moderate  key_person_dep=heavy  refugees=1
+
+  one-sentence summary:
+    Platinum Refrigeration is a high-performing, technician-centric shop with
+    strong customer satisfaction and rapid response times, but two isolated
+    operational failures (no-show, billing dispute) and heavy reliance on
+    named technicians suggest minimal FSM adoption and early-stage scaling
+    challenges.
+
+  pain evidence quote:
+    ".. no show. No follow up…"
+
+  momentum evidence quote:
+    "they had my ac fixed within under 5 days during peak season when most
+    people wait weeks"
+
+── REGEX NLP SAMPLE QUOTES ─────────────────────────────────────────────
+  pain_dispatch:
+    ".. no show. No follow up…"
+  control_positive:
+    "I had the pleasure of working with Platinum Refrigeration, and
+    specifically Jose Sanchez, on the installation of a commercial outdoor
+    freezer for a Tandoori pizza concept—and I can confidently say they
+    exceeded every expectation. Jose went above and beyond from start to
+    finish. His communication was consistent, clear, and proactive—he kept me
+    informed every step of the way, which made a complex project feel
+    completely manageable. What really stood out was how he approached the job
+    in well-structured phases, setting realistic and achievable expectations
+    throughout. Even when the project experienced delays due to factors
+    outside of his control, Jose didn’t miss a beat—he picked up the phone,
+    walked me through an action plan, and presented practical workarounds to
+    keep things moving forward. That level of ownership and professionalism is
+    rare. In my opinion, Platinum Refrigeration is the go-to company for any
+    project within their scope. If you’re looking for reliability,
+    communication, and execution—you won’t find better. 10/10 recommend"
+
+── REVIEW BURSTS ──────────────────────────────────────────────────────
+  category=scaling_surge  total=1  negative=0  positive=1  baseline=0.25/wk
+
+  positive burst sample (2026-03-25):
+    "This company was incredible they had to deal with my very annoying home
+    warranty company they were easy to contact always available always honest
+    and most of all despite all of the snags dealing with a home warranty
+    company they had my ac fixed within under 5 days during peak season when
+    most people wait weeks ! Feel very blessed to have work with them !"
+
+── REVIEWS CACHED ─────────────────────────────────────────────────────
+  28 reviews cached
+  date range: 2024-02-01 → 2026-04-07
+
+── TECH STACK ──────────────────────────────────────────────────────────
+  site_builder=—  cms=WordPress 6.6.2  page_builder=Elementor 3.14.1
+  form_builders=—
+  fsm_detected=NO
+  all_tech: Elementor 3.14.1; MySQL; Nginx 1.29.4; PHP; WordPress 6.6.2
+
+==================================================================================
+RANK 21  Robertson Heating and Cooling LLC  (Mesa)
+==================================================================================
+score=23.0  narrative=scaling_strain  confidence=low  domain=robertsonheatingandcooling.com
+
+── JOB POSTINGS ────────────────────────────────────────────────────────
+  (none)
+
+── DISPATCH EVIDENCE ──────────────────────────────────────────────────
+  category=dispatch_low_data  extractions=1  median=8h  max=8h  same_day=100%  negative=0%
+
+  per-review extractions:
+    [review #5] rating=5.0 delay=8h cat=same_day sentiment=positive
+       "Great Quick Professional Service"
+
+  dispatch quotes (from scored CSV):
+    fastest: "Great Quick Professional Service"
+    slowest: "Great Quick Professional Service"
+
+── REVIEW LLM ANALYSIS ────────────────────────────────────────────────
+  buying_category=low_signal  pain=0/10  momentum=0/10  smooth_ops=0/10
+  founder_involvement=heavy  key_person_dep=heavy  refugees=0
+
+  one-sentence summary:
+    Robertson Heating and Cooling is a small, founder-led operation with
+    strong customer satisfaction driven by Steve's personal attention and fair
+    pricing, but reviews contain no evidence of operational pain, scaling
+    strain, or implemented FSM systems.
+
+── REVIEW BURSTS ──────────────────────────────────────────────────────
+  category=low_data  total=0  negative=0  positive=0  baseline=0.00/wk
+
+── REVIEWS CACHED ─────────────────────────────────────────────────────
+  8 reviews cached
+  date range: 2025-04-11 → 2026-04-09
+
+── TECH STACK ──────────────────────────────────────────────────────────
+  site_builder=GoDaddy Website Builder 8.0.0000  cms=—  page_builder=—
+  form_builders=—
+  fsm_detected=NO
+  all_tech: GoDaddy Website Builder 8.0.0000; HSTS
+
+==================================================================================
+RANK 22  HVAC Enterprises LLC  (Gilbert)
+==================================================================================
+score=22.0  narrative=light_signal  confidence=low  domain=simplythebestac.com
+
+── JOB POSTINGS ────────────────────────────────────────────────────────
+  (none)
+
+── DISPATCH EVIDENCE ──────────────────────────────────────────────────
+  category=dispatch_low_data  extractions=2  median=2h  max=2h  same_day=100%  negative=0%
+
+  per-review extractions:
+    [review #3] rating=5.0 delay=2.17h cat=emergency sentiment=positive
+       "I called around 3 PM on a Friday, and they had a repairman at our
+       house by 5:10 PM."
+    [review #12] rating=5.0 delay=2.0h cat=emergency sentiment=positive
+       "Super fast response"
+
+  dispatch quotes (from scored CSV):
+    fastest: "Super fast response"
+    slowest: "I called around 3 PM on a Friday, and they had a repairman at our house by 5:10 PM."
+
+── REVIEW LLM ANALYSIS ────────────────────────────────────────────────
+  buying_category=low_signal  pain=3/10  momentum=0/10  smooth_ops=1/10
+  founder_involvement=moderate  key_person_dep=heavy  refugees=0
+
+  one-sentence summary:
+    HVAC Enterprises LLC (trading as Simply The Best) is heavily dependent on
+    a single technician (Octavio) and shows one critical operational failure
+    complaint involving scheduling breakdown and owner absence, but otherwise
+    demonstrates strong technician quality and customer loyalty.
+
+  pain evidence quote:
+    "Now they have one employee doing scheduling and all service. I talked to
+    the owner who is out of state and not even here to fix problems twice, and
+    he wants to guilt you into feeling so bad for him instead of trying to
+    understand the problem and making sure the work is done correctly."
+
+  smooth-ops evidence quote:
+    "Charlie called to give us an estimated time he would arrive. He was on
+    time and checked out our air conditioner and changed our filter."
+
+── REGEX NLP SAMPLE QUOTES ─────────────────────────────────────────────
+  positive_key_person:
+    "Octavio came out last minute and fixed my AC unit. He was so kind,
+    helpful, and explained everything step as he went. I would request him the
+    next time I need any AC repairs!"
+
+── REVIEW BURSTS ──────────────────────────────────────────────────────
+  category=scaling_surge  total=4  negative=0  positive=4  baseline=0.12/wk
+
+  positive burst sample (2026-03-25):
+    "Octavio, stop by late to save my family and keep us cool and comfortable.
+    Did great work and was very honest, much appreciated."
+
+── REVIEWS CACHED ─────────────────────────────────────────────────────
+  28 reviews cached
+  date range: 2021-09-29 → 2026-04-10
+
+── TECH STACK ──────────────────────────────────────────────────────────
+  site_builder=—  cms=—  page_builder=—
+  form_builders=—
+  fsm_detected=NO
+  all_tech: Cloudflare; Cloudflare Bot Management; HTTP/3
+
+==================================================================================
+RANK 23  Seabreeze Cooling LLC  (Goodyear)
+==================================================================================
+score=20.0  narrative=scaling_strain  confidence=medium  domain=seabreezecooling.com
+
+── JOB POSTINGS ────────────────────────────────────────────────────────
+  (none)
+
+── DISPATCH EVIDENCE ──────────────────────────────────────────────────
+  category=dispatch_fast  extractions=5  median=4h  max=24h  same_day=100%  negative=0%
+
+  per-review extractions:
+    [review #10] rating=5.0 delay=4h cat=same_day sentiment=positive
+       "They came out very quickly, which we really appreciated, especially
+       in this heat."
+    [review #13] rating=5.0 delay=0.5h cat=emergency sentiment=positive
+       "on time, found the issue, and had my AC blowing cool air again in
+       under 30 minutes!"
+    [review #17] rating=5.0 delay=2h cat=emergency sentiment=positive
+       "showed up much earlier than anticipated"
+    [review #24] rating=5.0 delay=24h cat=same_day sentiment=neutral
+       "company came out within 24hrs of call."
+    [review #29] rating=5.0 delay=24h cat=same_day sentiment=positive
+       "They came out for a warranty call and we're out in less than 24 hours
+       to get things fixed just in time for the hundred degree weather."
+
+  dispatch quotes (from scored CSV):
+    fastest: "on time, found the issue, and had my AC blowing cool air again in under 30 minutes!"
+    slowest: "They came out for a warranty call and we're out in less than 24 hours to get things fixed just in time for the hundred degree weather."
+
+── REVIEW LLM ANALYSIS ────────────────────────────────────────────────
+  buying_category=low_signal  pain=0/10  momentum=0/10  smooth_ops=0/10
+  founder_involvement=  key_person_dep=heavy  refugees=0
+
+  one-sentence summary:
+    Seabreeze Cooling LLC delivers consistently excellent technician service
+    with no operational complaints, but reviews reveal heavy dependence on a
+    single technician (Hamza) with no evidence of scaling infrastructure or
+    operational systems.
+
+── REGEX NLP SAMPLE QUOTES ─────────────────────────────────────────────
+  positive_key_person:
+    "My technician was the best! There was a scheduling mishap & he so kindly
+    accommodated taking care of my AC anyway. Very friendly, professional,
+    polite & got the job done so quick & efficiently."
+  control_positive:
+    "Sea Breeze Cooling did an excellent job from start to finish. Scheduling
+    was easy, they showed up on time, and the technician was professional,
+    knowledgeable, and respectful of my home. They clearly explained the
+    issue, walked me through my options, and didn’t try to upsell anything
+    unnecessary."
+
+── REVIEW BURSTS ──────────────────────────────────────────────────────
+  category=scaling_surge  total=9  negative=0  positive=9  baseline=0.50/wk
+
+  positive burst sample (2026-04-09):
+    "Hamza did a great job, quickly identified the fault and resolved issue."
+
+── REVIEWS CACHED ─────────────────────────────────────────────────────
+  78 reviews cached
+  date range: 2023-04-13 → 2026-04-10
+
+── TECH STACK ──────────────────────────────────────────────────────────
+  site_builder=—  cms=WordPress 6.9.4  page_builder=Elementor 4.0.1
+  form_builders=—
+  fsm_detected=NO
+  all_tech: Bootstrap; Cloudflare; Cloudflare Bot Management; Elementor 4.0.1; HTTP/3; MySQL; PHP; Site Kit 1.176.0; WordPress 6.9.4
+
+==================================================================================
+RANK 24  Cardinal Heating & Cooling LLC  (Phoenix)
+==================================================================================
+score=19.5  narrative=light_signal  confidence=low  domain=cardinalairaz.com
+
+── JOB POSTINGS ────────────────────────────────────────────────────────
+  (none)
+
+── DISPATCH EVIDENCE ──────────────────────────────────────────────────
+  category=dispatch_low_data  extractions=2  median=16h  max=24h  same_day=50%  negative=0%
+
+  per-review extractions:
+    [review #1] rating=5.0 delay=8h cat=same_day sentiment=positive
+       "I got same day (practically unheard of!) for a total replacement of
+       heating and cooling systems"
+    [review #4] rating=5.0 delay=24h cat=next_day sentiment=positive
+       "Quick response AC was installed next day"
+
+  dispatch quotes (from scored CSV):
+    fastest: "I got same day (practically unheard of!) for a total replacement of heating and cooling systems"
+    slowest: "Quick response AC was installed next day"
+
+── REVIEW LLM ANALYSIS ────────────────────────────────────────────────
+  buying_category=low_signal  pain=0/10  momentum=3/10  smooth_ops=2/10
+  founder_involvement=moderate  key_person_dep=moderate  refugees=1
+
+  one-sentence summary:
+    Cardinal Heating & Cooling is a well-regarded, reliable operator with
+    strong customer satisfaction and fair pricing, but shows minimal
+    operational pain or scaling strain signals across seven reviews.
+
+  momentum evidence quote:
+    "I got same day (practically unheard of!) for a total replacement of
+    heating and cooling systems."
+
+  smooth-ops evidence quote:
+    "They arrived on time as scheduled after the install. They walked us
+    through everything and even followed up with a phone call today to make
+    sure everything was going OK."
+
+── REGEX NLP SAMPLE QUOTES ─────────────────────────────────────────────
+  control_positive:
+    "Cardinal Heating and cooling installed the unit for me 12 years ago so on
+    my unit went out I reached out to get a quote then shopped around found
+    them to Be several hundred dollars less for the same product. So I made
+    the wise choice of choosing Cardinal. They arrived on time as scheduled
+    after the install. They walked us through everything and even followed up
+    with a phone call today to make sure everything was going OK. Very
+    enjoyable experience."
+
+── REVIEW BURSTS ──────────────────────────────────────────────────────
+  category=low_data  total=0  negative=0  positive=0  baseline=0.00/wk
+
+── REVIEWS CACHED ─────────────────────────────────────────────────────
+  8 reviews cached
+  date range: 2025-04-09 → 2026-03-29
+
+── TECH STACK ──────────────────────────────────────────────────────────
+  site_builder=—  cms=—  page_builder=—
+  form_builders=—
+  fsm_detected=NO
+  all_tech: Cloudflare; Cloudflare Bot Management; HTTP/3
+
+==================================================================================
+RANK 25  Hub Heating And Cooling LLC  (Queen Creek)
+==================================================================================
+score=19.0  narrative=light_signal  confidence=low  domain=hubhvac.com
+
+── JOB POSTINGS ────────────────────────────────────────────────────────
+  (none)
+
+── DISPATCH EVIDENCE ──────────────────────────────────────────────────
+  category=dispatch_low_data  extractions=2  median=169h  max=336h  same_day=50%  negative=50%
+
+  per-review extractions:
+    [review #1] rating=5.0 delay=2h cat=emergency sentiment=positive
+       "Todd showed up quickly"
+    [review #4] rating=4.0 delay=336h cat=2_plus_weeks sentiment=negative
+       "A bit sad it took over two weeks to get it installed"
+
+  dispatch quotes (from scored CSV):
+    fastest: "Todd showed up quickly"
+    slowest: "A bit sad it took over two weeks to get it installed"
+
+── REVIEW LLM ANALYSIS ────────────────────────────────────────────────
+  buying_category=low_signal  pain=0/10  momentum=2/10  smooth_ops=0/10
+  founder_involvement=heavy  key_person_dep=heavy  refugees=0
+
+  one-sentence summary:
+    Hub Heating and Cooling is a small, founder-led operation built on Todd's
+    personal reputation for reliability and technical skill, with no evidence
+    of operational pain or scaling infrastructure.
+
+  momentum evidence quote:
+    "A bit sad it took over two weeks to get it installed but Todd
+    communicated with us."
+
+── REGEX NLP SAMPLE QUOTES ─────────────────────────────────────────────
+  positive_demand:
+    "Todd sold us what we needed. Our AC needed replacing. A bit sad it took
+    over two weeks to get it installed but Todd communicated with us.
+    Reasonable price. Todd checked our install and identified a mistake which
+    was fixed ASAP. We will call Todd again."
+
+── REVIEW BURSTS ──────────────────────────────────────────────────────
+  category=low_data  total=0  negative=0  positive=0  baseline=0.00/wk
+
+── REVIEWS CACHED ─────────────────────────────────────────────────────
+  8 reviews cached
+  date range: 2022-04-11 → 2026-04-06
+
+── TECH STACK ──────────────────────────────────────────────────────────
+  site_builder=—  cms=—  page_builder=—
+  form_builders=—
+  fsm_detected=NO
+  all_tech: Cloudflare; HSTS; HTTP/3
+
+==================================================================================
+COVERAGE SUMMARY across top 25
+==================================================================================
+  Job postings cached                 6/25  ████················  (33 postings total)
+    └ Contains 'Dispatcher' role      1/25  ····················  (direct FSM buyer signal)
+  Dispatch extractions (raw)         23/25  ██████████████████··  (60 extractions total)
+  Dispatch quotes (scored CSV)       23/25  ██████████████████··  (fastest/slowest/negative)
+  LLM pain evidence quote            12/25  █████████···········
+  LLM momentum evidence quote         9/25  ███████·············
+  Customer refugee mentions          14/25  ███████████·········  (20 total mentions)
+  Regex dispatch pain quote           1/25  ····················
+  Regex customer-switch quote         2/25  █···················
+  Regex founder-praise quote          3/25  ██··················
+  Regex key-person quote             10/25  ████████············
+  Regex growth quote                  1/25  ····················
+  Review burst negative quote         1/25  ····················
+  Review burst positive quote        14/25  ███████████·········
+  Website scrape cached               3/25  ██··················
+  Apollo org/people data              0/25  ····················
+
+UNDENIABLE SIGNALS (strongest specific evidence):
+  rank  1  Maximum Comfort Specialist LLC                      →  1 refugee mentions
+  rank  2  Reliable Air Conditioning Inc                       →  1 refugee mentions
+  rank  3  Tropical Companies LLC                              →  1 refugee mentions, crisis burst quote
+  rank  4  Grand Canyon Home Services LLC                      →  DISPATCHER JOB POSTED, 1 refugee mentions
+  rank  7  Comfort Experts LLC                                 →  2 refugee mentions, customer switch quote
+  rank  9  Grizzly Mechanical LLC                              →  1 refugee mentions
+  rank 12  True Home Maintenance Air Conditioning & Heating L  →  1 refugee mentions
+  rank 13  Total Care Heating & Cooling LLC                    →  4 refugee mentions, customer switch quote
+  rank 15  AZ Trusted Air LLC                                  →  2 refugee mentions
+  rank 16  Cooling & Plumbing Co LLC                           →  1 refugee mentions
+  rank 17  Clark Heating and Cooling LLC                       →  1 refugee mentions
+  rank 19  Greenwood Air LLC                                   →  2 refugee mentions
+  rank 20  Platinum Refrigeration Inc                          →  1 refugee mentions
+  rank 24  Cardinal Heating & Cooling LLC                      →  1 refugee mentions

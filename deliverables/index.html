@@ -1,0 +1,732 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>HVAC Phoenix — Top 25 Hidden Gems</title>
+<style>
+* { box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #1a1a1a;
+  background: #eceef2;
+  margin: 0;
+  padding: 32px 16px;
+  line-height: 1.55;
+}
+.page {
+  max-width: 1120px;
+  margin: 0 auto;
+}
+.page-header {
+  background: white;
+  border-radius: 14px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  padding: 32px 40px;
+  margin-bottom: 24px;
+}
+.page-header h1 {
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  margin: 0 0 6px;
+  color: #0a0a1a;
+}
+.page-header .sub {
+  font-size: 14px;
+  color: #666;
+  margin: 0 0 20px;
+}
+.summary-stats {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+  padding-top: 20px;
+  border-top: 1px solid #eef0f3;
+}
+.summary-stats .ss {
+  flex: 0 0 auto;
+}
+.summary-stats .ss .val {
+  font-size: 28px;
+  font-weight: 700;
+  color: #0a0a1a;
+  display: block;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.summary-stats .ss .lbl {
+  font-size: 11px;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  display: block;
+  margin-top: 6px;
+}
+
+.legend {
+  background: white;
+  border-radius: 14px;
+  box-shadow: 0 2px 14px rgba(0,0,0,0.05);
+  padding: 22px 28px;
+  margin-bottom: 24px;
+}
+.legend h2 {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1.4px;
+  color: #888;
+  font-weight: 700;
+  margin: 0 0 14px;
+}
+.legend-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 28px;
+}
+.legend-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 12px;
+  color: #333;
+  line-height: 1.5;
+  padding: 4px 0;
+}
+.legend-item .chip {
+  flex: 0 0 auto;
+  margin-top: 1px;
+}
+.legend-item .desc strong { color: #1a1a1a; }
+.legend-sep {
+  border-top: 1px solid #eef0f3;
+  margin: 16px 0 14px;
+}
+.legend-scoring {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 28px;
+  font-size: 12px;
+  color: #444;
+}
+.legend-scoring .line { display: flex; gap: 10px; align-items: baseline; }
+.legend-scoring .dim {
+  font-weight: 700;
+  color: #1a1a1a;
+  min-width: 115px;
+}
+.legend-scoring .cap {
+  font-size: 11px;
+  color: #888;
+  font-variant-numeric: tabular-nums;
+}
+.legend-tiers {
+  display: flex;
+  gap: 14px;
+  margin-top: 12px;
+  align-items: center;
+  font-size: 12px;
+}
+.legend-tiers .tier-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  margin-right: 6px;
+}
+.legend-accent {
+  display: flex;
+  gap: 16px;
+  margin-top: 12px;
+  font-size: 12px;
+  color: #555;
+  flex-wrap: wrap;
+}
+.legend-accent .swatch {
+  display: inline-block;
+  width: 28px;
+  height: 6px;
+  border-radius: 3px;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+.sw-pain { background: #c4332b; }
+.sw-growth { background: #e6a700; }
+.sw-demand { background: #7c4dff; }
+.sw-none { background: #d8dce3; }
+
+.lead {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 14px rgba(0,0,0,0.06);
+  padding: 22px 28px 22px 32px;
+  margin-bottom: 14px;
+  display: grid;
+  grid-template-columns: 56px 1fr auto;
+  gap: 20px;
+  align-items: start;
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+  border-left: 6px solid #d8dce3;
+}
+.lead:hover {
+  box-shadow: 0 6px 24px rgba(0,0,0,0.1);
+  transform: translateY(-1px);
+}
+.lead.accent-pain { border-left-color: #c4332b; }
+.lead.accent-growth { border-left-color: #e6a700; }
+.lead.accent-demand { border-left-color: #7c4dff; }
+.lead.accent-none { border-left-color: #d8dce3; }
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 4px 0 14px;
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  white-space: nowrap;
+  border: 1px solid transparent;
+}
+.chip .chip-val {
+  background: rgba(255,255,255,0.55);
+  color: inherit;
+  padding: 1px 6px;
+  border-radius: 999px;
+  font-size: 9px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.chip-pain    { background: #fde8e8; color: #8f1a1a; border-color: #f5c2c2; }
+.chip-growth  { background: #fff4d6; color: #7a4d00; border-color: #f0d896; }
+.chip-demand  { background: #efe8ff; color: #4a2a9a; border-color: #d8c8ff; }
+.chip-nofsm   { background: #eceff4; color: #3d4656; border-color: #d0d6e0; }
+.chip-hiring  { background: #4a0808; color: #ffdcdc; border-color: #4a0808; }
+.chip-hiring .chip-val { color: #ffdcdc; background: rgba(255,255,255,0.15); }
+.chip-warn    { background: #fff9d6; color: #7a5c00; border-color: #f0d896; }
+.lead-rank {
+  font-size: 32px;
+  font-weight: 800;
+  color: #c9cdd5;
+  letter-spacing: -1px;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.lead-body h3 {
+  margin: 0 0 4px;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+}
+.lead-body h3 a {
+  color: #0a0a1a;
+  text-decoration: none;
+}
+.lead-body h3 a:hover { color: #0066cc; }
+.lead-meta {
+  font-size: 12px;
+  color: #888;
+  margin: 0 0 12px;
+}
+.lead-bullets {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.lead-bullets li {
+  padding: 5px 0 5px 20px;
+  font-size: 13px;
+  color: #333;
+  line-height: 1.5;
+  position: relative;
+}
+.lead-bullets li::before {
+  content: "▸";
+  position: absolute;
+  left: 4px;
+  top: 5px;
+  color: #e6a700;
+  font-weight: 700;
+}
+.lead-action {
+  text-align: right;
+  min-width: 130px;
+}
+.lead-action .tier-badge {
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  white-space: nowrap;
+  margin-bottom: 10px;
+}
+.tier-high { background: #fde8e8; color: #9a1a1a; }
+.tier-strong { background: #fff4d6; color: #8a5a00; }
+.tier-emerging { background: #e6f2ff; color: #003b7a; }
+.lead-action .view-link {
+  display: inline-block;
+  padding: 6px 12px;
+  background: #0066cc;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.lead-action .view-link:hover { background: #0052a3; }
+.page-footer {
+  text-align: center;
+  color: #888;
+  font-size: 11px;
+  padding: 20px 0 8px;
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="page-header">
+    <h1>Phoenix HVAC contractors · Top 25 hidden gems</h1>
+    <p class="sub">
+      Ranked by multi-signal scoring from AZ contractor license data, Google reviews,
+      website technology fingerprinting, public job postings, and public
+      company records. Click any row to open the full dossier.
+    </p>
+    <div class="summary-stats">
+      <div class="ss"><span class="val">25</span><span class="lbl">Contractors</span></div>
+      <div class="ss"><span class="val">7</span><span class="lbl">High intent</span></div>
+      <div class="ss"><span class="val">7</span><span class="lbl">Strong intent</span></div>
+      <div class="ss"><span class="val">4</span><span class="lbl">Actively hiring</span></div>
+      <div class="ss"><span class="val">25</span><span class="lbl">No FSM platform</span></div>
+    </div>
+  </div>
+
+  <div class="legend">
+    <h2>How to read this page</h2>
+    <div class="legend-grid">
+      <div class="legend-item">
+        <span class="chip chip-pain">PAIN <span class="chip-val">##</span></span>
+        <div class="desc"><strong>Pain signal.</strong> Customers complaining in reviews about dispatch failures, missed callbacks, or abandoned jobs. Number shows the pain dimension score (0-40).</div>
+      </div>
+      <div class="legend-item">
+        <span class="chip chip-growth">GROWTH <span class="chip-val">##</span></span>
+        <div class="desc"><strong>Growth signal.</strong> Hiring postings, review velocity acceleration, or momentum language in reviews. Number shows the growth dimension score (0-25).</div>
+      </div>
+      <div class="legend-item">
+        <span class="chip chip-demand">DEMAND PULL <span class="chip-val">##</span></span>
+        <div class="desc"><strong>Demand pull.</strong> One-person shop winning on reputation. Customers switching from competitors, owner named in reviews, positive review bursts. Number shows the demand-pull score (0-20).</div>
+      </div>
+      <div class="legend-item">
+        <span class="chip chip-nofsm">NO FSM</span>
+        <div class="desc"><strong>No field service platform.</strong> Website fingerprinting detected no ServiceTitan, Housecall Pro, Jobber, or online booking widget. Bookings happen by phone or web form.</div>
+      </div>
+      <div class="legend-item">
+        <span class="chip chip-hiring">HIRING DISPATCH</span>
+        <div class="desc"><strong>Actively hiring a dispatcher.</strong> Open job posting titled Dispatcher, Scheduling Coordinator, or CSR. They are hiring the role FSM software directly replaces.</div>
+      </div>
+      <div class="legend-item">
+        <span class="chip chip-warn">THIN SAMPLE (#)</span>
+        <div class="desc"><strong>Thin sample warning.</strong> LLM review analysis ran on fewer than 10 cached reviews. Signal scores derived from review text are discounted proportionally.</div>
+      </div>
+    </div>
+
+    <div class="legend-sep"></div>
+
+    <h2>Scoring dimensions</h2>
+    <div class="legend-scoring">
+      <div class="line"><span class="dim">Direct pain</span><span>Review complaints, strained dispatch, crisis bursts</span><span class="cap">0–40</span></div>
+      <div class="line"><span class="dim">Scaling strain</span><span>Hiring, velocity, momentum quotes</span><span class="cap">0–25</span></div>
+      <div class="line"><span class="dim">Demand pull</span><span>Competitor switches, founder dependency, surge bursts</span><span class="cap">0–20</span></div>
+      <div class="line"><span class="dim">Multi-signal</span><span>Bonus when multiple sources fire</span><span class="cap">0–15</span></div>
+      <div class="line"><span class="dim">Operational</span><span>Website, reviews, license years</span><span class="cap">0–10</span></div>
+      <div class="line"><span class="dim">Disqualifiers</span><span>Smooth-ops indicators</span><span class="cap">-15–0</span></div>
+    </div>
+    <p style="font-size:11px;color:#888;margin:10px 0 0;">Pain and scaling-strain scores are multiplied by a thin-sample discount when the LLM analyzed fewer than 15 cached reviews. This prevents small contractors with 5-8 reviews from maxing out a dimension on one angry customer.</p>
+
+    <div class="legend-sep"></div>
+
+    <h2>Intent tier badge</h2>
+    <div class="legend-tiers">
+      <span><span class="tier-badge tier-high">HIGH INTENT</span><span style="color:#555;">score ≥ 40</span></span>
+      <span><span class="tier-badge tier-strong">STRONG INTENT</span><span style="color:#555;">25-39</span></span>
+      <span><span class="tier-badge tier-emerging">EMERGING INTENT</span><span style="color:#555;">below 25</span></span>
+    </div>
+
+    <h2 style="margin-top:16px;">Left-edge accent</h2>
+    <div class="legend-accent">
+      <span><span class="swatch sw-pain"></span>dominant pain</span>
+      <span><span class="swatch sw-growth"></span>dominant growth</span>
+      <span><span class="swatch sw-demand"></span>dominant demand pull</span>
+      <span><span class="swatch sw-none"></span>no dominant signal</span>
+    </div>
+  </div>
+
+  
+    <div class="lead accent-growth">
+      <div class="lead-rank">01</div>
+      <div class="lead-body">
+        <h3><a href="dossier_v4_01_Grand_Canyon_Home_Services_LLC.html">Grand Canyon Home Services LLC</a></h3>
+        <p class="lead-meta">Nick Neill · Peoria · 15 yrs licensed · 366 reviews · 4.9★</p>
+        <div class="chips"><span class="chip chip-growth">GROWTH<span class="chip-val">25</span></span><span class="chip chip-demand">DEMAND PULL<span class="chip-val">13</span></span><span class="chip chip-nofsm">NO FSM</span><span class="chip chip-hiring">HIRING DISPATCH (5)</span></div>
+        <ul class="lead-bullets"><li>No field service platform detected. Bookings happen via phone only (website only site).</li><li>16 open job postings including 5 roles FSM software directly replaces (HVAC Dispatcher, Dispatcher, HVAC and Plumbing Dispatcher), most recent posted 2026-03-23.</li><li>2 reviews mention customers switching from a competitor to this shop (most recent: 2026-02-03).</li><li>Currently executing fast dispatch (100% same-day, 8h median). Strong execution — for a small shop this is proof the responsiveness lives in the owner, not a system.</li><li>Review velocity surge: 34 reviews in the last 90 days versus 1 in the prior 90 (34x). Business is accelerating fast.</li></ul>
+      </div>
+      <div class="lead-action">
+        <div><span class="tier-badge tier-high">HIGH INTENT</span></div>
+        <a class="view-link" href="dossier_v4_01_Grand_Canyon_Home_Services_LLC.html">View dossier →</a>
+      </div>
+    </div>
+    
+    <div class="lead accent-growth">
+      <div class="lead-rank">02</div>
+      <div class="lead-body">
+        <h3><a href="dossier_v4_02_Comfort_Experts_LLC.html">Comfort Experts LLC</a></h3>
+        <p class="lead-meta">Ryan John Cronstrom · Mesa · 14 yrs licensed · 473 reviews · 4.9★</p>
+        <div class="chips"><span class="chip chip-growth">GROWTH<span class="chip-val">25</span></span><span class="chip chip-demand">DEMAND PULL<span class="chip-val">9</span></span><span class="chip chip-nofsm">NO FSM</span><span class="chip chip-hiring">HIRING DISPATCH</span></div>
+        <ul class="lead-bullets"><li>No field service platform detected. Bookings happen via phone only (WordPress 6.9.4 site).</li><li>2 open job postings including 1 role FSM software directly replaces (Customer Service Representative/Scheduling Coordinator at Comfort Experts, LLC. Mesa, AZ), most recent posted 2026-03-31.</li><li>2 reviews mention customers switching from a competitor to this shop (most recent: 2026-02-05).</li><li>Currently executing fast dispatch (100% same-day, 8h median). Strong execution — for a small shop this is proof the responsiveness lives in the owner, not a system.</li><li>Review velocity surge: 26 reviews in the last 90 days versus 5 in the prior 90 (5x). Business is accelerating fast.</li></ul>
+      </div>
+      <div class="lead-action">
+        <div><span class="tier-badge tier-high">HIGH INTENT</span></div>
+        <a class="view-link" href="dossier_v4_02_Comfort_Experts_LLC.html">View dossier →</a>
+      </div>
+    </div>
+    
+    <div class="lead accent-growth">
+      <div class="lead-rank">03</div>
+      <div class="lead-body">
+        <h3><a href="dossier_v4_03_D_W_Plumbing_Heating_Cooling_Inc.html">D W Plumbing Heating &amp; Cooling Inc</a></h3>
+        <p class="lead-meta">Ronald Dean Wilson · Phoenix · 9 yrs licensed · 203 reviews · 4.6★</p>
+        <div class="chips"><span class="chip chip-growth">GROWTH<span class="chip-val">24</span></span><span class="chip chip-demand">DEMAND PULL<span class="chip-val">7</span></span><span class="chip chip-nofsm">NO FSM</span></div>
+        <ul class="lead-bullets"><li>No field service platform detected. Bookings happen via phone only (website only site).</li><li>Currently executing fast dispatch (100% same-day, 2h median). Strong execution — for a small shop this is proof the responsiveness lives in the owner, not a system.</li><li>Review velocity surge: 76 reviews in the last 90 days versus 29 in the prior 90 (3x). Business is accelerating fast.</li></ul>
+      </div>
+      <div class="lead-action">
+        <div><span class="tier-badge tier-high">HIGH INTENT</span></div>
+        <a class="view-link" href="dossier_v4_03_D_W_Plumbing_Heating_Cooling_Inc.html">View dossier →</a>
+      </div>
+    </div>
+    
+    <div class="lead accent-growth">
+      <div class="lead-rank">04</div>
+      <div class="lead-body">
+        <h3><a href="dossier_v4_04_Air_Water_Mechanical_Services_LLC.html">Air &amp; Water Mechanical Services LLC</a></h3>
+        <p class="lead-meta">Milen Georgiev Kosev · Mesa · 6 yrs licensed · 170 reviews · 4.8★</p>
+        <div class="chips"><span class="chip chip-growth">GROWTH<span class="chip-val">25</span></span><span class="chip chip-demand">DEMAND PULL<span class="chip-val">9</span></span><span class="chip chip-nofsm">NO FSM</span></div>
+        <ul class="lead-bullets"><li>No field service platform detected. Bookings happen via phone only (website only site).</li><li>2 reviews mention customers switching from a competitor to this shop (most recent: 2026-01-27).</li><li>Currently executing fast dispatch (100% same-day, 20h median). Strong execution — for a small shop this is proof the responsiveness lives in the owner, not a system.</li><li>Review velocity surge: 19 reviews in the last 90 days versus 4 in the prior 90 (5x). Business is accelerating fast.</li></ul>
+      </div>
+      <div class="lead-action">
+        <div><span class="tier-badge tier-high">HIGH INTENT</span></div>
+        <a class="view-link" href="dossier_v4_04_Air_Water_Mechanical_Services_LLC.html">View dossier →</a>
+      </div>
+    </div>
+    
+    <div class="lead accent-demand">
+      <div class="lead-rank">05</div>
+      <div class="lead-body">
+        <h3><a href="dossier_v4_05_Total_Care_Heating_Cooling_LLC.html">Total Care Heating &amp; Cooling LLC</a></h3>
+        <p class="lead-meta">Sammy Sayegh · Peoria · 9 yrs licensed · 198 reviews · 5.0★</p>
+        <div class="chips"><span class="chip chip-growth">GROWTH<span class="chip-val">16</span></span><span class="chip chip-demand">DEMAND PULL<span class="chip-val">17</span></span><span class="chip chip-nofsm">NO FSM</span></div>
+        <ul class="lead-bullets"><li>No field service platform detected. Bookings happen via phone only (WordPress site).</li><li>3 reviews mention customers switching from a competitor to this shop (most recent: 2026-04-03).</li><li>Sammy Sayegh is named directly in 16 of 18 cached reviews (88%). Business runs on one person&#x27;s personal reputation.</li><li>Review volume accelerating: 7 reviews in last 90 days versus 3 prior.</li></ul>
+      </div>
+      <div class="lead-action">
+        <div><span class="tier-badge tier-high">HIGH INTENT</span></div>
+        <a class="view-link" href="dossier_v4_05_Total_Care_Heating_Cooling_LLC.html">View dossier →</a>
+      </div>
+    </div>
+    
+    <div class="lead accent-demand">
+      <div class="lead-rank">06</div>
+      <div class="lead-body">
+        <h3><a href="dossier_v4_06_Arizona_Cooling_and_Heating_Specialists_LLC.html">Arizona Cooling and Heating Specialists LLC</a></h3>
+        <p class="lead-meta">Safwat Sadek Aziz · Queen Creek · 12 yrs licensed · 266 reviews · 5.0★</p>
+        <div class="chips"><span class="chip chip-growth">GROWTH<span class="chip-val">10</span></span><span class="chip chip-demand">DEMAND PULL<span class="chip-val">17</span></span><span class="chip chip-nofsm">NO FSM</span></div>
+        <ul class="lead-bullets"><li>No field service platform detected. Bookings happen via phone only (website only site).</li><li>2 reviews mention customers switching from a competitor to this shop (most recent: 2026-03-09).</li><li>Currently executing fast dispatch (80% same-day, 8h median). Strong execution — for a small shop this is proof the responsiveness lives in the owner, not a system.</li><li>Review velocity surge: 31 reviews in the last 90 days versus 12 in the prior 90 (3x). Business is accelerating fast.</li></ul>
+      </div>
+      <div class="lead-action">
+        <div><span class="tier-badge tier-high">HIGH INTENT</span></div>
+        <a class="view-link" href="dossier_v4_06_Arizona_Cooling_and_Heating_Specialists_LLC.html">View dossier →</a>
+      </div>
+    </div>
+    
+    <div class="lead accent-pain">
+      <div class="lead-rank">07</div>
+      <div class="lead-body">
+        <h3><a href="dossier_v4_07_Tropical_Companies_LLC.html">Tropical Companies LLC</a></h3>
+        <p class="lead-meta">Devin Duke · Chandler · 7 yrs licensed · 112 reviews · 4.8★</p>
+        <div class="chips"><span class="chip chip-pain">PAIN<span class="chip-val">12</span></span><span class="chip chip-growth">GROWTH<span class="chip-val">10</span></span><span class="chip chip-demand">DEMAND PULL<span class="chip-val">7</span></span><span class="chip chip-nofsm">NO FSM</span></div>
+        <ul class="lead-bullets"><li>No field service platform detected. Bookings happen via phone only (WebsiteBuilder site).</li><li>1 review mention customers switching from a competitor to this shop (most recent: 2026-02-12).</li><li>Mostly fast dispatch (80% same-day, 8h median) with one slow outlier. Incident, not a trend.</li><li>Review velocity surge: 21 reviews in the last 90 days versus 8 in the prior 90 (3x). Business is accelerating fast.</li></ul>
+      </div>
+      <div class="lead-action">
+        <div><span class="tier-badge tier-high">HIGH INTENT</span></div>
+        <a class="view-link" href="dossier_v4_07_Tropical_Companies_LLC.html">View dossier →</a>
+      </div>
+    </div>
+    
+    <div class="lead accent-demand">
+      <div class="lead-rank">08</div>
+      <div class="lead-body">
+        <h3><a href="dossier_v4_08_Around_The_Sun_Heating_and_Cooling_Inc.html">Around The Sun Heating and Cooling Inc</a></h3>
+        <p class="lead-meta">Michael Beuning · Gilbert · 20 yrs licensed · 52 reviews · 5.0★</p>
+        <div class="chips"><span class="chip chip-growth">GROWTH<span class="chip-val">12</span></span><span class="chip chip-demand">DEMAND PULL<span class="chip-val">16</span></span><span class="chip chip-nofsm">NO FSM</span></div>
+        <ul class="lead-bullets"><li>No field service platform detected. Bookings happen via phone only (website only site).</li><li>3 reviews mention customers switching from a competitor to this shop (most recent: 2026-03-20).</li><li>Currently executing fast dispatch (100% same-day, 4h median). Strong execution — for a small shop this is proof the responsiveness lives in the owner, not a system.</li><li>Review velocity surge: 21 reviews in the last 90 days versus 7 in the prior 90 (3x). Business is accelerating fast.</li></ul>
+      </div>
+      <div class="lead-action">
+        <div><span class="tier-badge tier-strong">STRONG INTENT</span></div>
+        <a class="view-link" href="dossier_v4_08_Around_The_Sun_Heating_and_Cooling_Inc.html">View dossier →</a>
+      </div>
+    </div>
+    
+    <div class="lead accent-pain">
+      <div class="lead-rank">09</div>
+      <div class="lead-body">
+        <h3><a href="dossier_v4_09_Platinum_Refrigeration_Inc.html">Platinum Refrigeration Inc</a></h3>
+        <p class="lead-meta">Jose Alejandro Sanchez-Guzman · Avondale · 9 yrs licensed · 125 reviews · 4.8★</p>
+        <div class="chips"><span class="chip chip-pain">PAIN<span class="chip-val">10</span></span><span class="chip chip-growth">GROWTH<span class="chip-val">10</span></span><span class="chip chip-nofsm">NO FSM</span></div>
+        <ul class="lead-bullets"><li>No field service platform detected. Bookings happen via phone only (WordPress 6.6.2 site).</li><li>1 review mention customers switching from a competitor to this shop (most recent: 2026-03-13).</li><li>Dispatch is strained: median 63 hours, slowest job 120 hours. Customers are waiting.</li><li>Review volume accelerating: 10 reviews in last 90 days versus 6 prior.</li></ul>
+      </div>
+      <div class="lead-action">
+        <div><span class="tier-badge tier-strong">STRONG INTENT</span></div>
+        <a class="view-link" href="dossier_v4_09_Platinum_Refrigeration_Inc.html">View dossier →</a>
+      </div>
+    </div>
+    
+    <div class="lead accent-pain">
+      <div class="lead-rank">10</div>
+      <div class="lead-body">
+        <h3><a href="dossier_v4_10_Sonoran_Mechanical_Systems_LLC.html">Sonoran Mechanical Systems, LLC</a></h3>
+        <p class="lead-meta">Marte Serrano Sanchez · Peoria · 13 yrs licensed · 147 reviews · 4.1★</p>
+        <div class="chips"><span class="chip chip-pain">PAIN<span class="chip-val">19</span></span><span class="chip chip-nofsm">NO FSM</span><span class="chip chip-warn">THIN SAMPLE (9)</span></div>
+        <ul class="lead-bullets"><li>No field service platform detected. Bookings happen via phone only (website only site).</li><li>LLM review analysis scores customer pain at 7/10. Specific complaints around capacity, dispatch.</li></ul>
+      </div>
+      <div class="lead-action">
+        <div><span class="tier-badge tier-strong">STRONG INTENT</span></div>
+        <a class="view-link" href="dossier_v4_10_Sonoran_Mechanical_Systems_LLC.html">View dossier →</a>
+      </div>
+    </div>
+    
+    <div class="lead accent-growth">
+      <div class="lead-rank">11</div>
+      <div class="lead-body">
+        <h3><a href="dossier_v4_11_True_Home_Maintenance_Air_Conditioning_Heating_LLC.html">True Home Maintenance Air Conditioning &amp; Heating LLC</a></h3>
+        <p class="lead-meta">Christopher M. Schaubert · Mesa · 13 yrs licensed · 325 reviews · 4.8★</p>
+        <div class="chips"><span class="chip chip-growth">GROWTH<span class="chip-val">13</span></span><span class="chip chip-nofsm">NO FSM</span></div>
+        <ul class="lead-bullets"><li>No field service platform detected. Bookings happen via phone only (WordPress site).</li><li>2 open job postings (most recent 2026-03-25, oldest 2026-03-25). Actively growing headcount.</li><li>1 review mention customers switching from a competitor to this shop (most recent: 2026-03-24).</li><li>Review velocity surge: 12 reviews in the last 90 days versus 3 in the prior 90 (4x). Business is accelerating fast.</li></ul>
+      </div>
+      <div class="lead-action">
+        <div><span class="tier-badge tier-strong">STRONG INTENT</span></div>
+        <a class="view-link" href="dossier_v4_11_True_Home_Maintenance_Air_Conditioning_Heating_LLC.html">View dossier →</a>
+      </div>
+    </div>
+    
+    <div class="lead accent-growth">
+      <div class="lead-rank">12</div>
+      <div class="lead-body">
+        <h3><a href="dossier_v4_12_Seabreeze_Cooling_LLC.html">Seabreeze Cooling LLC</a></h3>
+        <p class="lead-meta">Ahsan Waqar · Goodyear · 7 yrs licensed · 311 reviews · 4.1★</p>
+        <div class="chips"><span class="chip chip-growth">GROWTH<span class="chip-val">12</span></span><span class="chip chip-demand">DEMAND PULL<span class="chip-val">11</span></span><span class="chip chip-nofsm">NO FSM</span></div>
+        <ul class="lead-bullets"><li>No field service platform detected. Bookings happen via phone only (WordPress 6.9.4 site).</li><li>Currently executing fast dispatch (100% same-day, 8h median). Strong execution — for a small shop this is proof the responsiveness lives in the owner, not a system.</li><li>Review velocity surge: 73 reviews in the last 90 days versus 0 in the prior 90 (73x). Business is accelerating fast.</li></ul>
+      </div>
+      <div class="lead-action">
+        <div><span class="tier-badge tier-strong">STRONG INTENT</span></div>
+        <a class="view-link" href="dossier_v4_12_Seabreeze_Cooling_LLC.html">View dossier →</a>
+      </div>
+    </div>
+    
+    <div class="lead accent-growth">
+      <div class="lead-rank">13</div>
+      <div class="lead-body">
+        <h3><a href="dossier_v4_13_HVAC_Enterprises_LLC.html">HVAC Enterprises LLC</a></h3>
+        <p class="lead-meta">Michael Cassity · Gilbert · 9 yrs licensed · 195 reviews · 4.5★</p>
+        <div class="chips"><span class="chip chip-growth">GROWTH<span class="chip-val">12</span></span><span class="chip chip-demand">DEMAND PULL<span class="chip-val">7</span></span><span class="chip chip-nofsm">NO FSM</span></div>
+        <ul class="lead-bullets"><li>No field service platform detected. Bookings happen via phone only (website only site).</li><li>Currently executing fast dispatch (100% same-day, 2h median). Strong execution — for a small shop this is proof the responsiveness lives in the owner, not a system.</li><li>Review velocity surge: 15 reviews in the last 90 days versus 6 in the prior 90 (2x). Business is accelerating fast.</li></ul>
+      </div>
+      <div class="lead-action">
+        <div><span class="tier-badge tier-strong">STRONG INTENT</span></div>
+        <a class="view-link" href="dossier_v4_13_HVAC_Enterprises_LLC.html">View dossier →</a>
+      </div>
+    </div>
+    
+    <div class="lead accent-growth">
+      <div class="lead-rank">14</div>
+      <div class="lead-body">
+        <h3><a href="dossier_v4_14_All_Day_Heating_Air_Conditioning_LLC.html">All Day Heating &amp; Air Conditioning LLC</a></h3>
+        <p class="lead-meta">Steven Kipp · Mesa · 7 yrs licensed · 59 reviews · 4.9★</p>
+        <div class="chips"><span class="chip chip-growth">GROWTH<span class="chip-val">8</span></span><span class="chip chip-demand">DEMAND PULL<span class="chip-val">8</span></span><span class="chip chip-nofsm">NO FSM</span><span class="chip chip-warn">THIN SAMPLE (9)</span></div>
+        <ul class="lead-bullets"><li>No field service platform detected. Bookings happen via phone only (website only site).</li><li>Review velocity surge: 11 reviews in the last 90 days versus 3 in the prior 90 (4x). Business is accelerating fast.</li></ul>
+      </div>
+      <div class="lead-action">
+        <div><span class="tier-badge tier-strong">STRONG INTENT</span></div>
+        <a class="view-link" href="dossier_v4_14_All_Day_Heating_Air_Conditioning_LLC.html">View dossier →</a>
+      </div>
+    </div>
+    
+    <div class="lead accent-growth">
+      <div class="lead-rank">15</div>
+      <div class="lead-body">
+        <h3><a href="dossier_v4_15_Sun_Devil_Heating_and_Cooling_Inc.html">Sun Devil Heating and Cooling Inc</a></h3>
+        <p class="lead-meta">Gerardo Suarez Quijada · Phoenix · 18 yrs licensed · 142 reviews · 4.8★</p>
+        <div class="chips"><span class="chip chip-growth">GROWTH<span class="chip-val">14</span></span><span class="chip chip-nofsm">NO FSM</span></div>
+        <ul class="lead-bullets"><li>No field service platform detected. Bookings happen via phone only (WordPress site).</li><li>Currently executing fast dispatch (100% same-day, 6h median). Strong execution — for a small shop this is proof the responsiveness lives in the owner, not a system.</li><li>Review velocity surge: 29 reviews in the last 90 days versus 2 in the prior 90 (14x). Business is accelerating fast.</li></ul>
+      </div>
+      <div class="lead-action">
+        <div><span class="tier-badge tier-emerging">EMERGING INTENT</span></div>
+        <a class="view-link" href="dossier_v4_15_Sun_Devil_Heating_and_Cooling_Inc.html">View dossier →</a>
+      </div>
+    </div>
+    
+    <div class="lead accent-demand">
+      <div class="lead-rank">16</div>
+      <div class="lead-body">
+        <h3><a href="dossier_v4_16_AZ_Trusted_Air_LLC.html">AZ Trusted Air LLC</a></h3>
+        <p class="lead-meta">Brian Michael Cline · Phoenix · 8 yrs licensed · 68 reviews · 4.4★</p>
+        <div class="chips"><span class="chip chip-growth">GROWTH<span class="chip-val">6</span></span><span class="chip chip-demand">DEMAND PULL<span class="chip-val">11</span></span><span class="chip chip-nofsm">NO FSM</span><span class="chip chip-warn">THIN SAMPLE (4)</span></div>
+        <ul class="lead-bullets"><li>No field service platform detected. Bookings happen via phone only (website only site).</li><li>1 review mention customers switching from a competitor to this shop (most recent: 2026-03-29).</li><li>Dispatch is slow: median 26 hours to respond.</li></ul>
+      </div>
+      <div class="lead-action">
+        <div><span class="tier-badge tier-emerging">EMERGING INTENT</span></div>
+        <a class="view-link" href="dossier_v4_16_AZ_Trusted_Air_LLC.html">View dossier →</a>
+      </div>
+    </div>
+    
+    <div class="lead accent-growth">
+      <div class="lead-rank">17</div>
+      <div class="lead-body">
+        <h3><a href="dossier_v4_17_Clark_Heating_and_Cooling_LLC.html">Clark Heating and Cooling LLC</a></h3>
+        <p class="lead-meta">David Byron Clark · Peoria · 15 yrs licensed · 427 reviews · 4.9★</p>
+        <div class="chips"><span class="chip chip-growth">GROWTH<span class="chip-val">12</span></span><span class="chip chip-nofsm">NO FSM</span></div>
+        <ul class="lead-bullets"><li>No field service platform detected. Bookings happen via phone only (Joomla site).</li><li>David Byron Clark is named directly in 8 of 38 cached reviews (21%). Business runs on one person&#x27;s personal reputation.</li><li>Currently executing fast dispatch (100% same-day, 24h median). Strong execution — for a small shop this is proof the responsiveness lives in the owner, not a system.</li><li>Review velocity surge: 20 reviews in the last 90 days versus 7 in the prior 90 (3x). Business is accelerating fast.</li></ul>
+      </div>
+      <div class="lead-action">
+        <div><span class="tier-badge tier-emerging">EMERGING INTENT</span></div>
+        <a class="view-link" href="dossier_v4_17_Clark_Heating_and_Cooling_LLC.html">View dossier →</a>
+      </div>
+    </div>
+    
+    <div class="lead accent-growth">
+      <div class="lead-rank">18</div>
+      <div class="lead-body">
+        <h3><a href="dossier_v4_18_Martin_Air_LLC.html">Martin Air LLC</a></h3>
+        <p class="lead-meta">Jacob Ronald Martin · Mesa · 8 yrs licensed · 304 reviews · 5.0★</p>
+        <div class="chips"><span class="chip chip-growth">GROWTH<span class="chip-val">12</span></span><span class="chip chip-nofsm">NO FSM</span></div>
+        <ul class="lead-bullets"><li>No field service platform detected. Bookings happen via phone only (website only site).</li><li>Currently executing fast dispatch (100% same-day, 8h median). Strong execution — for a small shop this is proof the responsiveness lives in the owner, not a system.</li><li>Review volume accelerating: 26 reviews in last 90 days versus 17 prior.</li></ul>
+      </div>
+      <div class="lead-action">
+        <div><span class="tier-badge tier-emerging">EMERGING INTENT</span></div>
+        <a class="view-link" href="dossier_v4_18_Martin_Air_LLC.html">View dossier →</a>
+      </div>
+    </div>
+    
+    <div class="lead accent-growth">
+      <div class="lead-rank">19</div>
+      <div class="lead-body">
+        <h3><a href="dossier_v4_19_Hil_Co_Mechanical_Corporation.html">Hil-Co Mechanical Corporation</a></h3>
+        <p class="lead-meta">Brian Peter Mc Queen · Peoria · 19 yrs licensed · 222 reviews · 5.0★</p>
+        <div class="chips"><span class="chip chip-growth">GROWTH<span class="chip-val">10</span></span><span class="chip chip-nofsm">NO FSM</span></div>
+        <ul class="lead-bullets"><li>No field service platform detected. Bookings happen via phone only (website only site).</li><li>Review velocity surge: 15 reviews in the last 90 days versus 2 in the prior 90 (8x). Business is accelerating fast.</li></ul>
+      </div>
+      <div class="lead-action">
+        <div><span class="tier-badge tier-emerging">EMERGING INTENT</span></div>
+        <a class="view-link" href="dossier_v4_19_Hil_Co_Mechanical_Corporation.html">View dossier →</a>
+      </div>
+    </div>
+    
+    <div class="lead accent-demand">
+      <div class="lead-rank">20</div>
+      <div class="lead-body">
+        <h3><a href="dossier_v4_20_Cardinal_Heating_Cooling_LLC.html">Cardinal Heating &amp; Cooling LLC</a></h3>
+        <p class="lead-meta">Gerardo Suarez Quijada · Phoenix · 13 yrs licensed · 106 reviews · 4.3★</p>
+        <div class="chips"><span class="chip chip-growth">GROWTH<span class="chip-val">5</span></span><span class="chip chip-demand">DEMAND PULL<span class="chip-val">6</span></span><span class="chip chip-nofsm">NO FSM</span><span class="chip chip-warn">THIN SAMPLE (6)</span></div>
+        <ul class="lead-bullets"><li>No field service platform detected. Bookings happen via phone only (website only site).</li><li>1 review mention customers switching from a competitor to this shop (most recent: 2026-03-04).</li><li>Currently executing fast dispatch (100% same-day, 16h median). Strong execution — for a small shop this is proof the responsiveness lives in the owner, not a system.</li><li>Review velocity surge: 7 reviews in the last 90 days versus 0 in the prior 90 (7x). Business is accelerating fast.</li></ul>
+      </div>
+      <div class="lead-action">
+        <div><span class="tier-badge tier-emerging">EMERGING INTENT</span></div>
+        <a class="view-link" href="dossier_v4_20_Cardinal_Heating_Cooling_LLC.html">View dossier →</a>
+      </div>
+    </div>
+    
+    <div class="lead accent-demand">
+      <div class="lead-rank">21</div>
+      <div class="lead-body">
+        <h3><a href="dossier_v4_21_All_Area_AC_Heating_Inc.html">All Area A/C &amp; Heating Inc</a></h3>
+        <p class="lead-meta">Oscar Santiago Zeballos · Phoenix · 8 yrs licensed · 214 reviews · 5.0★</p>
+        <div class="chips"><span class="chip chip-demand">DEMAND PULL<span class="chip-val">11</span></span><span class="chip chip-nofsm">NO FSM</span><span class="chip chip-warn">THIN SAMPLE (7)</span></div>
+        <ul class="lead-bullets"><li>No field service platform detected. Bookings happen via phone only (WordPress site).</li><li>Oscar Santiago Zeballos is named directly in 7 of 8 cached reviews (87%). Business runs on one person&#x27;s personal reputation.</li><li>Currently executing fast dispatch (100% same-day, 2h median). Strong execution — for a small shop this is proof the responsiveness lives in the owner, not a system.</li></ul>
+      </div>
+      <div class="lead-action">
+        <div><span class="tier-badge tier-emerging">EMERGING INTENT</span></div>
+        <a class="view-link" href="dossier_v4_21_All_Area_AC_Heating_Inc.html">View dossier →</a>
+      </div>
+    </div>
+    
+    <div class="lead accent-none">
+      <div class="lead-rank">22</div>
+      <div class="lead-body">
+        <h3><a href="dossier_v4_22_JDL_Refrigeration_LLC.html">JDL Refrigeration LLC</a></h3>
+        <p class="lead-meta">Jeff Dale Lihosit · Mesa · 11 yrs licensed · 222 reviews · 4.9★</p>
+        <div class="chips"><span class="chip chip-nofsm">NO FSM</span><span class="chip chip-warn">THIN SAMPLE (5)</span></div>
+        <ul class="lead-bullets"><li>No field service platform detected. Bookings happen via phone only (WordPress site).</li><li>2 open job postings (most recent 2026-03-12, oldest 2026-03-12). Actively growing headcount.</li><li>Review velocity surge: 5 reviews in the last 90 days versus 0 in the prior 90 (5x). Business is accelerating fast.</li></ul>
+      </div>
+      <div class="lead-action">
+        <div><span class="tier-badge tier-emerging">EMERGING INTENT</span></div>
+        <a class="view-link" href="dossier_v4_22_JDL_Refrigeration_LLC.html">View dossier →</a>
+      </div>
+    </div>
+    
+    <div class="lead accent-demand">
+      <div class="lead-rank">23</div>
+      <div class="lead-body">
+        <h3><a href="dossier_v4_23_Dependable_Air_LLC.html">Dependable Air, LLC</a></h3>
+        <p class="lead-meta">timothy john contreras · Mesa · 9 yrs licensed · 113 reviews · 4.9★</p>
+        <div class="chips"><span class="chip chip-demand">DEMAND PULL<span class="chip-val">11</span></span><span class="chip chip-nofsm">NO FSM</span><span class="chip chip-warn">THIN SAMPLE (4)</span></div>
+        <ul class="lead-bullets"><li>No field service platform detected. Bookings happen via phone only (GoDaddy Website Builder 8.0.0000 site).</li><li>1 review mention customers switching from a competitor to this shop (most recent: 2026-01-31).</li></ul>
+      </div>
+      <div class="lead-action">
+        <div><span class="tier-badge tier-emerging">EMERGING INTENT</span></div>
+        <a class="view-link" href="dossier_v4_23_Dependable_Air_LLC.html">View dossier →</a>
+      </div>
+    </div>
+    
+    <div class="lead accent-demand">
+      <div class="lead-rank">24</div>
+      <div class="lead-body">
+        <h3><a href="dossier_v4_24_Desert_Sun_Air_LLC.html">Desert Sun Air LLC</a></h3>
+        <p class="lead-meta">jorge luis prieto · Tolleson · 12 yrs licensed · 441 reviews · 4.7★</p>
+        <div class="chips"><span class="chip chip-demand">DEMAND PULL<span class="chip-val">6</span></span><span class="chip chip-nofsm">NO FSM</span></div>
+        <ul class="lead-bullets"><li>No field service platform detected. Bookings happen via phone only (WebsiteBuilder site).</li><li>2 reviews mention customers switching from a competitor to this shop (most recent: 2026-02-19).</li><li>Dispatch is slow: median 36 hours to respond.</li></ul>
+      </div>
+      <div class="lead-action">
+        <div><span class="tier-badge tier-emerging">EMERGING INTENT</span></div>
+        <a class="view-link" href="dossier_v4_24_Desert_Sun_Air_LLC.html">View dossier →</a>
+      </div>
+    </div>
+    
+    <div class="lead accent-demand">
+      <div class="lead-rank">25</div>
+      <div class="lead-body">
+        <h3><a href="dossier_v4_25_Second_Opinion_Plumbing_LLC.html">Second Opinion Plumbing LLC</a></h3>
+        <p class="lead-meta">BRIAN BROOKS · Gilbert · 7 yrs licensed · 271 reviews · 4.9★</p>
+        <div class="chips"><span class="chip chip-demand">DEMAND PULL<span class="chip-val">9</span></span><span class="chip chip-nofsm">NO FSM</span></div>
+        <ul class="lead-bullets"><li>No field service platform detected. Bookings happen via phone only (WordPress site).</li><li>2 reviews mention customers switching from a competitor to this shop (most recent: 2026-04-03).</li><li>Currently executing fast dispatch (100% same-day, 16h median). Strong execution — for a small shop this is proof the responsiveness lives in the owner, not a system.</li></ul>
+      </div>
+      <div class="lead-action">
+        <div><span class="tier-badge tier-emerging">EMERGING INTENT</span></div>
+        <a class="view-link" href="dossier_v4_25_Second_Opinion_Plumbing_LLC.html">View dossier →</a>
+      </div>
+    </div>
+    
+
+  <div class="page-footer">
+    Generated 2026-04-11 · HVAC Signals pipeline · 25 contractors
+  </div>
+
+</div>
+</body>
+</html>
