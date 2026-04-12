@@ -1823,8 +1823,15 @@ def render_header(row: pd.Series, jobs: list[dict] | None = None) -> str:
     # optional freshness badge. Freshness only fires when at least 25% of
     # the contractor's dated signals are in the last 30 days — below that,
     # it's silent (no stale marker; we're already inside 180 days).
+    revenue_band = s(row.get("revenue_band"))
+    bond_amount = row.get("bond_amount")
+
     badges_html = [f'<span class="tier-badge {tier_class}">{tier_label}</span>']
-    if size_tier:
+    if revenue_band and revenue_band != "Unknown":
+        badges_html.append(
+            f'<span class="size-badge">{esc(revenue_band)} est. annual revenue</span>'
+        )
+    elif size_tier:
         size_label = {"XL": "XL · Large", "L": "L · Established",
                       "M": "M · Mid", "S": "S · Small"}.get(size_tier, size_tier)
         badges_html.append(

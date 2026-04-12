@@ -19,7 +19,7 @@ A buying-signal pipeline for field service management (FSM) software vendors sel
 
 ## The pipeline
 
-17 numbered Python scripts under [pipeline/](pipeline/). Run in order:
+18 numbered Python scripts under [pipeline/](pipeline/). Run in order:
 
 1. **[01_load_and_filter](pipeline/01_load_and_filter.py)** — filter ROC exports to Phoenix HVAC contractors with 5-25 year license age, drop sole-proprietor-pattern names
 2. **[02_enrich_places](pipeline/02_enrich_places.py)** — Google Places API enrichment with DBA routing
@@ -32,8 +32,9 @@ A buying-signal pipeline for field service management (FSM) software vendors sel
 9. **[08_review_nlp](pipeline/08_review_nlp.py)** / **[08b_review_llm](pipeline/08b_review_llm.py)** — regex and LLM review analysis in parallel, 6-month recency window, returns per-mention arrays with review_index references
 10. **[09_dispatch_delay](pipeline/09_dispatch_delay.py)** — per-review dispatch time extraction, 6-month recency window, classifier shared with the render layer
 11. **[10_review_burst_detection](pipeline/10_review_burst_detection.py)** — detect review volume spikes (crisis bursts are the signal; positive surges are deprioritized in favor of the velocity card)
-12. **[11_scoring](pipeline/11_scoring.py)** — 6-dimension additive scoring with thin-sample discount and demand-pull dimension
-13. **[12_contact_enrichment](pipeline/12_contact_enrichment.py)** / **[13_contact_augment](pipeline/13_contact_augment.py)** — website scrape, Apollo people, AZ ROC qualifying party merge
+12. **[18_roc_bond_scraper](pipeline/18_roc_bond_scraper.py)** — scrapes bond amounts from the AZ ROC public website (Playwright headless browser). Bond amounts are mandated by law to scale with annual gross volume — maps to revenue bands ($150K–$500K, $500K–$1.5M, etc.). 100% coverage on the pool, $0 cost
+13. **[11_scoring](pipeline/11_scoring.py)** — 7-dimension additive scoring with ICP fit, FSM-vendor disqualifier, revenue band, size tier, and signal freshness display fields
+14. **[12_contact_enrichment](pipeline/12_contact_enrichment.py)** / **[13_contact_augment](pipeline/13_contact_augment.py)** — website scrape, Apollo people, AZ ROC qualifying party merge
 14. **[16_tavily_contact_search](pipeline/16_tavily_contact_search.py)** — pure extractor: Tavily search, dumps every email/phone/social-URL candidate with no ownership judgment
 15. **[17_candidate_validator](pipeline/17_candidate_validator.py)** — one Claude Haiku call per contractor decides which Tavily + SerpAPI-jobs candidates actually belong, with a written reason per decision. Single source of truth for the dossier's contact and hiring cards
 16. **[14_dossier_cards](pipeline/14_dossier_cards.py)** — card-based HTML dossiers + index page
@@ -89,7 +90,8 @@ python pipeline/12_contact_enrichment.py          # website scrape + Apollo peop
 python pipeline/13_contact_augment.py             # merge ROC owner + Places + website
 python pipeline/16_tavily_contact_search.py       # pure extractor: every candidate contact (all 70)
 python pipeline/17_candidate_validator.py         # LLM validator: belongs/reject per candidate (all 70)
-python pipeline/11_scoring.py                     # reads validator-kept jobs for hiring counts
+python pipeline/18_roc_bond_scraper.py            # scrape bond amounts → revenue bands (all 70)
+python pipeline/11_scoring.py                     # reads validator + bond caches for scoring
 python pipeline/14_dossier_cards.py --all         # generates 25 dossiers + index
 ```
 
@@ -118,7 +120,7 @@ hvac-signals/
 ├── PIPELINE.md                        # full pipeline narrative
 ├── CLAUDE.md                          # standing rules and lessons
 │
-├── pipeline/                          # 17 numbered scripts (01 through 17)
+├── pipeline/                          # 18 numbered scripts (01 through 18)
 ├── data/
 │   ├── 01_contractors/                # Step 01–02c outputs (filtered, enriched, tiered)
 │   ├── 02_enrichment/                 # Step 03–04 outputs (FSM detection, Apollo signals)

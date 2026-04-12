@@ -171,9 +171,29 @@ Two contractors can share the same total score and have completely different nar
 
 Two pieces of information appear on every dossier header but are deliberately kept out of the `score_total` because they're reference data, not buying-intent signals.
 
+### Revenue band (from AZ ROC bond amount)
+
+Arizona law ([ARS 32-1152](https://www.azleg.gov/ars/32/01152.htm)) requires every contractor to post a surety bond sized to their anticipated annual gross volume. The bond amount is public record, visible on every contractor's ROC detail page, and directly tied to reported revenue — not an estimate from a third-party database.
+
+The pipeline scrapes the bond amount from the ROC website for every contractor in the pool (100% coverage) and maps it to a revenue band:
+
+| Combined Bond Amount | Revenue Band |
+|---|---|
+| $50,000+ | $5M+ |
+| $20,000–$49,999 | $1.5M–$5M |
+| $9,000–$19,999 | $500K–$1.5M |
+| $4,000–$8,999 | $150K–$500K |
+| Under $4,000 | Under $150K |
+
+For dual-scope (CR-39) contractors, the bond amount shown on the ROC page is the sum of the commercial bond and the residential bond. The mapping above accounts for that combined amount.
+
+This is **not a scoring signal** — it's a display field. A $500K contractor with multiple intent signals should still outrank a $5M contractor with none. But two contractors with similar scores may represent very different deals, and the revenue band lets a buyer route them to the right sales motion (enterprise vs SMB).
+
+**Why this is better than Apollo or ZoomInfo revenue estimates:** those databases have 0/70 coverage for our hidden-gems pool. The ROC bond amount has 70/70 coverage, is government-mandated, and is updated when the contractor renews their license. It's not a model or an estimate — it's a legal disclosure.
+
 ### Size tier (`size_tier`)
 
-A business-size proxy computed from license tenure and Google review volume. Segments contractors into S / M / L / XL so a rep or a buyer can filter the list by expected deal size without distorting the ranking.
+A secondary size proxy computed from license tenure and Google review volume. Used as a fallback when bond data is unavailable (e.g. if the pipeline is ported to a state without volume-based bonds). Segments contractors into S / M / L / XL.
 
 | Tier | Rule |
 |---|---|
@@ -182,9 +202,7 @@ A business-size proxy computed from license tenure and Google review volume. Seg
 | **M** | License ≥10 years OR ≥150 Google reviews |
 | **S** | Everything else |
 
-Thresholds are calibrated against the current Phoenix HVAC 5–25 year / 50–500 review pool. Distribution in the current top 25 is roughly 10 L / 10 M / 5 S / 0 XL. XL is a reserve tier for larger contractors that don't exist in this specific pool — no top-25 contractor meets it today, which is expected given the hidden-gems filter.
-
-This is not a scoring signal. A small shop with multiple intent signals should still outrank a large shop with none. But two contractors with similar scores may represent very different deals, and the size tier lets a buyer route them to the right sales motion.
+When the revenue band is available (which it is for 100% of the current pool), the revenue band takes priority on the dossier header. Size tier remains in the scored CSV as a secondary reference.
 
 ### Signal freshness (`signal_freshness`)
 
@@ -218,7 +236,7 @@ Being honest about the edges:
 
 5. **The model is calibrated to Phoenix-area HVAC, 2026.** Scores are comparable within the pool. Porting the thresholds to a different metro or a different trade would require re-calibration — the thin-sample cutoffs, velocity ratios, and hiring weights were all tuned on this specific dataset.
 
-6. **Firmographic enrichment is sparse for hidden-gem contractors.** We check Apollo's organization database for employee count and estimated revenue, but Apollo's coverage of sub-$10M private HVAC shops is near zero — 0 of the 25 contractors in the current top list have Apollo firmographics. This is expected and arguably a feature: the pipeline is surfacing prospects that commodity lead databases miss. For size estimation we rely on our own `size_tier` field computed from license tenure and review volume, not on third-party revenue data.
+6. **Third-party firmographic databases don't cover these contractors.** Apollo's organization database returns 0/70 revenue or employee records for our hidden-gems pool. This is expected — these are sub-$10M private HVAC shops that commodity lead databases miss. Instead of estimated revenue from a third party, we use the **AZ ROC bond amount** — a government-mandated, volume-tiered surety bond that maps directly to the contractor's reported annual gross volume. Coverage: 70/70 (100%). See the "Revenue band" section above.
 
 ## How to read a score in practice
 

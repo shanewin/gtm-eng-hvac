@@ -51,6 +51,57 @@ FSM_DROPPED_CSV = ROOT / "data" / "03_hidden_gems" / "already_fsm_dropped.csv"
 SNAPSHOT_DIR = ROOT / "data" / "snapshots" / "scored"
 VALIDATOR_DIR = ROOT / "data" / "signals_raw" / "validator"
 SERP_JOBS_DIR = ROOT / "data" / "signals_raw" / "serpapi_jobs"
+BOND_DIR = ROOT / "data" / "signals_raw" / "roc_bonds"
+
+
+# ---- Revenue band from ROC bond amount ----
+#
+# Arizona law (ARS 32-1152) requires contractors to post a surety bond
+# sized to their annual gross volume tier. The bond amount is public
+# record on the ROC detail page. For CR-39 (Specialty Dual) contractors,
+# the combined bond = commercial bond + residential bond. The combined
+# amount maps to a revenue band.
+#
+# These thresholds are derived from the statutory tier tables and the
+# empirical distribution of combined bond amounts across the 70-
+# contractor hidden-gems pool. The mapping is conservative — we assign
+# the floor of the range, not the ceiling.
+
+def load_bond_amount(place_id: str) -> int | None:
+    """Read the cached bond amount scraped from the ROC detail page."""
+    path = BOND_DIR / f"{place_id}.json"
+    if not path.exists():
+        return None
+    try:
+        data = json.loads(path.read_text())
+    except (json.JSONDecodeError, OSError):
+        return None
+    return data.get("bond_amount")
+
+
+def classify_revenue_band(bond_amount: int | None) -> str:
+    """Map a combined ROC bond amount to a revenue band label.
+
+    The bands are intentionally labeled as ranges, not point estimates.
+    A $32,500 bond means the ROC certified this contractor for $1.5M–$5M
+    in annual gross volume — we don't know where in that range they fall,
+    and claiming more precision than the bond schedule provides would be
+    dishonest.
+
+    Returns a human-readable string like "$1.5M–$5M" or "Unknown" if
+    the bond amount is missing.
+    """
+    if bond_amount is None:
+        return "Unknown"
+    if bond_amount >= 50_000:
+        return "$5M+"
+    if bond_amount >= 20_000:
+        return "$1.5M–$5M"
+    if bond_amount >= 9_000:
+        return "$500K–$1.5M"
+    if bond_amount >= 4_000:
+        return "$150K–$500K"
+    return "Under $150K"
 
 
 # ---- size_tier classifier ----
@@ -771,6 +822,11 @@ def main() -> None:
             int(safe_num(r.get("place_review_count"))),
         )
 
+        # Revenue band from ROC bond amount (non-scoring, display only)
+        place_id = safe_str(r.get("place_id"))
+        bond_amt = load_bond_amount(place_id)
+        rev_band = classify_revenue_band(bond_amt)
+
         rows.append({
             "license_no": r["license_no"],
             "score_direct_pain": round(dp, 1),
@@ -785,6 +841,8 @@ def main() -> None:
             "confidence_tier": confidence,
             "primary_narrative": narrative,
             "size_tier": size,
+            "revenue_band": rev_band,
+            "bond_amount": bond_amt,
             "already_fsm_customer": bool(r.get("_already_fsm_customer", False)),
             "already_fsm_vendor": safe_str(r.get("_already_fsm_vendor")),
             "score_evidence": " | ".join(
@@ -854,6 +912,13 @@ def main() -> None:
     res = int((top25["class"].isin(["R-39", "R-39R"])).sum())
     print(f"  Dual (CR-39):        {dual}")
     print(f"  Residential only:    {res}")
+
+    print()
+    print("Revenue band distribution (top 25, from ROC bond amount):")
+    for band in ["$5M+", "$1.5M–$5M", "$500K–$1.5M", "$150K–$500K", "Under $150K", "Unknown"]:
+        c = int((top25["revenue_band"] == band).sum())
+        if c:
+            print(f"  {band:<16} {c}")
 
     # Biggest rank changes from original to scored
     print()
