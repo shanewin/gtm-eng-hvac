@@ -5,7 +5,8 @@ A buying-signal pipeline for field service management (FSM) software vendors sel
 ## The output
 
 - **[deliverables/index.html](deliverables/index.html)** — one-page ranked list of the top 25 contractors. Each row shows signal chips (PAIN / GROWTH / DEMAND PULL / NO FSM / HIRING DISPATCH / THIN SAMPLE), a colored accent indicating the dominant signal, the intent tier badge, and the top bullet points for why this contractor is a lead.
-- **[deliverables/dossier_v4_*.html](deliverables/)** — 25 individual dossiers, one per contractor. Each dossier is a stack of cards, one per fired signal, with every claim backed by a dated citation to the source evidence.
+- **[deliverables/dossier_v4_*.html](deliverables/)** — 25 individual dossiers, one per contractor. Each dossier is a stack of cards, one per fired signal, with every claim backed by a dated citation to the source evidence. Headers show intent tier, estimated annual revenue (from AZ ROC bond amounts), and a signal freshness badge when 25%+ of dated signals are in the last 30 days.
+- **[SCORING.md](SCORING.md)** — full scoring methodology: 7 dimensions, 3 non-scoring display fields, FSM-vendor hard disqualifier, and explicit disclaimers about what the model can and can't see.
 
 ## The funnel
 

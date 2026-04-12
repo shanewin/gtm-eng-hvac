@@ -191,7 +191,7 @@ Classification of matching postings:
 
 The `07b_` retry script handles contractors where the first pass returned nothing by retrying under the Google Places name (for casing/spacing mismatches against the legal name).
 
-**Dossier surfacing.** The hiring card shows every cached posting with its real date and flags `ops_pain` titles with a red "FSM BUYER ROLE" badge. Date sources, in priority order:
+**Dossier surfacing.** The hiring card shows every cached posting with its real date and flags `ops_pain` titles with a green "FSM BUYER ROLE" badge (green because these are positive buying signals, not warnings). Date sources, in priority order:
 1. Apollo's `organization_job_postings` endpoint (exact ISO timestamps, LinkedIn URLs, available when the org is in Apollo's database)
 2. SerpAPI's `"X days ago"` field computed against the cache's `fetched_at` timestamp
 3. `fetched_at` itself, labeled as "first observed on \<date\>" — honest lower bound when neither source gives an absolute date
@@ -206,6 +206,7 @@ Two parallel approaches on the same cached reviews. Both apply a strict **6-mont
 
 - **Aggregate scores:** `pain_score` (0–10), `momentum_score` (0–10), `smooth_ops_score` (0–10), `buying_category`, `founder_involvement` (none/moderate/heavy), `key_person_dependency` (none/moderate/heavy), `one_sentence_summary`
 - **Per-mention arrays** (capped at 8 entries each): `pain_mentions`, `momentum_mentions`, `switcher_mentions`, `smooth_ops_mentions`
+- **Referenced people** (`referenced_people` array): first names of employees customers mention in reviews — technicians, dispatchers, office staff. One entry per distinct person, with a `mention_count` and a short `sample_quote` (verbatim, under 80 chars). The LLM is instructed to exclude the reviewer's own family, prior contractors being badmouthed, and generic references ("the tech"). Rendered inline on the decision-maker card as "Also named in reviews — ask for any of these by first name." Owner's first name is deduped at render time so the one-person card and the referenced-people list don't double-count.
 
 Each mention is an object: `{review_index, quote, subtype}`. The `review_index` is 1-based and points into the `indexed_reviews` list cached alongside the parsed response — so any downstream reader can resolve a mention back to its dated source review. Subtypes are specific per category (pain subtypes: dispatch / communication / capacity / quality / billing / other; momentum subtypes: demand_pressure / founder_owned / key_person / long_wait / capacity_strain / other).
 
@@ -254,7 +255,7 @@ Crisis bursts (`active_crisis` and `recent_crisis`) are the real value of this s
 
 `pipeline/11_scoring.py`
 
-### Six scoring dimensions
+### Seven scoring dimensions
 
 | # | Dimension | Cap | What it rewards |
 |---|---|---|---|
@@ -263,7 +264,14 @@ Crisis bursts (`active_crisis` and `recent_crisis`) are the real value of this s
 | 3 | Multi-signal convergence | 0–15 | Bonus when multiple independent sources fire |
 | 4 | Operational readiness | 0–10 | Has website, enough reviews, 10+ years licensed |
 | 5 | Demand pull | 0–20 | Customer-switch mentions, heavy founder/key-person dependency, qualifying scaling_surge bursts, fast dispatch combined with any of the above |
-| 6 | Disqualifiers | −15–0 | Smooth-ops indicators |
+| 6 | ICP fit | 0–5 | License scope: Dual (CR-39, commercial + residential) = +5, Residential-only (R-39/R-39R) = +2 |
+| 7 | Disqualifiers | −30–0 | Smooth-ops indicators, FSM-vendor job postings (hard exclusion) |
+
+Three non-scoring display fields also appear on every dossier:
+
+- **Revenue band** — from AZ ROC bond amounts (step 18), maps to $150K–$500K / $500K–$1.5M / $1.5M–$5M / $5M+ tiers. 100% coverage, government-mandated, updates at license renewal.
+- **Size tier** — secondary proxy from license tenure + review count (S/M/L/XL). Fallback when bond data is unavailable.
+- **Signal freshness** — FRESH (50%+ of dated signals in last 30 days) or RECENT (25%+). Tells a rep which prospects are in pain *right now*.
 
 ### The thin-sample discount
 
@@ -334,7 +342,17 @@ Cost: ~$0.005 per contractor on Haiku average, occasional outliers up to $0.04 o
 
 **The validator is the single source of truth for which contacts AND jobs belong to which contractor.** Step 11 scoring reads the validator's kept jobs (classified into ops_pain / capacity / other at read time) to compute `hiring_ops_pain_count`, `hiring_capacity_count`, and `hiring_signal`. The dossier render layer reads from the same cache for contacts and hiring cards. There is no second fuzzy check anywhere downstream — if the validator kept it, it renders; if the validator rejected it, it doesn't exist. Every claim on every dossier traces back to a validator decision with a written reason.
 
-**Pipeline ordering consequence.** Because scoring depends on the validator for hiring counts, the run order is now: 06 velocity → 07 hiring extractor → 07b retry → 08 review NLP → 08b review LLM → 09 dispatch → 10 burst → **16 Tavily → 17 validator** → 11 scoring → 12/13 contact augment → 14 dossier. Tavily and the validator moved *in front of* scoring. The file numbers still reflect the order the scripts were written in, not the order they run in — see the README for the correct execution sequence.
+**Pipeline ordering consequence.** Because scoring depends on the validator for hiring counts and the bond scraper for revenue bands, the run order is now: 06 velocity → 07 hiring extractor → 07b retry → 08 review NLP → 08b review LLM → 09 dispatch → 10 burst → 12/13 contact augment → **16 Tavily → 17 validator → 18 bond scraper → 11 scoring** → 14 dossier. The file numbers reflect the order the scripts were written in, not the order they run in — see the README for the correct execution sequence.
+
+### Step 18: `pipeline/18_roc_bond_scraper.py` — revenue bands from public record
+
+Arizona law ([ARS 32-1152](https://www.azleg.gov/ars/32/01152.htm)) requires every contractor to post a surety bond sized to their annual gross volume tier. The bond amount is public record on every contractor's ROC detail page. This step scrapes it for all 70 contractors using Playwright (headless Chromium, because the ROC site is a Salesforce Aura app that renders client-side).
+
+The scraper searches by license number, extracts the Salesforce `licenseId` from the search results, loads the detail page, and reads the bond amount. When a contractor holds separate R-39 (residential) and C-39 (commercial) licenses instead of a single CR-39 dual, both bonds are scraped and combined. Cached to `data/signals_raw/roc_bonds/{place_id}.json`.
+
+Coverage: 70/70 (100%). Cost: $0 — public government website. Runtime: ~12 minutes for the full pool.
+
+The bond amount maps to a revenue band: $4K–$9K → $150K–$500K, $9K–$20K → $500K–$1.5M, $20K–$50K → $1.5M–$5M, $50K+ → $5M+. This is not an estimate from a third-party database — it's a government-mandated disclosure tied to reported volume. Apollo has 0/70 coverage on this pool; the ROC bond has 100%.
 
 ---
 
@@ -356,7 +374,7 @@ Each dossier is a stack of cards. Cards only render when their underlying signal
 2. **Why this is a good lead** — a yellow bullet-list panel with one bullet per fired signal. The five-second scan.
 3. **Technology stack gap** — placed first in the evidence section because no-FSM is the loudest objective signal
 4. **Decision maker** — owner name with green ✓ "verified via AZ contractor license," booking phone, booking web form, discovered emails (from Tavily with source attribution), alternate phones (labeled AZ / toll-free / out-of-state), social URLs (Facebook, LinkedIn, Instagram)
-5. **Hiring intelligence** — renders when the validator kept any job postings for the contractor. Lists real postings with real dates (Apollo ISO timestamps where available, relative-date computed from SerpAPI otherwise, or `fetched_at` as a last-resort "first observed on" label). FSM buyer roles (dispatcher, scheduling coordinator, CSR) flagged with a red badge.
+5. **Hiring intelligence** — renders when the validator kept any job postings for the contractor. Lists real postings with real dates (Apollo ISO timestamps where available, relative-date computed from SerpAPI otherwise, or `fetched_at` as a last-resort "first observed on" label). FSM buyer roles (dispatcher, scheduling coordinator, CSR) flagged with a green badge.
 6. **Customers who switched from a competitor** — renders every verified switcher mention from `switcher_mentions` in the LLM cache. Count is `len(switcher_mentions)` so the headline always matches the evidence.
 7. **One-person operation** — fires only when the owner's first name is mentioned in ≥4 cached reviews AND ≥20% of cached reviews (mechanical regex match against the AZ-verified owner first name). Evidence restricted to ≥4-star reviews so the card never pairs "founder praise" framing with a complaint.
 8. **Dispatch distribution** — renders when ≥2 extractions exist in the 6-month window. Dot plot on a 0-to-168-hour axis, colored by sentiment. Headline derived from fresh stats via `classify_dispatch_pattern` — `fast`, `fast_outlier`, `bimodal`, `strained`, or `slow`. Each pattern has distinct headline text and interpretation.
@@ -393,7 +411,7 @@ The yellow panel at the top is the executive summary. It reads the same data as 
 - Intent tier badge
 - "View dossier →" button
 
-The index header has a legend panel explaining all six chip types, the six scoring dimensions, the three intent tiers, and the four left-accent colors. It's dense but it makes the page self-explaining.
+The index header has a legend panel explaining all six chip types, the seven scoring dimensions, the three intent tiers, and the four left-accent colors. It's dense but it makes the page self-explaining.
 
 ---
 
@@ -421,7 +439,7 @@ Output goes to stdout and optionally to `outputs/evidence_audit_YYYY-MM-DD.txt`.
 
 ```
 hvac-signals/
-├── pipeline/                           # 16 numbered pipeline scripts
+├── pipeline/                           # 18 numbered pipeline scripts
 │   ├── 01_load_and_filter.py           # 82,610 → 963
 │   ├── 02_enrich_places.py             # Google Places join
 │   ├── 02b_segment_tiers.py            # → 4 tiers
@@ -433,15 +451,17 @@ hvac-signals/
 │   ├── 07_serpapi_hiring.py            # Google Jobs (with company_name filter)
 │   ├── 07b_serpapi_hiring_retry.py     # retry under alt name
 │   ├── 08_review_nlp.py                # regex review analysis
-│   ├── 08b_review_llm.py               # LLM review analysis (per-mention arrays, 6-month filter)
+│   ├── 08b_review_llm.py               # LLM review analysis (per-mention arrays, referenced_people, 6-month filter)
 │   ├── 09_dispatch_delay.py            # per-review dispatch extraction (6-month filter)
 │   ├── 10_review_burst_detection.py    # burst detection
-│   ├── 11_scoring.py                   # 6-dimension scoring
+│   ├── 11_scoring.py                   # 7-dimension scoring + display fields
 │   ├── 12_contact_enrichment.py        # website + Apollo contacts
 │   ├── 13_contact_augment.py           # ROC qualifying_party merge + Tavily merge
 │   ├── 14_dossier_cards.py             # HTML dossiers + index
 │   ├── 15_evidence_audit.py            # diagnostic: dump all cached evidence per contractor
-│   └── 16_tavily_contact_search.py     # Tavily-based contact discovery
+│   ├── 16_tavily_contact_search.py     # Tavily-based contact discovery (pure extractor)
+│   ├── 17_candidate_validator.py       # LLM validator: belongs/reject per candidate
+│   └── 18_roc_bond_scraper.py          # ROC bond scraper: revenue bands from public record
 │
 ├── data/
 │   ├── 01_contractors/                 # Steps 01, 02, 02b, 02c outputs

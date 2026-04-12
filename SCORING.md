@@ -187,7 +187,11 @@ The pipeline scrapes the bond amount from the ROC website for every contractor i
 
 For dual-scope (CR-39) contractors, the bond amount shown on the ROC page is the sum of the commercial bond and the residential bond. The mapping above accounts for that combined amount.
 
+For contractors holding separate R-39 (residential) and C-39 (commercial) licenses instead of a single CR-39 dual, both bonds are scraped and combined. The scraper detects multi-license contractors by searching by license number and matching the correct Salesforce `licenseId` when multiple results appear.
+
 This is **not a scoring signal** — it's a display field. A $500K contractor with multiple intent signals should still outrank a $5M contractor with none. But two contractors with similar scores may represent very different deals, and the revenue band lets a buyer route them to the right sales motion (enterprise vs SMB).
+
+**How it's collected.** `pipeline/18_roc_bond_scraper.py` uses Playwright (headless Chromium) to render the ROC's Salesforce-hosted detail pages — there is no API. The scraper searches by license number, extracts the Salesforce `licenseId` from the search results, loads the detail page, and reads the bond amount. Cached per contractor at `data/signals_raw/roc_bonds/{place_id}.json`. Full pool scrape: ~12 minutes, $0 cost.
 
 **Why this is better than Apollo or ZoomInfo revenue estimates:** those databases have 0/70 coverage for our hidden-gems pool. The ROC bond amount has 70/70 coverage, is government-mandated, and is updated when the contractor renews their license. It's not a model or an estimate — it's a legal disclosure.
 
@@ -249,4 +253,9 @@ Being honest about the edges:
 - **`size_tier = L` or `XL`**: route to the enterprise sales motion. `S` or `M`: route to SMB.
 - **`score_icp_fit = +5` (Dual-scope)**: commercial customer segment is available to them, which matters for enterprise FSM pitches. `+2` (Residential-only) is a Jobber / Housecall Pro shape.
 
-The entire model fits in one Python file ([pipeline/11_scoring.py](pipeline/11_scoring.py)), is under 700 lines, and has no opinion-based weights that can't be traced back to specific cached evidence. Every number in every dossier header can be reconstructed from the raw signal caches by re-running the scorer. That reproducibility is the point.
+**Also on every dossier (not part of the scoring model):**
+
+- **Referenced people.** First names of technicians, dispatchers, and office staff that customers mention in reviews (from `pipeline/08b_review_llm.py`). Rendered inline on the decision-maker card as "Also named in reviews — ask for any of these by first name." The owner is deduped so the same person doesn't appear twice. These are not a scoring signal — they're a sales-call aid.
+- **Validated contacts.** Emails, phones, social URLs, and job postings, each with a written reason from the LLM validator explaining why it belongs to this contractor. No fuzzy matching — every contact on every dossier traces back to a specific validator decision.
+
+The scoring model fits in one Python file ([pipeline/11_scoring.py](pipeline/11_scoring.py)), under 800 lines, with no opinion-based weights that can't be traced back to specific cached evidence. Every number in every dossier header can be reconstructed from the raw signal caches by re-running the scorer. That reproducibility is the point.
