@@ -2,32 +2,36 @@
 """
 Multi-signal scoring and re-ranking of the 70 hidden gem contractors.
 
-Additive scoring model across 6 dimensions:
+Additive scoring model across 7 dimensions:
   1. Direct pain evidence           (0-40 points, thin-sample discounted)
   2. Scaling strain / momentum      (0-25 points, thin-sample discounted)
   3. Multi-signal convergence bonus (0-15 points)
   4. Operational readiness          (0-10 points)
-  5. Demand pull (capacity ceiling) (0-20 points, new)
-  6. Disqualifiers                  (-15 to 0 points)
+  5. Demand pull (capacity ceiling) (0-20 points)
+  6. ICP fit (license scope)        (0-5 points, new in V2)
+  7. Disqualifiers                  (-30 to 0 points)
+
+Non-scoring display fields:
+  - size_tier         : S / M / L / XL, computed from license_years + review_count
+  - confidence_tier   : low / medium / high (capped at low when sample < 10)
+  - primary_narrative : active_pain | scaling_strain | demand_pull | mixed | unclear
+  - final_rank        : 1 = highest score
+
+Hard disqualifier (V2): a contractor whose cached SerpAPI job descriptions
+explicitly mention an FSM platform as a required skill (ServiceTitan, Jobber,
+Housecall Pro, FieldEdge, etc.) is flagged as `already_fsm_customer` and
+receives -15 in addition to any other disqualifier points. This catches
+contractors who already bought — the single most embarrassing failure mode
+in any buying-signal list.
 
 Thin-sample discount: when the LLM only analyzed fewer than 15 cached reviews,
 score_direct_pain and score_scaling_strain are multiplied by
 min(1, n/15). This prevents contractors with 5-8 cached reviews from
 maxing out the pain dimension on a single angry review.
 
-Demand-pull dimension: rewards contractors that show a 'success at capacity
-ceiling' pattern — customers switching from competitors, heavy founder/key
-person dependency, scaling_surge review bursts, and fast dispatch combined
-with any of the above. These are the one-person shops winning deals on
-personal responsiveness with no system to scale past the owner.
-
-Also computes:
-  - confidence_tier   : low / medium / high (capped at low when sample < 10)
-  - primary_narrative : active_pain | scaling_strain | demand_pull | mixed | unclear
-  - final_rank        : 1 = highest score
-
 Input:  data/03_hidden_gems/complete.csv
 Output: data/03_hidden_gems/scored.csv
+        data/03_hidden_gems/already_fsm_dropped.csv  (audit sidecar)
         data/snapshots/scored/YYYY-MM-DD.csv
 """
 
@@ -43,8 +47,111 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parent.parent
 INPUT_CSV = ROOT / "data" / "03_hidden_gems" / "complete.csv"
 OUTPUT_CSV = ROOT / "data" / "03_hidden_gems" / "scored.csv"
+FSM_DROPPED_CSV = ROOT / "data" / "03_hidden_gems" / "already_fsm_dropped.csv"
 SNAPSHOT_DIR = ROOT / "data" / "snapshots" / "scored"
 VALIDATOR_DIR = ROOT / "data" / "signals_raw" / "validator"
+SERP_JOBS_DIR = ROOT / "data" / "signals_raw" / "serpapi_jobs"
+
+
+# ---- size_tier classifier ----
+#
+# Non-scoring. A display field that segments contractors by business
+# size proxy (license tenure + Google review volume). Used by the
+# render layer to show S/M/L/XL badges on dossiers and by buyers to
+# filter the list by deal size expectations.
+#
+# Thresholds calibrated against the current hidden-gems pool (5-25
+# years in business, 50-500 reviews). XL is a reserve tier for larger
+# contractors outside this pool — nothing in the current top 25
+# reaches it, which is expected.
+
+def classify_size_tier(years: float, reviews: int) -> str:
+    if years >= 20 and reviews >= 400:
+        return "XL"
+    if years >= 15 or reviews >= 300:
+        return "L"
+    if years >= 10 or reviews >= 150:
+        return "M"
+    return "S"
+
+
+# ---- FSM-vendor detection (disqualifier) ----
+#
+# Brand-name matching against cached SerpAPI job descriptions. If a
+# contractor's hiring posts require experience with a named FSM
+# platform, they almost certainly already bought it — and we need to
+# drop them from the list before a rep embarrasses themselves pitching
+# a product the prospect already pays for.
+#
+# This is NOT fuzzy matching. These are exact brand names, case-
+# insensitive, word-boundary anchored. No cultural-assumption issues.
+# The no-fuzzy-match rule in CLAUDE.md is about ownership judgments
+# ("is this contractor the same as that one"), not about exact-token
+# brand detection, which is always safe.
+
+FSM_VENDOR_PATTERNS = [
+    r"\bservice\s*titan\b",
+    r"\bhousecall\s*pro\b",
+    r"\bjobber\b",
+    r"\bfield\s*edge\b",
+    r"\bservice\s*bridge\b",
+    r"\bworkiz\b",
+    r"\bfield\s*pulse\b",
+    r"\bservice\s*fusion\b",
+    r"\btradify\b",
+    r"\bkickserv\b",
+    r"\bmhelpdesk\b",
+    r"\bsynchroteam\b",
+    r"\bgorilla\s*desk\b",
+    r"\bworkwave\b",
+]
+_COMPILED_FSM_VENDORS = [re.compile(p, re.IGNORECASE) for p in FSM_VENDOR_PATTERNS]
+
+
+def detect_fsm_vendor_in_jobs(place_id: str) -> tuple[bool, str, str]:
+    """
+    Return (is_customer, vendor_matched, quote) by scanning all cached
+    SerpAPI job postings (primary + retry) for FSM vendor brand names.
+    Returns ("", "", "") when nothing matches or no cache exists.
+
+    We scan job title + description + (where present) qualifications.
+    """
+    paths = [
+        SERP_JOBS_DIR / f"{place_id}.json",
+        SERP_JOBS_DIR / f"{place_id}_retry.json",
+    ]
+    for path in paths:
+        if not path.exists():
+            continue
+        try:
+            data = json.loads(path.read_text())
+        except (json.JSONDecodeError, OSError):
+            continue
+        resp = data.get("response") or {}
+        jobs = (resp.get("jobs_results") or []) + (data.get("rejected_jobs") or [])
+        for j in jobs:
+            blob_parts = [
+                j.get("title") or "",
+                j.get("description") or "",
+            ]
+            # Job highlights can carry the skills requirements
+            for h in (j.get("job_highlights") or []):
+                if isinstance(h, dict):
+                    blob_parts.append(h.get("title") or "")
+                    items = h.get("items") or []
+                    if isinstance(items, list):
+                        blob_parts.extend(str(x) for x in items)
+            blob = "\n".join(blob_parts)
+            for rx in _COMPILED_FSM_VENDORS:
+                m = rx.search(blob)
+                if m:
+                    vendor = m.group(0)
+                    # Extract a short context window around the match
+                    start = max(0, m.start() - 60)
+                    end = min(len(blob), m.end() + 60)
+                    quote = re.sub(r"\s+", " ", blob[start:end]).strip()
+                    return True, vendor, quote
+    return False, "", ""
 
 
 # ---- Hiring counts from the validator cache ----
@@ -436,6 +543,30 @@ def score_multi_signal(r: pd.Series) -> tuple[float, list[str], int]:
     return float(bonus), evidence, n
 
 
+def score_icp_fit(r: pd.Series) -> tuple[float, list[str]]:
+    """
+    ICP fit dimension (new in V2). Rewards license scope that matches
+    enterprise FSM buyer personas. AZ ROC class codes:
+      - CR-39 : Dual-scope license (commercial + residential)
+      - R-39  : Residential Air Conditioning and Refrigeration Including Solar
+      - R-39R : Residential Air Conditioning and Refrigeration
+
+    A Dual-scope contractor can serve commercial customers, which
+    typically means bigger truck fleets, bigger deal sizes, and a
+    fit with enterprise FSM products (ServiceTitan's commercial play).
+    A Residential-only contractor is a Jobber / Housecall Pro shape.
+
+    Non-controversial, strictly additive, capped small so it doesn't
+    dominate real buying-intent signals.
+    """
+    cls = safe_str(r.get("class"))
+    if cls == "CR-39":
+        return 5.0, ["Dual-scope license CR-39 (commercial + residential) (+5)"]
+    if cls in {"R-39", "R-39R"}:
+        return 2.0, [f"Residential-only license {cls} (+2)"]
+    return 0.0, []
+
+
 def score_operational_readiness(r: pd.Series) -> tuple[float, list[str]]:
     """Baseline indicators that this is a real, established business."""
     score = 0.0
@@ -469,9 +600,25 @@ def score_operational_readiness(r: pd.Series) -> tuple[float, list[str]]:
 
 
 def score_disqualifiers(r: pd.Series) -> tuple[float, list[str]]:
-    """Negative adjustments for contractors with smooth-ops indicators."""
+    """Negative adjustments for contractors with smooth-ops indicators.
+
+    V2 addition: a hard -15 disqualifier fires when a contractor's cached
+    SerpAPI job postings explicitly name an FSM platform as a required
+    skill. This catches contractors who already bought — the single most
+    embarrassing failure mode in any buying-signal list. See
+    `detect_fsm_vendor_in_jobs` above for the brand-name list."""
     score = 0.0
     evidence = []
+
+    # Hard disqualifier: already an FSM customer per job-posting evidence
+    is_fsm_customer = bool(r.get("_already_fsm_customer", False))
+    if is_fsm_customer:
+        vendor = safe_str(r.get("_already_fsm_vendor"))
+        score -= 15
+        evidence.append(
+            f"Job posting requires {vendor} experience — already an FSM "
+            f"customer (-15)"
+        )
 
     llm_cat = safe_str(r.get("llm_buying_category"))
     if llm_cat == "smooth_ops":
@@ -514,7 +661,9 @@ def score_disqualifiers(r: pd.Series) -> tuple[float, list[str]]:
         score -= 5
         evidence.append("Fast dispatch + no pain + no demand-pull signals (-5)")
 
-    return max(score, -15.0), evidence
+    # New floor with hard-disqualifier expansion: -30 (vs old -15) so
+    # the FSM-customer -15 can stack on top of other disqualifiers.
+    return max(score, -30.0), evidence
 
 
 def classify_narrative(
@@ -569,6 +718,36 @@ def main() -> None:
             f"validator cache. Run pipeline/17_candidate_validator.py first — "
             f"their hiring scores will be zero."
         )
+
+    # FSM-vendor detection: scan cached SerpAPI job descriptions for
+    # explicit brand-name mentions. Flag any hit as already-FSM-customer
+    # and feed that into score_disqualifiers. Write an audit sidecar so
+    # we can see every contractor we dropped and verify the regex isn't
+    # overreaching.
+    fsm_hits: list[dict] = []
+    for idx, row in df.iterrows():
+        place_id = str(row.get("place_id") or "")
+        is_customer, vendor, quote = detect_fsm_vendor_in_jobs(place_id)
+        df.at[idx, "_already_fsm_customer"] = is_customer
+        df.at[idx, "_already_fsm_vendor"] = vendor
+        if is_customer:
+            fsm_hits.append({
+                "license_no": row.get("license_no"),
+                "business_name": row.get("business_name"),
+                "place_id": place_id,
+                "fsm_vendor_matched": vendor,
+                "context_quote": quote,
+            })
+    if fsm_hits:
+        print(
+            f"  FSM-vendor disqualifier fired for {len(fsm_hits)} contractor"
+            f"{'s' if len(fsm_hits) != 1 else ''}:"
+        )
+        for hit in fsm_hits:
+            print(f"    - {hit['business_name']}: matched '{hit['fsm_vendor_matched']}'")
+        pd.DataFrame(fsm_hits).to_csv(FSM_DROPPED_CSV, index=False)
+    else:
+        print("  FSM-vendor disqualifier: no matches in cached job postings")
     print()
 
     rows = []
@@ -578,12 +757,19 @@ def main() -> None:
         ms, ms_evid, sig_count = score_multi_signal(r)
         op, op_evid = score_operational_readiness(r)
         dm, dm_evid = score_demand_pull(r)
+        icp, icp_evid = score_icp_fit(r)
         dq, dq_evid = score_disqualifiers(r)
 
-        total = dp + ss + ms + op + dm + dq
+        total = dp + ss + ms + op + dm + icp + dq
         narrative = classify_narrative(dp, ss, dm)
         review_count = safe_num(r.get("llm_review_count_analyzed"))
         confidence = classify_confidence(sig_count, review_count)
+
+        # size_tier display field (non-scoring)
+        size = classify_size_tier(
+            safe_num(r.get("license_years")),
+            int(safe_num(r.get("place_review_count"))),
+        )
 
         rows.append({
             "license_no": r["license_no"],
@@ -592,21 +778,38 @@ def main() -> None:
             "score_multi_signal": round(ms, 1),
             "score_operational_readiness": round(op, 1),
             "score_demand_pull": round(dm, 1),
+            "score_icp_fit": round(icp, 1),
             "score_disqualifiers": round(dq, 1),
             "score_total": round(total, 1),
             "signal_source_count": sig_count,
             "confidence_tier": confidence,
             "primary_narrative": narrative,
+            "size_tier": size,
+            "already_fsm_customer": bool(r.get("_already_fsm_customer", False)),
+            "already_fsm_vendor": safe_str(r.get("_already_fsm_vendor")),
             "score_evidence": " | ".join(
-                dp_evid + ss_evid + ms_evid + op_evid + dm_evid + dq_evid
+                dp_evid + ss_evid + ms_evid + op_evid + dm_evid + icp_evid + dq_evid
             ),
         })
 
     score_df = pd.DataFrame(rows)
+
+    # Drop the private helper columns we used to pass FSM-customer state
+    # into score_disqualifiers. They're already preserved as public
+    # columns (already_fsm_customer, already_fsm_vendor) on score_df.
+    df = df.drop(columns=[c for c in ["_already_fsm_customer", "_already_fsm_vendor"] if c in df.columns])
+
     merged = df.merge(score_df, on="license_no", how="left")
 
-    # Compute final_rank from score_total (higher is better)
-    merged = merged.sort_values("score_total", ascending=False).reset_index(drop=True)
+    # Sort for final_rank. FSM-customer contractors are hard-pushed to
+    # the bottom of the list regardless of score_total — we never want
+    # a rep pitching them, even if their other signals look strong. The
+    # -15 disqualifier keeps the audit trail, but the sort ordering is
+    # what actually prevents them from showing up in the top 25.
+    merged = merged.sort_values(
+        by=["already_fsm_customer", "score_total"],
+        ascending=[True, False],
+    ).reset_index(drop=True)
     merged["final_rank"] = merged.index + 1
 
     merged.to_csv(OUTPUT_CSV, index=False)
@@ -621,7 +824,8 @@ def main() -> None:
     cols_show = [
         "final_rank", "rank", "business_name", "city",
         "score_total", "score_direct_pain", "score_scaling_strain",
-        "score_demand_pull", "primary_narrative", "confidence_tier",
+        "score_demand_pull", "score_icp_fit", "size_tier",
+        "primary_narrative", "confidence_tier",
     ]
     with pd.option_context("display.max_colwidth", 35, "display.width", 220):
         print(merged[cols_show].head(25).to_string(index=False))
@@ -636,6 +840,20 @@ def main() -> None:
     print("Confidence tier distribution (top 25):")
     for c, n in top25["confidence_tier"].value_counts().items():
         print(f"  {c:<10} {n}")
+
+    print()
+    print("Size tier distribution (top 25):")
+    for t in ["XL", "L", "M", "S"]:
+        c = int((top25["size_tier"] == t).sum())
+        if c:
+            print(f"  {t:<4} {c}")
+
+    print()
+    print("ICP fit distribution (top 25):")
+    dual = int((top25["class"] == "CR-39").sum())
+    res = int((top25["class"].isin(["R-39", "R-39R"])).sum())
+    print(f"  Dual (CR-39):        {dual}")
+    print(f"  Residential only:    {res}")
 
     # Biggest rank changes from original to scored
     print()

@@ -667,24 +667,27 @@ def svg_dispatch_dotplot(extractions: list[dict]) -> str:
     return f'<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}">{"".join(parts)}</svg>'
 
 
-def svg_monthly_bars(monthly: list[tuple[str, int]]) -> str:
-    """Month-by-month bar chart, 12 months back."""
+MONTH_ABBR = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+              "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+
+
+def svg_monthly_line(monthly: list[tuple[str, int]]) -> str:
+    """Line chart of monthly review counts over the last 12 months. Each
+    input tuple is ("YYYY-MM", count). X-axis labels render as "Mar 25"."""
     if not monthly:
         return ""
     width = 740
-    height = 200
+    height = 220
     left = 40
     right = 20
-    top = 14
-    bottom = 46
+    top = 20
+    bottom = 42
     chart_w = width - left - right
     chart_h = height - top - bottom
 
     n = len(monthly)
-    gap = 6
-    bar_w = (chart_w - gap * (n - 1)) / n
     max_count = max((c for _, c in monthly), default=1) or 1
-    # Round up max_count to nice number for gridline
+    # Round up max_count to a nice gridline cap
     gridline_max = max(max_count, 5)
     if gridline_max > 10:
         gridline_max = int(math.ceil(gridline_max / 5.0) * 5)
@@ -696,33 +699,72 @@ def svg_monthly_bars(monthly: list[tuple[str, int]]) -> str:
     for gi in range(grid_steps + 1):
         val = gridline_max * gi / grid_steps
         y = top + chart_h - (val / gridline_max) * chart_h
-        parts.append(f'<line x1="{left}" y1="{y}" x2="{left + chart_w}" y2="{y}" stroke="#eef0f3" stroke-width="1"/>')
-        parts.append(f'<text x="{left - 6}" y="{y + 4}" text-anchor="end" font-size="10" fill="#888">{int(val)}</text>')
+        parts.append(
+            f'<line x1="{left}" y1="{y}" x2="{left + chart_w}" y2="{y}" '
+            f'stroke="#eef0f3" stroke-width="1"/>'
+        )
+        parts.append(
+            f'<text x="{left - 6}" y="{y + 4}" text-anchor="end" '
+            f'font-size="10" fill="#888">{int(val)}</text>'
+        )
 
-    # Bars + labels
-    for idx, (label, count) in enumerate(monthly):
-        x = left + idx * (bar_w + gap)
-        bh = (count / gridline_max) * chart_h if gridline_max > 0 else 0
-        y = top + chart_h - bh
-        color = "#0066cc" if count > 0 else "#e5e8ee"
-        parts.append(f'<rect x="{x}" y="{y}" width="{bar_w}" height="{max(bh, 2)}" fill="{color}" rx="2"/>')
+    # Point positions
+    if n == 1:
+        xs = [left + chart_w / 2]
+    else:
+        xs = [left + i * chart_w / (n - 1) for i in range(n)]
+    ys = [
+        top + chart_h - (c / gridline_max) * chart_h
+        for _, c in monthly
+    ]
+
+    # Filled area under the line for visual weight
+    area_pts = " ".join(f"{x},{y}" for x, y in zip(xs, ys))
+    baseline = top + chart_h
+    area_d = (
+        f"M {xs[0]},{baseline} "
+        f"L " + " L ".join(f"{x},{y}" for x, y in zip(xs, ys)) +
+        f" L {xs[-1]},{baseline} Z"
+    )
+    parts.append(
+        f'<path d="{area_d}" fill="#0066cc" fill-opacity="0.08"/>'
+    )
+
+    # The line itself
+    line_d = "M " + " L ".join(f"{x},{y}" for x, y in zip(xs, ys))
+    parts.append(
+        f'<path d="{line_d}" fill="none" stroke="#0066cc" '
+        f'stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>'
+    )
+
+    # Dots + count labels + x-axis month labels
+    for (label, count), x, y in zip(monthly, xs, ys):
+        color = "#0066cc" if count > 0 else "#d0d4db"
+        parts.append(
+            f'<circle cx="{x}" cy="{y}" r="3.5" fill="{color}" '
+            f'stroke="white" stroke-width="1.5"/>'
+        )
         if count > 0:
             parts.append(
-                f'<text x="{x + bar_w/2}" y="{y - 4}" text-anchor="middle" font-size="11" fill="#333" font-weight="600">{count}</text>'
+                f'<text x="{x}" y="{y - 9}" text-anchor="middle" '
+                f'font-size="11" fill="#333" font-weight="600">{count}</text>'
             )
-        # Month label (shortened: "04" from "2025-04")
-        mo = label[5:7]
+        # X-axis label: "Mar 25"
+        try:
+            mo_num = int(label[5:7])
+            yr_short = label[2:4]
+            x_label = f"{MONTH_ABBR[mo_num - 1]} {yr_short}"
+        except (ValueError, IndexError):
+            x_label = label
         parts.append(
-            f'<text x="{x + bar_w/2}" y="{top + chart_h + 16}" text-anchor="middle" font-size="10" fill="#666">{mo}</text>'
+            f'<text x="{x}" y="{top + chart_h + 18}" text-anchor="middle" '
+            f'font-size="10" fill="#666">{x_label}</text>'
         )
-        # Year label on January only
-        if mo == "01" or idx == 0:
-            yr = label[:4]
-            parts.append(
-                f'<text x="{x + bar_w/2}" y="{top + chart_h + 30}" text-anchor="middle" font-size="10" fill="#999" font-weight="600">{yr}</text>'
-            )
 
-    return f'<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}">{"".join(parts)}</svg>'
+    return (
+        f'<svg width="{width}" height="{height}" '
+        f'viewBox="0 0 {width} {height}">{"".join(parts)}</svg>'
+    )
 
 
 # ---------- CSS ----------
@@ -831,6 +873,40 @@ body {
 .tier-strong { background: #fff4d6; color: #8a5a00; }
 .tier-emerging { background: #e6f2ff; color: #003b7a; }
 
+.badge-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+.size-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  background: #eef2f8;
+  color: #2a3b55;
+  border: 1px solid #d6dceb;
+}
+.size-xl { background: #e0e8f5; color: #1a2b4a; border-color: #c0cce0; }
+.size-l  { background: #e8edf6; color: #1f3054; border-color: #ced7e6; }
+.size-m  { background: #eef2f8; color: #2a3b55; border-color: #d6dceb; }
+.size-s  { background: #f4f6fa; color: #445266; border-color: #e0e5ee; }
+.fresh-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+.fresh-hot  { background: #fff0e8; color: #8c3a14; border: 1px solid #f4c9b0; }
+.fresh-warm { background: #fff8e6; color: #8a5a00; border: 1px solid #efdba6; }
+
 .card {
   padding: 24px 36px;
   border-bottom: 1px solid #f0f2f5;
@@ -858,6 +934,10 @@ body {
 .card-label .tag-amber {
   background: #fff4d6;
   color: #8a5a00;
+}
+.card-label .tag-green {
+  background: #e6f4ea;
+  color: #14532d;
 }
 .card-headline {
   font-size: 18px;
@@ -972,8 +1052,8 @@ blockquote.evidence.grouped .obs .obs-label {
   font-size: 14px;
 }
 .job-list li.buyer-role {
-  border-left: 3px solid #c4332b;
-  background: #fff8f5;
+  border-left: 3px solid #1a8c4a;
+  background: #f1f8f3;
 }
 .job-list .title {
   font-weight: 600;
@@ -982,7 +1062,7 @@ blockquote.evidence.grouped .obs .obs-label {
 }
 .job-list .buyer-flag {
   display: inline-block;
-  background: #c4332b;
+  background: #1a8c4a;
   color: white;
   padding: 1px 7px;
   border-radius: 3px;
@@ -1023,6 +1103,45 @@ blockquote.evidence.grouped .obs .obs-label {
   font-weight: 500;
 }
 .contact-card .owner-source::before { content: "✓ "; }
+.referenced-people {
+  margin: 0 0 18px;
+  padding: 12px 14px;
+  background: #ffffff;
+  border: 1px solid #e8ebf0;
+  border-radius: 6px;
+}
+.referenced-people .rp-label {
+  font-size: 11px;
+  color: #666;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0 0 8px;
+}
+.referenced-people .rp-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.referenced-people .rp-row {
+  font-size: 13px;
+  color: #1a1a1a;
+  padding: 3px 0;
+  line-height: 1.45;
+}
+.referenced-people .rp-row strong {
+  color: #0a0a1a;
+  font-weight: 600;
+}
+.referenced-people .rp-count {
+  color: #888;
+  font-size: 11px;
+  font-weight: 500;
+}
+.referenced-people .rp-quote {
+  color: #555;
+  font-style: italic;
+}
 .contact-card dl {
   margin: 0;
   display: grid;
@@ -1412,10 +1531,11 @@ def build_why_bullets(row: pd.Series, contact: pd.Series, reviews: list[dict], j
     has_booking = row.get("has_any_booking_tool")
     phone_only = row.get("phone_only")
     if not has_booking:
-        stack = s(row.get("webanalyze_site_builder")) or s(row.get("webanalyze_cms")) or "website only"
-        channel = "phone" if phone_only else "phone and web form"
+        stack = s(row.get("webanalyze_site_builder")) or s(row.get("webanalyze_cms"))
+        stack_suffix = f" ({stack} site)" if stack else ""
         bullets.append(
-            f"No field service platform detected. Bookings happen via {channel} only ({stack} site)."
+            f"No field service platform detected. Bookings likely go through phone "
+            f"or web form{stack_suffix}."
         )
 
     # 2. Hiring intelligence
@@ -1430,8 +1550,8 @@ def build_why_bullets(row: pd.Series, contact: pd.Series, reviews: list[dict], j
             most_recent = dated_jobs[0]["date_iso"] if dated_jobs else ""
             date_bit = f", most recent posted {most_recent}" if most_recent else ""
             bullets.append(
-                f"{len(jobs)} open job posting{'s' if len(jobs) != 1 else ''} including {buyer_count} role{'s' if buyer_count != 1 else ''} "
-                f"FSM software directly replaces ({title_list}){date_bit}."
+                f"{len(jobs)} open job posting{'s' if len(jobs) != 1 else ''} including {buyer_count} ops role{'s' if buyer_count != 1 else ''} "
+                f"FSM software is designed to support ({title_list}){date_bit}."
             )
         elif dated_jobs:
             most_recent = dated_jobs[0]["date_iso"]
@@ -1474,9 +1594,9 @@ def build_why_bullets(row: pd.Series, contact: pd.Series, reviews: list[dict], j
         if n >= 4 and total > 0 and (n / total) >= 0.20:
             pct_str = f"{int(n / total * 100)}%"
             bullets.append(
-                f"{owner_full or owner_first} is named directly in "
-                f"{n} of {total} cached reviews ({pct_str}). Business "
-                f"runs on one person's personal reputation."
+                f"{owner_full or owner_first} is named by first name in "
+                f"{n} of {total} cached reviews ({pct_str}). Customers "
+                f"associate this shop with a specific person."
             )
 
     # 5. Dispatch pattern — classification is computed from the
@@ -1490,22 +1610,21 @@ def build_why_bullets(row: pd.Series, contact: pd.Series, reviews: list[dict], j
         same_day_pct = disp_stats["same_day_pct"]
         if pattern == "fast":
             bullets.append(
-                f"Currently executing fast dispatch "
-                f"({int(same_day_pct*100)}% same-day, {median_h:.0f}h median). "
-                f"Strong execution — for a small shop this is proof the "
-                f"responsiveness lives in the owner, not a system."
+                f"Fast dispatch in recent reviews: "
+                f"{int(same_day_pct*100)}% same-day, {median_h:.0f}h median. "
+                f"Responsiveness is the competitive edge here."
             )
         elif pattern == "fast_outlier":
             bullets.append(
                 f"Mostly fast dispatch ({int(same_day_pct*100)}% same-day, "
-                f"{median_h:.0f}h median) with one slow outlier. Incident, "
-                f"not a trend."
+                f"{median_h:.0f}h median) with one slow outlier in the "
+                f"6-month window."
             )
         elif pattern == "bimodal":
             bullets.append(
                 f"Two-speed dispatch: {int(same_day_pct*100)}% same-day, "
-                f"but slowest job took {max_h:.0f} hours. Classic "
-                f"fingerprint of manual scheduling."
+                f"but slowest job took {max_h:.0f} hours. Worth asking how "
+                f"they triage."
             )
         elif pattern == "strained":
             bullets.append(
@@ -1547,7 +1666,8 @@ def build_why_bullets(row: pd.Series, contact: pd.Series, reviews: list[dict], j
     prior_90 = i(row.get("prior_90d_reviews"))
     if vel_ratio >= 2.5 and recent_90 >= 5:
         bullets.append(
-            f"Review velocity surge: {recent_90} reviews in the last 90 days versus {prior_90} in the prior 90 ({vel_ratio:.0f}x). Business is accelerating fast."
+            f"Review volume surged: {recent_90} reviews in the last 90 days "
+            f"versus {prior_90} in the prior 90 ({vel_ratio:.0f}x)."
         )
     elif vel_cat in ("accelerating", "hot_new") and recent_90 >= 5:
         bullets.append(
@@ -1597,6 +1717,61 @@ def render_why_card(row: pd.Series, contact: pd.Series, reviews: list[dict], job
     """
 
 
+def compute_signal_freshness(place_id: str) -> tuple[float, int, int]:
+    """
+    Read the LLM review analysis cache and compute how concentrated
+    the pain, momentum, and switcher mentions are in the last 30 days
+    versus the full 180-day window.
+
+    Returns (freshness_ratio, recent_30d_count, total_signals).
+    - freshness_ratio = recent_30d_count / max(total_signals, 1)
+    - Returns (0.0, 0, 0) when there are no dated signals to measure.
+
+    Used by the header to render a small "FRESH" or "RECENT" badge so
+    a rep can tell at a glance whether the pain is happening *right now*
+    or spread evenly across the six-month window.
+    """
+    parsed, indexed_reviews = load_llm_analysis(place_id)
+    if not parsed or not indexed_reviews:
+        return 0.0, 0, 0
+
+    # Build a review_index -> date lookup
+    idx_to_date: dict[int, str] = {}
+    for r in indexed_reviews:
+        ri = r.get("review_index")
+        d = r.get("date") or ""
+        if isinstance(ri, int) and d:
+            idx_to_date[ri] = d
+
+    from datetime import date as _date
+    today = datetime.now(timezone.utc).date()
+    cutoff_30 = today - timedelta(days=30)
+
+    signal_mentions = (
+        (parsed.get("pain_mentions") or [])
+        + (parsed.get("momentum_mentions") or [])
+        + (parsed.get("switcher_mentions") or [])
+    )
+    total = 0
+    recent = 0
+    for m in signal_mentions:
+        ri = m.get("review_index")
+        if not isinstance(ri, int):
+            continue
+        d_str = idx_to_date.get(ri)
+        if not d_str:
+            continue
+        try:
+            d = _date.fromisoformat(d_str)
+        except (ValueError, TypeError):
+            continue
+        total += 1
+        if d >= cutoff_30:
+            recent += 1
+    ratio = (recent / total) if total > 0 else 0.0
+    return ratio, recent, total
+
+
 def render_header(row: pd.Series, jobs: list[dict] | None = None) -> str:
     biz = s(row.get("business_name"))
     city = s(row.get("city"))
@@ -1609,6 +1784,16 @@ def render_header(row: pd.Series, jobs: list[dict] | None = None) -> str:
     score = f(row.get("score_total"))
     tier_label, tier_class = intent_tier(score)
 
+    # V2 display fields
+    size_tier = s(row.get("size_tier"))
+    freshness_ratio, recent_30d, total_signals = compute_signal_freshness(place_id)
+    cls = s(row.get("class"))
+    license_scope_label = ""
+    if cls == "CR-39":
+        license_scope_label = "Dual-scope HVAC license (commercial + residential)"
+    elif cls in {"R-39", "R-39R"}:
+        license_scope_label = "Residential-only HVAC license"
+
     gbp_url = f"https://www.google.com/maps/place/?q=place_id:{place_id}" if place_id else ""
 
     meta_bits = []
@@ -1616,6 +1801,8 @@ def render_header(row: pd.Series, jobs: list[dict] | None = None) -> str:
         meta_bits.append(f"{esc(city)}, {esc(state)}")
     if years:
         meta_bits.append(f"{years:.0f} years licensed in AZ")
+    if license_scope_label:
+        meta_bits.append(license_scope_label)
     if review_count:
         meta_bits.append(f"{review_count} Google reviews · {rating:.1f}★")
 
@@ -1632,6 +1819,28 @@ def render_header(row: pd.Series, jobs: list[dict] | None = None) -> str:
 
     accent_cls = dominant_signal_color(row)
 
+    # Right-side badge stack: intent tier, then optional size_tier, then
+    # optional freshness badge. Freshness only fires when at least 25% of
+    # the contractor's dated signals are in the last 30 days — below that,
+    # it's silent (no stale marker; we're already inside 180 days).
+    badges_html = [f'<span class="tier-badge {tier_class}">{tier_label}</span>']
+    if size_tier:
+        size_label = {"XL": "XL · Large", "L": "L · Established",
+                      "M": "M · Mid", "S": "S · Small"}.get(size_tier, size_tier)
+        badges_html.append(
+            f'<span class="size-badge size-{size_tier.lower()}">{esc(size_label)}</span>'
+        )
+    if total_signals >= 3 and freshness_ratio >= 0.5:
+        badges_html.append(
+            f'<span class="fresh-badge fresh-hot" title="{recent_30d} of {total_signals} '
+            f'dated signals are in the last 30 days">FRESH · {int(freshness_ratio*100)}% last 30d</span>'
+        )
+    elif total_signals >= 3 and freshness_ratio >= 0.25:
+        badges_html.append(
+            f'<span class="fresh-badge fresh-warm" title="{recent_30d} of {total_signals} '
+            f'dated signals are in the last 30 days">RECENT · {int(freshness_ratio*100)}% last 30d</span>'
+        )
+
     return f"""
     <div class="header {accent_cls}">
       <div class="header-top">
@@ -1641,7 +1850,7 @@ def render_header(row: pd.Series, jobs: list[dict] | None = None) -> str:
           <p class="links">{"".join(link_bits)}</p>
           {chips_html}
         </div>
-        <div><span class="tier-badge {tier_class}">{tier_label}</span></div>
+        <div class="badge-stack">{"".join(badges_html)}</div>
       </div>
     </div>
     """
@@ -1662,6 +1871,29 @@ def render_decision_maker(contact: pd.Series) -> str:
     # so we never render anything the LLM didn't confirm as belonging.
     place_id = s(contact.get("place_id"))
     validated = load_validator_cache(place_id)
+
+    # Other people named in reviews — pulled from the 08b LLM review
+    # analysis cache. These are techs/office staff customers mention
+    # by name. Dedupe against the owner's first name so Sammy-the-owner
+    # doesn't also show up as "also named in reviews."
+    llm_parsed, _ = load_llm_analysis(place_id)
+    referenced_people = llm_parsed.get("referenced_people") or []
+    owner_first_lower = owner_first.lower().strip()
+    deduped_people: list[dict] = []
+    for p in referenced_people:
+        name = str(p.get("name") or "").strip()
+        if not name:
+            continue
+        first_token = name.split()[0].lower()
+        if owner_first_lower and first_token == owner_first_lower:
+            continue
+        deduped_people.append({
+            "name": name,
+            "mention_count": int(p.get("mention_count") or 0),
+            "sample_quote": str(p.get("sample_quote") or "").strip(),
+        })
+    # Sort by mention_count descending, then by name for stability
+    deduped_people.sort(key=lambda p: (-p["mention_count"], p["name"].lower()))
 
     def _kept(category: str) -> list[str]:
         items = validated.get(category) or []
@@ -1692,6 +1924,31 @@ def render_decision_maker(contact: pd.Series) -> str:
             source_html = '<p class="owner-source">Verified via AZ contractor license (public record)</p>'
         else:
             source_html = ""
+
+    # "Also named in reviews" block — renders below the owner line with
+    # one row per extracted person, sorted by mention count. Each row
+    # shows the name and a short verbatim context snippet so a rep can
+    # ask for anyone on this list by first name during a cold call.
+    referenced_html = ""
+    if deduped_people:
+        rows_html = []
+        for p in deduped_people:
+            name = esc(p["name"])
+            count = p["mention_count"]
+            count_bit = f' <span class="rp-count">{count}×</span>' if count > 1 else ""
+            quote = p["sample_quote"]
+            quote_html = (
+                f' <span class="rp-quote">— "{esc(quote)}"</span>' if quote else ""
+            )
+            rows_html.append(
+                f'<li class="rp-row"><strong>{name}</strong>{count_bit}{quote_html}</li>'
+            )
+        referenced_html = (
+            '<div class="referenced-people">'
+            '<p class="rp-label">Also named in reviews — ask for any of these by first name:</p>'
+            f'<ul class="rp-list">{"".join(rows_html)}</ul>'
+            '</div>'
+        )
 
     rows = []
     if phone:
@@ -1771,6 +2028,7 @@ def render_decision_maker(contact: pd.Series) -> str:
       <div class="contact-card">
         {owner_html}
         {source_html}
+        {referenced_html}
         <dl>{dl_html}</dl>
       </div>
     </div>
@@ -1798,7 +2056,7 @@ def render_hiring_card(row: pd.Series) -> str:
     buyer_count = sum(1 for j in jobs if fsm_buyer_role(j["title"]))
     tag_html = ""
     if buyer_count > 0:
-        tag_html = f'<span class="tag">{buyer_count} FSM BUYER ROLE{"S" if buyer_count > 1 else ""}</span>'
+        tag_html = f'<span class="tag tag-green">{buyer_count} FSM BUYER ROLE{"S" if buyer_count > 1 else ""}</span>'
 
     # Count date sources to note in subtitle
     apollo_dated = sum(1 for j in jobs if j.get("date_source") == "apollo")
@@ -2005,9 +2263,9 @@ def render_one_person_card(row: pd.Series, contact: pd.Series, reviews: list[dic
 
     return f"""
     <div class="card">
-      <p class="card-label">One-person operation</p>
-      <h3 class="card-headline">{esc(owner_first)} is named directly in {mention_count} of {total_reviews} cached reviews ({pct_str})</h3>
-      <p class="card-subtitle">When the owner shows up in a meaningful share of positive reviews, the business runs on personal reputation. Growth past that person's capacity requires systems.</p>
+      <p class="card-label">Customer attention on one person</p>
+      <h3 class="card-headline">{esc(owner_first)} is named by first name in {mention_count} of {total_reviews} cached reviews ({pct_str})</h3>
+      <p class="card-subtitle">Customers mention a specific person often enough that the brand and the individual are tied together in public reviews. Whether that reflects a true one-person shop or a named figurehead on a bigger team is worth confirming on the call.</p>
       {snippets_html}
     </div>
     """
@@ -2186,27 +2444,27 @@ def render_dispatch_card(row: pd.Series) -> str:
     # slow review in the 180-day window, we say "slow" and mean it.
     pattern = classify_dispatch_pattern(disp_stats)
     if pattern == "fast":
-        headline = "Currently executing fast on every job we can measure"
+        headline = "Fast dispatch on every job we could measure"
         interpretation = (
-            "Fast dispatch is not a pain signal — it is proof this contractor "
-            "is winning deals by being responsive. For a one-person or small "
-            "shop, that responsiveness lives in a human, not a system. "
-            "The ceiling is capacity, not quality."
+            "Fast dispatch is not a pain signal — it's what this contractor "
+            "is getting right. Responsiveness like this typically caps out "
+            "when volume exceeds whoever is running the schedule, which is "
+            "where FSM software earns its keep."
         )
     elif pattern == "fast_outlier":
         headline = "Mostly fast dispatch with one slow outlier"
         interpretation = (
-            "Most jobs run same-day. One job in the cached window went "
-            "sideways — parts, warranty, or misdiagnosis — but it does not "
-            "reflect the broader pattern. Treat it as an incident, not a trend."
+            "Most jobs in the 6-month window ran same-day. One job went "
+            "long — could be parts, warranty, or complexity; the reviews "
+            "don't tell us which."
         )
     elif pattern == "bimodal":
         headline = "Two-speed dispatch — substantial fast AND substantial slow"
         interpretation = (
-            "At least a quarter of measured jobs go same-day and at least "
-            "a quarter stretch to a week or more. That split is the classic "
-            "fingerprint of manual scheduling — whoever is dispatching is "
-            "prioritizing by feel, not by system."
+            "At least a quarter of measured jobs went same-day and at least "
+            "a quarter stretched to a week or more. We can't tell from the "
+            "reviews alone whether the split is by job type, parts "
+            "availability, or scheduling — worth asking how they triage."
         )
     elif pattern == "strained":
         headline = "Dispatch is strained — customers are waiting"
@@ -2525,9 +2783,10 @@ def render_momentum_card(row: pd.Series, reviews: list[dict]) -> str:
     obs_note = ""
     if n_obs > n_reviews:
         obs_note = f" ({n_obs} distinct observations across those reviews)"
+    verb = "contain" if n_reviews != 1 else "contains"
     headline = (
         f"{n_reviews} recent review{'s' if n_reviews != 1 else ''} "
-        f"show signs they are winning work faster than before"
+        f"{verb} growth or demand-pressure language"
     )
 
     return f"""
@@ -2552,7 +2811,7 @@ def render_velocity_card(row: pd.Series) -> str:
     place_id = s(row.get("place_id"))
     reviews = load_reviews(place_id)
     monthly = monthly_review_counts(reviews, months_back=12)
-    chart = svg_monthly_bars(monthly)
+    chart = svg_monthly_line(monthly)
 
     stats = f"""
     <div class="card-stats">
@@ -2570,7 +2829,7 @@ def render_velocity_card(row: pd.Series) -> str:
     <div class="card">
       <p class="card-label">Review velocity</p>
       <h3 class="card-headline">{esc(headline)}</h3>
-      <p class="card-subtitle">Reviews per month over the last 12 months. Each bar is the count of cached Google reviews with dates in that month.</p>
+      <p class="card-subtitle">Reviews per month over the last 12 months. Each point is the count of cached Google reviews with dates in that month.</p>
       {stats}
       <div style="margin:14px 0;">{chart}</div>
     </div>
@@ -2774,12 +3033,22 @@ def render_tech_card(row: pd.Series) -> str:
 
     fsm_cls = "no" if not has_booking else "yes"
     fsm_txt = "Not detected" if not has_booking else "Detected"
+    # `phone_only` is a misleading flag name — all it actually means is
+    # "we found a phone number prominently displayed on their homepage."
+    # It says nothing about whether they also take email, SMS, or contact
+    # forms. The dossier used to render it as "Yes — bookings happen by
+    # phone" which is a claim we can't back up. We soften to the actual
+    # evidence: phone is visible, no online booking platform was detected.
     phone_cls = "yes" if phone_only else ""
-    phone_txt = "Yes — bookings happen by phone" if phone_only else "No — online booking available"
+    phone_txt = (
+        "Likely phone or web form (no online booking platform detected)"
+        if phone_only
+        else "No online booking platform detected"
+    )
 
     rows = [
         ("Field service platform", fsm_txt, fsm_cls),
-        ("Phone-only bookings", phone_txt, phone_cls),
+        ("How customers book", phone_txt, phone_cls),
     ]
     if builder:
         rows.append(("Site builder", builder, ""))
@@ -2996,15 +3265,15 @@ def render_index(scored: pd.DataFrame, contacts: pd.DataFrame) -> str:
       </div>
       <div class="legend-item">
         <span class="chip chip-demand">DEMAND PULL <span class="chip-val">##</span></span>
-        <div class="desc"><strong>Demand pull.</strong> One-person shop winning on reputation. Customers switching from competitors, owner named in reviews, positive review bursts. Number shows the demand-pull score (0-20).</div>
+        <div class="desc"><strong>Demand pull.</strong> Signs the business is winning on reputation rather than scale: customers switching from competitors, owner named by first name in reviews, positive review bursts. Number shows the demand-pull score (0-20).</div>
       </div>
       <div class="legend-item">
         <span class="chip chip-nofsm">NO FSM</span>
-        <div class="desc"><strong>No field service platform.</strong> Website fingerprinting detected no ServiceTitan, Housecall Pro, Jobber, or online booking widget. Bookings happen by phone or web form.</div>
+        <div class="desc"><strong>No field service platform.</strong> Website fingerprinting detected no ServiceTitan, Housecall Pro, Jobber, or online booking widget. Bookings likely go through phone or web form.</div>
       </div>
       <div class="legend-item">
         <span class="chip chip-hiring">HIRING DISPATCH</span>
-        <div class="desc"><strong>Actively hiring a dispatcher.</strong> Open job posting titled Dispatcher, Scheduling Coordinator, or CSR. They are hiring the role FSM software directly replaces.</div>
+        <div class="desc"><strong>Actively hiring a dispatcher.</strong> Open job posting titled Dispatcher, Scheduling Coordinator, or CSR — an ops role FSM software is designed to support.</div>
       </div>
       <div class="legend-item">
         <span class="chip chip-warn">THIN SAMPLE (#)</span>

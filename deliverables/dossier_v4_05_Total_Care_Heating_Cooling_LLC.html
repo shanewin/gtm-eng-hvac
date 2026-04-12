@@ -107,6 +107,40 @@ body {
 .tier-strong { background: #fff4d6; color: #8a5a00; }
 .tier-emerging { background: #e6f2ff; color: #003b7a; }
 
+.badge-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+.size-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  background: #eef2f8;
+  color: #2a3b55;
+  border: 1px solid #d6dceb;
+}
+.size-xl { background: #e0e8f5; color: #1a2b4a; border-color: #c0cce0; }
+.size-l  { background: #e8edf6; color: #1f3054; border-color: #ced7e6; }
+.size-m  { background: #eef2f8; color: #2a3b55; border-color: #d6dceb; }
+.size-s  { background: #f4f6fa; color: #445266; border-color: #e0e5ee; }
+.fresh-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+.fresh-hot  { background: #fff0e8; color: #8c3a14; border: 1px solid #f4c9b0; }
+.fresh-warm { background: #fff8e6; color: #8a5a00; border: 1px solid #efdba6; }
+
 .card {
   padding: 24px 36px;
   border-bottom: 1px solid #f0f2f5;
@@ -134,6 +168,10 @@ body {
 .card-label .tag-amber {
   background: #fff4d6;
   color: #8a5a00;
+}
+.card-label .tag-green {
+  background: #e6f4ea;
+  color: #14532d;
 }
 .card-headline {
   font-size: 18px;
@@ -248,8 +286,8 @@ blockquote.evidence.grouped .obs .obs-label {
   font-size: 14px;
 }
 .job-list li.buyer-role {
-  border-left: 3px solid #c4332b;
-  background: #fff8f5;
+  border-left: 3px solid #1a8c4a;
+  background: #f1f8f3;
 }
 .job-list .title {
   font-weight: 600;
@@ -258,7 +296,7 @@ blockquote.evidence.grouped .obs .obs-label {
 }
 .job-list .buyer-flag {
   display: inline-block;
-  background: #c4332b;
+  background: #1a8c4a;
   color: white;
   padding: 1px 7px;
   border-radius: 3px;
@@ -299,6 +337,45 @@ blockquote.evidence.grouped .obs .obs-label {
   font-weight: 500;
 }
 .contact-card .owner-source::before { content: "✓ "; }
+.referenced-people {
+  margin: 0 0 18px;
+  padding: 12px 14px;
+  background: #ffffff;
+  border: 1px solid #e8ebf0;
+  border-radius: 6px;
+}
+.referenced-people .rp-label {
+  font-size: 11px;
+  color: #666;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0 0 8px;
+}
+.referenced-people .rp-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.referenced-people .rp-row {
+  font-size: 13px;
+  color: #1a1a1a;
+  padding: 3px 0;
+  line-height: 1.45;
+}
+.referenced-people .rp-row strong {
+  color: #0a0a1a;
+  font-weight: 600;
+}
+.referenced-people .rp-count {
+  color: #888;
+  font-size: 11px;
+  font-weight: 500;
+}
+.referenced-people .rp-quote {
+  color: #555;
+  font-style: italic;
+}
 .contact-card dl {
   margin: 0;
   display: grid;
@@ -391,25 +468,25 @@ blockquote.evidence.grouped .obs .obs-label {
       <div class="header-top">
         <div>
           <h1 class="biz-name">Total Care Heating &amp; Cooling LLC</h1>
-          <p class="biz-meta">Peoria, AZ · 9 years licensed in AZ · 198 Google reviews · 5.0★</p>
+          <p class="biz-meta">Peoria, AZ · 9 years licensed in AZ · Dual-scope HVAC license (commercial + residential) · 198 Google reviews · 5.0★</p>
           <p class="links"><a href="http://totalcareheatingandcoolingaz.com/" target="_blank" rel="noopener">Company website ↗</a><a href="https://www.google.com/maps/place/?q=place_id:ChIJlzvGJ1FdK4cRuDKmZ2uYPE4" target="_blank" rel="noopener">Google Business Profile ↗</a></p>
           <div class="chips"><span class="chip chip-growth">GROWTH<span class="chip-val">16</span></span><span class="chip chip-demand">DEMAND PULL<span class="chip-val">17</span></span><span class="chip chip-nofsm">NO FSM</span></div>
         </div>
-        <div><span class="tier-badge tier-high">HIGH INTENT</span></div>
+        <div class="badge-stack"><span class="tier-badge tier-high">HIGH INTENT</span><span class="size-badge size-m">M · Mid</span><span class="fresh-badge fresh-hot" title="3 of 4 dated signals are in the last 30 days">FRESH · 75% last 30d</span></div>
       </div>
     </div>
     
     <div class="card why-card">
       <p class="card-label">Why this is a good lead</p>
       <h3 class="card-headline">4 signals fired</h3>
-      <ul class="why-list"><li>No field service platform detected. Bookings happen via phone only (WordPress site).</li><li>3 reviews mention customers switching from a competitor to this shop (most recent: 2026-04-03).</li><li>Sammy Sayegh is named directly in 16 of 18 cached reviews (88%). Business runs on one person&#x27;s personal reputation.</li><li>Review volume accelerating: 7 reviews in last 90 days versus 3 prior.</li></ul>
+      <ul class="why-list"><li>No field service platform detected. Bookings likely go through phone or web form (WordPress site).</li><li>3 reviews mention customers switching from a competitor to this shop (most recent: 2026-04-03).</li><li>Sammy Sayegh is named by first name in 16 of 18 cached reviews (88%). Customers associate this shop with a specific person.</li><li>Review volume accelerating: 7 reviews in last 90 days versus 3 prior.</li></ul>
     </div>
     
     <div class="card">
       <p class="card-label">Technology stack gap</p>
       <h3 class="card-headline">What we can see about how they operate</h3>
       <p class="card-subtitle">Fingerprinted from their public website.</p>
-      <div style="margin:12px 0 0;"><div class="tech-row"><div class="k">Field service platform</div><div class="v no">Not detected</div></div><div class="tech-row"><div class="k">Phone-only bookings</div><div class="v yes">Yes — bookings happen by phone</div></div><div class="tech-row"><div class="k">CMS</div><div class="v ">WordPress</div></div><div class="tech-row"><div class="k">Page builder</div><div class="v ">Elementor 4.0.1</div></div><div class="tech-row"><div class="k">All detected tech</div><div class="v ">Elementor 4.0.1; HSTS; HTTP/3; MySQL; PHP; Redis; Redis Object Cache; WordPress</div></div></div>
+      <div style="margin:12px 0 0;"><div class="tech-row"><div class="k">Field service platform</div><div class="v no">Not detected</div></div><div class="tech-row"><div class="k">How customers book</div><div class="v yes">Likely phone or web form (no online booking platform detected)</div></div><div class="tech-row"><div class="k">CMS</div><div class="v ">WordPress</div></div><div class="tech-row"><div class="k">Page builder</div><div class="v ">Elementor 4.0.1</div></div><div class="tech-row"><div class="k">All detected tech</div><div class="v ">Elementor 4.0.1; HSTS; HTTP/3; MySQL; PHP; Redis; Redis Object Cache; WordPress</div></div></div>
     </div>
     
     <div class="card">
@@ -418,6 +495,7 @@ blockquote.evidence.grouped .obs .obs-label {
       <div class="contact-card">
         <p class="owner-line">Sammy Sayegh</p>
         <p class="owner-source">Verified via AZ contractor license (public record)</p>
+        
         <dl><dt>Booking phone</dt><dd><a href="tel:6025500722">(602) 550-0722</a> — ask for Sammy<span class="note">Same number their customers call to schedule.</span></dd><dt>Web form</dt><dd><a href="http://totalcareheatingandcoolingaz.com/" target="_blank" rel="noopener">http://totalcareheatingandcoolingaz.com/</a><span class="note">Same channel their customers use to book.</span></dd></dl>
       </div>
     </div>
@@ -438,16 +516,16 @@ blockquote.evidence.grouped .obs .obs-label {
         </blockquote>
         
         <blockquote class="evidence positive">
-          Unlike every other HVAC company I&#x27;ve ever used. Sammy is very responsive and on-time for an appointment.
+          Unlike every other HVAC company I&#x27;ve ever used.
           <span class="cite">2025-10-25 · 5★ · customer switched from another HVAC company</span>
         </blockquote>
         
     </div>
     
     <div class="card">
-      <p class="card-label">One-person operation</p>
-      <h3 class="card-headline">Sammy is named directly in 16 of 18 cached reviews (88%)</h3>
-      <p class="card-subtitle">When the owner shows up in a meaningful share of positive reviews, the business runs on personal reputation. Growth past that person's capacity requires systems.</p>
+      <p class="card-label">Customer attention on one person</p>
+      <h3 class="card-headline">Sammy is named by first name in 16 of 18 cached reviews (88%)</h3>
+      <p class="card-subtitle">Customers mention a specific person often enough that the brand and the individual are tied together in public reviews. Whether that reflects a true one-person shop or a named figurehead on a bigger team is worth confirming on the call.</p>
       
         <blockquote class="evidence">
           From start to finish, we felt completely taken care of and could fully trust Sammy. The whole process was so easy, and it really felt like he worked with us to meet our specific needs.
@@ -468,7 +546,7 @@ blockquote.evidence.grouped .obs .obs-label {
     
     <div class="card">
       <p class="card-label">Growth momentum <span class="tag tag-amber">momentum score 2/10</span></p>
-      <h3 class="card-headline">1 recent review show signs they are winning work faster than before</h3>
+      <h3 class="card-headline">1 recent review contains growth or demand-pressure language</h3>
       
         <blockquote class="evidence positive grouped">
           <div class="review-cite">2026-04-02 · 5★</div>
@@ -480,7 +558,7 @@ blockquote.evidence.grouped .obs .obs-label {
     <div class="card">
       <p class="card-label">Review velocity</p>
       <h3 class="card-headline">Review volume is accelerating</h3>
-      <p class="card-subtitle">Reviews per month over the last 12 months. Each bar is the count of cached Google reviews with dates in that month.</p>
+      <p class="card-subtitle">Reviews per month over the last 12 months. Each point is the count of cached Google reviews with dates in that month.</p>
       
     <div class="card-stats">
       <div class="stat"><span class="val">7</span><span class="lbl">Reviews last 90d</span></div>
@@ -488,10 +566,10 @@ blockquote.evidence.grouped .obs .obs-label {
       <div class="stat"><span class="val">2.3x</span><span class="lbl">Velocity ratio</span></div>
     </div>
     
-      <div style="margin:14px 0;"><svg width="740" height="200" viewBox="0 0 740 200"><line x1="40" y1="154.0" x2="720" y2="154.0" stroke="#eef0f3" stroke-width="1"/><text x="34" y="158.0" text-anchor="end" font-size="10" fill="#888">0</text><line x1="40" y1="119.0" x2="720" y2="119.0" stroke="#eef0f3" stroke-width="1"/><text x="34" y="123.0" text-anchor="end" font-size="10" fill="#888">1</text><line x1="40" y1="84.0" x2="720" y2="84.0" stroke="#eef0f3" stroke-width="1"/><text x="34" y="88.0" text-anchor="end" font-size="10" fill="#888">2</text><line x1="40" y1="49.0" x2="720" y2="49.0" stroke="#eef0f3" stroke-width="1"/><text x="34" y="53.0" text-anchor="end" font-size="10" fill="#888">3</text><line x1="40" y1="14.0" x2="720" y2="14.0" stroke="#eef0f3" stroke-width="1"/><text x="34" y="18.0" text-anchor="end" font-size="10" fill="#888">5</text><rect x="40.0" y="154.0" width="51.166666666666664" height="2" fill="#e5e8ee" rx="2"/><text x="65.58333333333333" y="170" text-anchor="middle" font-size="10" fill="#666">05</text><text x="65.58333333333333" y="184" text-anchor="middle" font-size="10" fill="#999" font-weight="600">2025</text><rect x="97.16666666666666" y="126.0" width="51.166666666666664" height="28.0" fill="#0066cc" rx="2"/><text x="122.74999999999999" y="122.0" text-anchor="middle" font-size="11" fill="#333" font-weight="600">1</text><text x="122.74999999999999" y="170" text-anchor="middle" font-size="10" fill="#666">06</text><rect x="154.33333333333331" y="98.0" width="51.166666666666664" height="56.0" fill="#0066cc" rx="2"/><text x="179.91666666666666" y="94.0" text-anchor="middle" font-size="11" fill="#333" font-weight="600">2</text><text x="179.91666666666666" y="170" text-anchor="middle" font-size="10" fill="#666">07</text><rect x="211.5" y="70.0" width="51.166666666666664" height="84.0" fill="#0066cc" rx="2"/><text x="237.08333333333334" y="66.0" text-anchor="middle" font-size="11" fill="#333" font-weight="600">3</text><text x="237.08333333333334" y="170" text-anchor="middle" font-size="10" fill="#666">08</text><rect x="268.66666666666663" y="154.0" width="51.166666666666664" height="2" fill="#e5e8ee" rx="2"/><text x="294.24999999999994" y="170" text-anchor="middle" font-size="10" fill="#666">09</text><rect x="325.8333333333333" y="98.0" width="51.166666666666664" height="56.0" fill="#0066cc" rx="2"/><text x="351.41666666666663" y="94.0" text-anchor="middle" font-size="11" fill="#333" font-weight="600">2</text><text x="351.41666666666663" y="170" text-anchor="middle" font-size="10" fill="#666">10</text><rect x="383.0" y="126.0" width="51.166666666666664" height="28.0" fill="#0066cc" rx="2"/><text x="408.5833333333333" y="122.0" text-anchor="middle" font-size="11" fill="#333" font-weight="600">1</text><text x="408.5833333333333" y="170" text-anchor="middle" font-size="10" fill="#666">11</text><rect x="440.16666666666663" y="126.0" width="51.166666666666664" height="28.0" fill="#0066cc" rx="2"/><text x="465.74999999999994" y="122.0" text-anchor="middle" font-size="11" fill="#333" font-weight="600">1</text><text x="465.74999999999994" y="170" text-anchor="middle" font-size="10" fill="#666">12</text><rect x="497.3333333333333" y="154.0" width="51.166666666666664" height="2" fill="#e5e8ee" rx="2"/><text x="522.9166666666666" y="170" text-anchor="middle" font-size="10" fill="#666">01</text><text x="522.9166666666666" y="184" text-anchor="middle" font-size="10" fill="#999" font-weight="600">2026</text><rect x="554.5" y="126.0" width="51.166666666666664" height="28.0" fill="#0066cc" rx="2"/><text x="580.0833333333334" y="122.0" text-anchor="middle" font-size="11" fill="#333" font-weight="600">1</text><text x="580.0833333333334" y="170" text-anchor="middle" font-size="10" fill="#666">02</text><rect x="611.6666666666666" y="98.0" width="51.166666666666664" height="56.0" fill="#0066cc" rx="2"/><text x="637.25" y="94.0" text-anchor="middle" font-size="11" fill="#333" font-weight="600">2</text><text x="637.25" y="170" text-anchor="middle" font-size="10" fill="#666">03</text><rect x="668.8333333333333" y="42.0" width="51.166666666666664" height="112.0" fill="#0066cc" rx="2"/><text x="694.4166666666666" y="38.0" text-anchor="middle" font-size="11" fill="#333" font-weight="600">4</text><text x="694.4166666666666" y="170" text-anchor="middle" font-size="10" fill="#666">04</text></svg></div>
+      <div style="margin:14px 0;"><svg width="740" height="220" viewBox="0 0 740 220"><line x1="40" y1="178.0" x2="720" y2="178.0" stroke="#eef0f3" stroke-width="1"/><text x="34" y="182.0" text-anchor="end" font-size="10" fill="#888">0</text><line x1="40" y1="138.5" x2="720" y2="138.5" stroke="#eef0f3" stroke-width="1"/><text x="34" y="142.5" text-anchor="end" font-size="10" fill="#888">1</text><line x1="40" y1="99.0" x2="720" y2="99.0" stroke="#eef0f3" stroke-width="1"/><text x="34" y="103.0" text-anchor="end" font-size="10" fill="#888">2</text><line x1="40" y1="59.5" x2="720" y2="59.5" stroke="#eef0f3" stroke-width="1"/><text x="34" y="63.5" text-anchor="end" font-size="10" fill="#888">3</text><line x1="40" y1="20.0" x2="720" y2="20.0" stroke="#eef0f3" stroke-width="1"/><text x="34" y="24.0" text-anchor="end" font-size="10" fill="#888">5</text><path d="M 40.0,178 L 40.0,178.0 L 101.81818181818181,146.4 L 163.63636363636363,114.8 L 225.45454545454547,83.2 L 287.27272727272725,178.0 L 349.09090909090907,114.8 L 410.90909090909093,146.4 L 472.72727272727275,146.4 L 534.5454545454545,178.0 L 596.3636363636364,146.4 L 658.1818181818181,114.8 L 720.0,51.599999999999994 L 720.0,178 Z" fill="#0066cc" fill-opacity="0.08"/><path d="M 40.0,178.0 L 101.81818181818181,146.4 L 163.63636363636363,114.8 L 225.45454545454547,83.2 L 287.27272727272725,178.0 L 349.09090909090907,114.8 L 410.90909090909093,146.4 L 472.72727272727275,146.4 L 534.5454545454545,178.0 L 596.3636363636364,146.4 L 658.1818181818181,114.8 L 720.0,51.599999999999994" fill="none" stroke="#0066cc" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/><circle cx="40.0" cy="178.0" r="3.5" fill="#d0d4db" stroke="white" stroke-width="1.5"/><text x="40.0" y="196" text-anchor="middle" font-size="10" fill="#666">May 25</text><circle cx="101.81818181818181" cy="146.4" r="3.5" fill="#0066cc" stroke="white" stroke-width="1.5"/><text x="101.81818181818181" y="137.4" text-anchor="middle" font-size="11" fill="#333" font-weight="600">1</text><text x="101.81818181818181" y="196" text-anchor="middle" font-size="10" fill="#666">Jun 25</text><circle cx="163.63636363636363" cy="114.8" r="3.5" fill="#0066cc" stroke="white" stroke-width="1.5"/><text x="163.63636363636363" y="105.8" text-anchor="middle" font-size="11" fill="#333" font-weight="600">2</text><text x="163.63636363636363" y="196" text-anchor="middle" font-size="10" fill="#666">Jul 25</text><circle cx="225.45454545454547" cy="83.2" r="3.5" fill="#0066cc" stroke="white" stroke-width="1.5"/><text x="225.45454545454547" y="74.2" text-anchor="middle" font-size="11" fill="#333" font-weight="600">3</text><text x="225.45454545454547" y="196" text-anchor="middle" font-size="10" fill="#666">Aug 25</text><circle cx="287.27272727272725" cy="178.0" r="3.5" fill="#d0d4db" stroke="white" stroke-width="1.5"/><text x="287.27272727272725" y="196" text-anchor="middle" font-size="10" fill="#666">Sep 25</text><circle cx="349.09090909090907" cy="114.8" r="3.5" fill="#0066cc" stroke="white" stroke-width="1.5"/><text x="349.09090909090907" y="105.8" text-anchor="middle" font-size="11" fill="#333" font-weight="600">2</text><text x="349.09090909090907" y="196" text-anchor="middle" font-size="10" fill="#666">Oct 25</text><circle cx="410.90909090909093" cy="146.4" r="3.5" fill="#0066cc" stroke="white" stroke-width="1.5"/><text x="410.90909090909093" y="137.4" text-anchor="middle" font-size="11" fill="#333" font-weight="600">1</text><text x="410.90909090909093" y="196" text-anchor="middle" font-size="10" fill="#666">Nov 25</text><circle cx="472.72727272727275" cy="146.4" r="3.5" fill="#0066cc" stroke="white" stroke-width="1.5"/><text x="472.72727272727275" y="137.4" text-anchor="middle" font-size="11" fill="#333" font-weight="600">1</text><text x="472.72727272727275" y="196" text-anchor="middle" font-size="10" fill="#666">Dec 25</text><circle cx="534.5454545454545" cy="178.0" r="3.5" fill="#d0d4db" stroke="white" stroke-width="1.5"/><text x="534.5454545454545" y="196" text-anchor="middle" font-size="10" fill="#666">Jan 26</text><circle cx="596.3636363636364" cy="146.4" r="3.5" fill="#0066cc" stroke="white" stroke-width="1.5"/><text x="596.3636363636364" y="137.4" text-anchor="middle" font-size="11" fill="#333" font-weight="600">1</text><text x="596.3636363636364" y="196" text-anchor="middle" font-size="10" fill="#666">Feb 26</text><circle cx="658.1818181818181" cy="114.8" r="3.5" fill="#0066cc" stroke="white" stroke-width="1.5"/><text x="658.1818181818181" y="105.8" text-anchor="middle" font-size="11" fill="#333" font-weight="600">2</text><text x="658.1818181818181" y="196" text-anchor="middle" font-size="10" fill="#666">Mar 26</text><circle cx="720.0" cy="51.599999999999994" r="3.5" fill="#0066cc" stroke="white" stroke-width="1.5"/><text x="720.0" y="42.599999999999994" text-anchor="middle" font-size="11" fill="#333" font-weight="600">4</text><text x="720.0" y="196" text-anchor="middle" font-size="10" fill="#666">Apr 26</text></svg></div>
     </div>
     
-<div class="footer">Rank 5 · Generated 2026-04-11 · HVAC Signals pipeline</div>
+<div class="footer">Rank 5 · Generated 2026-04-12 · HVAC Signals pipeline</div>
 </div>
 </body>
 </html>

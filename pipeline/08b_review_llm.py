@@ -57,7 +57,8 @@ experiencing operational pain or scaling strain — the conditions that drive \
 Field Service Management (FSM) software purchases (ServiceTitan, Housecall \
 Pro, Jobber, etc.).
 
-You are looking for four distinct signal types:
+You are looking for four distinct signal types plus a list of people named \
+in the reviews:
 
 1. PAIN SIGNALS — customers explicitly complaining about operational \
 failures: no-shows, missed appointments, rescheduling, unanswered phones, \
@@ -79,6 +80,15 @@ SMOOTHNESS: text reminders, online booking, arrival ETAs, automated \
 confirmations, technician tracking. These contractors have already bought \
 FSM software and are NOT buying targets.
 
+5. REFERENCED PEOPLE — first names of individuals who WORK AT this business \
+(owner, technicians, dispatchers, office staff). Customers mention them \
+by first name: "Greg came out", "spoke with Sarah", "Mike was fantastic". \
+These are gold for sales reps — a named technician is a person the rep \
+can ask for by name on the call. Return one entry per distinct person, \
+with a mention_count and one short verbatim context snippet (under 80 \
+characters, ideally one short clause like "Greg fixed the AC in minutes"). \
+Do NOT infer or label their role.
+
 CRITICAL RULES:
 - Base your findings strictly on the reviews you are given.
 - For each mention you return, copy the customer language VERBATIM. Do not \
@@ -91,6 +101,13 @@ lowest-numbered reviews in the prompt).
 - Positive praise for a technician's friendliness, skill, or fair pricing \
 is NOT a momentum signal unless it also reveals demand pressure, founder \
 involvement, or customer-switcher status.
+- For referenced_people, ONLY include people who clearly work at this \
+business. EXCLUDE the customer's own family members ("my husband Mike said \
+to call"), the reviewer themselves, prior/competing contractors being \
+badmouthed ("John from XYZ botched our install"), and generic phrases \
+("the guy", "the tech") where no specific name is given. When in doubt, \
+leave the name out — a false inclusion tells a sales rep to ask for \
+someone who doesn't work there.
 
 Return ONLY valid JSON. No markdown, no prose, no code fences."""
 
@@ -141,6 +158,14 @@ Follow this exact schema:
       "review_index": <int>,
       "quote": <string, verbatim>,
       "subtype": <"online_booking" | "text_reminders" | "technician_tracking" | "eta_notifications" | "automated_confirmation" | "other">
+    }}
+  ],
+
+  "referenced_people": [
+    {{
+      "name": <string, first name as it appears in the review>,
+      "mention_count": <int, how many distinct reviews name this person>,
+      "sample_quote": <string, short verbatim context — ideally under 80 chars, one clause>
     }}
   ]
 }}
@@ -241,7 +266,7 @@ def call_claude(
     try:
         resp = client.messages.create(
             model=MODEL,
-            max_tokens=2048,
+            max_tokens=3000,
             temperature=0,
             system=system_prompt,
             messages=[{"role": "user", "content": user_prompt}],
@@ -284,11 +309,14 @@ def validate_llm_result(result: dict) -> bool:
         "pain_score", "momentum_score", "smooth_ops_score", "buying_category",
         "founder_involvement", "key_person_dependency", "one_sentence_summary",
         "pain_mentions", "momentum_mentions", "switcher_mentions",
-        "smooth_ops_mentions",
+        "smooth_ops_mentions", "referenced_people",
     }
     if not all(k in result for k in required):
         return False
-    for k in ("pain_mentions", "momentum_mentions", "switcher_mentions", "smooth_ops_mentions"):
+    for k in (
+        "pain_mentions", "momentum_mentions", "switcher_mentions",
+        "smooth_ops_mentions", "referenced_people",
+    ):
         if not isinstance(result.get(k), list):
             return False
     return True
@@ -401,10 +429,17 @@ def main() -> None:
                 llm_result = cached_payload.get("parsed")
                 usage = cached_payload.get("usage", {})
                 cached_indexed_reviews = cached_payload.get("indexed_reviews") or []
-                # Old schema caches won't have pain_mentions — treat as stale
-                if llm_result and "pain_mentions" not in llm_result:
+                # Old schema caches are stale if they're missing any of the
+                # required top-level arrays. Adding a new array to the schema
+                # (e.g. referenced_people) forces a re-fetch automatically.
+                required_keys = {
+                    "pain_mentions", "momentum_mentions",
+                    "switcher_mentions", "smooth_ops_mentions",
+                    "referenced_people",
+                }
+                if llm_result and not required_keys.issubset(llm_result.keys()):
                     llm_result = None
-                else:
+                elif llm_result:
                     from_cache = True
                     cache_hits += 1
             except (json.JSONDecodeError, OSError):
