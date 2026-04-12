@@ -3358,6 +3358,13 @@ def main() -> None:
         return
 
     if args.all:
+        # Wipe stale dossiers from prior runs. When ranks shift between
+        # runs (a contractor drops out or gets promoted), the old file
+        # stays behind with the wrong rank number in its filename. This
+        # caused duplicate/phantom dossiers that had to be cleaned up
+        # manually. Now --all always starts from a clean slate.
+        for stale in OUT_DIR.glob("dossier_v4_*.html"):
+            stale.unlink()
         targets = scored[scored["final_rank"] <= 25].sort_values("final_rank")
     else:
         targets = scored[scored["final_rank"] == args.rank]
