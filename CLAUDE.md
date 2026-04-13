@@ -144,8 +144,8 @@ When querying external APIs by name, first normalize:
 - `data/` — all CSVs, inputs and outputs
 - `data/*_snapshots/` — timestamped snapshot files, never overwritten
 - `data/*_dropped.csv` — sidecar files for audit, contain rows dropped by filters
-- `deliverables/` — final outputs intended for external consumption
-- `outputs/` — intermediate outputs that might become deliverables
+- `docs/` — final outputs: HTML dossiers + index, served via GitHub Pages
+- `outputs/` — intermediate outputs and diagnostics
 
 ## Standing lessons from past steps
 

@@ -4,8 +4,8 @@ A buying-signal pipeline for field service management (FSM) software vendors sel
 
 ## The output
 
-- **[deliverables/index.html](deliverables/index.html)** — one-page ranked list of the top 25 contractors. Each row shows signal chips (PAIN / GROWTH / DEMAND PULL / NO FSM / HIRING DISPATCH / THIN SAMPLE), a colored accent indicating the dominant signal, the intent tier badge, and the top bullet points for why this contractor is a lead.
-- **[deliverables/dossier_v4_*.html](deliverables/)** — 25 individual dossiers, one per contractor. Each dossier is a stack of cards, one per fired signal, with every claim backed by a dated citation to the source evidence. Headers show intent tier, estimated annual revenue (from AZ ROC bond amounts), and a signal freshness badge when 25%+ of dated signals are in the last 30 days.
+- **[docs/index.html](docs/index.html)** — one-page ranked list of the top 25 contractors. Each row shows signal chips (PAIN / GROWTH / DEMAND PULL / NO FSM / HIRING DISPATCH / THIN SAMPLE), a colored accent indicating the dominant signal, the intent tier badge, and the top bullet points for why this contractor is a lead.
+- **[docs/dossier_v4_*.html](docs/)** — 25 individual dossiers, one per contractor. Each dossier is a stack of cards, one per fired signal, with every claim backed by a dated citation to the source evidence. Headers show intent tier, estimated annual revenue (from AZ ROC bond amounts), and a signal freshness badge when 25%+ of dated signals are in the last 30 days.
 - **[SCORING.md](SCORING.md)** — full scoring methodology: 7 dimensions, 3 non-scoring display fields, FSM-vendor hard disqualifier, and explicit disclaimers about what the model can and can't see.
 
 ## The funnel
@@ -130,7 +130,7 @@ hvac-signals/
 │   ├── signals_raw/                   # cached API responses (never re-fetched)
 │   └── snapshots/                     # timestamped audit copies, one subdir per step
 │
-├── deliverables/                      # index.html + 25 dossier HTML files
+├── docs/                      # index.html + 25 dossier HTML files
 ├── outputs/                           # diagnostic output (evidence audit)
 ├── tools/                             # webanalyze binary + fingerprints
 │

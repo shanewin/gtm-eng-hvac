@@ -20,7 +20,7 @@ Every number in this document is pulled from the real output files. Every lesson
 | Step 05 hidden gems filtered pool | 70 | `data/03_hidden_gems/filtered_pool.csv` |
 | After all signal enrichments | 70 | `data/03_hidden_gems/complete.csv` |
 | **After Step 11 scoring** | **70 ranked** | `data/03_hidden_gems/scored.csv` |
-| **Top 25** | **25** | `deliverables/index.html` |
+| **Top 25** | **25** | `docs/index.html` |
 
 The top 25 narrative mix: 16 light_signal, 4 scaling_strain, 3 demand_pull, 1 mixed, 1 unclear. Confidence tiers: 3 high, 7 medium, 15 low.
 
@@ -401,7 +401,7 @@ The yellow panel at the top is the executive summary. It reads the same data as 
 
 ### The index page
 
-`deliverables/index.html` is a one-page list of all 25 ranked dossiers. Each row shows:
+`docs/index.html` is a one-page list of all 25 ranked dossiers. Each row shows:
 
 - Large rank number
 - Business name (clickable)
@@ -518,7 +518,7 @@ hvac-signals/
 │       ├── contacts/                   # Steps 12, 13
 │       └── apollo/                     # Step 04
 │
-├── deliverables/
+├── docs/
 │   ├── index.html                      # top 25 ranked overview
 │   └── dossier_v4_*.html               # 25 individual dossiers
 │

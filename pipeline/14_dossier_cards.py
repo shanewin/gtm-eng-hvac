@@ -53,7 +53,7 @@ JOBS_RAW_DIR = ROOT / "data" / "signals_raw" / "serpapi_jobs"
 APOLLO_JOBS_DIR = ROOT / "data" / "signals_raw" / "apollo_jobs"
 DISPATCH_RAW_DIR = ROOT / "data" / "signals_raw" / "dispatch_delay"
 LLM_RAW_DIR = ROOT / "data" / "signals_raw" / "review_llm"
-OUT_DIR = ROOT / "deliverables"
+OUT_DIR = ROOT / "docs"
 
 FSM_BUYER_ROLE_KEYWORDS = [
     "dispatch", "scheduler", "scheduling", "coordinator",
