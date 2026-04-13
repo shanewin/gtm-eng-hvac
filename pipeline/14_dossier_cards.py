@@ -108,10 +108,10 @@ def load_json(path: Path) -> dict:
 
 def intent_tier(score: float) -> tuple[str, str]:
     if score >= 40:
-        return "HIGH INTENT", "tier-high"
+        return "TOP PRIORITY", "tier-high"
     if score >= 25:
         return "STRONG INTENT", "tier-strong"
-    return "EMERGING INTENT", "tier-emerging"
+    return "EMERGING", "tier-emerging"
 
 
 def build_signal_chips(row: pd.Series, jobs: list[dict]) -> list[dict]:
@@ -869,7 +869,7 @@ body {
   letter-spacing: 0.8px;
   white-space: nowrap;
 }
-.tier-high { background: #fde8e8; color: #9a1a1a; }
+.tier-high { background: #e6f4ea; color: #14532d; }
 .tier-strong { background: #fff4d6; color: #8a5a00; }
 .tier-emerging { background: #e6f2ff; color: #003b7a; }
 
@@ -1368,6 +1368,29 @@ body {
   flex-direction: column;
   gap: 8px;
 }
+.tier-guide {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+.tier-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.tier-row .tier-badge {
+  flex: 0 0 auto;
+  margin-top: 2px;
+}
+.tier-detail {
+  font-size: 13px;
+  color: #333;
+  line-height: 1.55;
+}
+.tier-detail strong {
+  color: #1a1a1a;
+}
 .badge-row {
   display: flex;
   align-items: baseline;
@@ -1577,7 +1600,7 @@ body {
   letter-spacing: 0.6px;
   white-space: nowrap;
 }
-.tier-high { background: #fde8e8; color: #9a1a1a; }
+.tier-high { background: #e6f4ea; color: #14532d; }
 .tier-strong { background: #fff4d6; color: #8a5a00; }
 .tier-emerging { background: #e6f2ff; color: #003b7a; }
 .call-sheet {
@@ -3820,12 +3843,35 @@ def render_index(scored: pd.DataFrame, contacts: pd.DataFrame) -> str:
 
   <div class="legend">
 
-    <h2>How to work this list</h2>
-    <div class="legend-badges">
-      <div class="badge-row">
-        <span class="tier-badge tier-high">HIGH INTENT</span>
-        <span class="badge-desc">Work this week. Four or more signals firing in the same direction.</span>
+    <h2>Priority tiers</h2>
+    <div class="tier-guide">
+      <div class="tier-row">
+        <span class="tier-badge tier-high">TOP PRIORITY</span>
+        <div class="tier-detail">
+          <strong>Score 40+ · Call this week.</strong>
+          Multiple independent signals converging — pain complaints, hiring posts, review surges, no FSM platform. These contractors have the loudest buying signals in the pool.
+        </div>
       </div>
+      <div class="tier-row">
+        <span class="tier-badge tier-strong">STRONG INTENT</span>
+        <div class="tier-detail">
+          <strong>Score 25–39 · Call within two weeks.</strong>
+          Clear signal in at least one dimension. Worth the time — some dimension is clearly firing, but the full pattern hasn't converged yet.
+        </div>
+      </div>
+      <div class="tier-row">
+        <span class="tier-badge tier-emerging">EMERGING</span>
+        <div class="tier-detail">
+          <strong>Score below 25 · Work if there's capacity.</strong>
+          Early or thin signals. May be a future top-priority account — worth monitoring, not urgent.
+        </div>
+      </div>
+    </div>
+
+    <div class="legend-sep"></div>
+
+    <h2>What the badges mean</h2>
+    <div class="legend-badges">
       <div class="badge-row">
         <span class="chip chip-hiring">HIRING DISPATCH</span>
         <span class="badge-desc">Lead with the job posting in your opener. They're actively hiring for the exact role your software is designed to support.</span>
@@ -3848,14 +3894,14 @@ def render_index(scored: pd.DataFrame, contacts: pd.DataFrame) -> str:
       </div>
       <div class="badge-row">
         <span class="chip chip-warn">THIN SAMPLE (#)</span>
-        <span class="badge-desc">Warning: scored on limited review data. Treat the intent score with caution and verify by phone.</span>
+        <span class="badge-desc">Buying signals are present but based on a smaller data set. Still worth a call — just verify the situation hasn't changed.</span>
       </div>
     </div>
 
     <div class="legend-sep"></div>
 
     <h2>How the score works</h2>
-    <p class="trust-para">Each contractor is scored across seven dimensions drawn from independent public data sources: state licensing records, website technology fingerprinting, Google Jobs hiring posts, Google Business Profile review patterns, and AZ ROC bond filings. A multi-signal bonus rewards contractors where independent sources point the same direction — a single complaint could be a bad day, but a complaint plus a dispatcher hiring post plus customers switching from a competitor is a pattern. Contractors whose websites show modern booking platforms or whose customers praise automated workflows get points deducted — they've likely already bought. Scores are discounted when data samples are thin, so no single source can dominate the ranking. Contractors scoring 40+ are tagged <span class="tier-badge tier-high" style="font-size:9px;padding:2px 8px;">HIGH INTENT</span>, 25–39 are <span class="tier-badge tier-strong" style="font-size:9px;padding:2px 8px;">STRONG INTENT</span>, and below 25 are <span class="tier-badge tier-emerging" style="font-size:9px;padding:2px 8px;">EMERGING INTENT</span>.</p>
+    <p class="trust-para">Each contractor is scored across seven dimensions drawn from independent public data sources: state licensing records, website technology fingerprinting, Google Jobs hiring posts, Google Business Profile review patterns, and AZ ROC bond filings. A multi-signal bonus rewards contractors where independent sources point the same direction — a single complaint could be a bad day, but a complaint plus a dispatcher hiring post plus customers switching from a competitor is a pattern. Contractors whose websites show modern booking platforms or whose customers praise automated workflows get points deducted — they've likely already bought. Scores are discounted when data samples are thin, so no single source can dominate the ranking. Contractors scoring 40+ are tagged <span class="tier-badge tier-high" style="font-size:9px;padding:2px 8px;">TOP PRIORITY</span>, 25–39 are <span class="tier-badge tier-strong" style="font-size:9px;padding:2px 8px;">STRONG INTENT</span>, and below 25 are <span class="tier-badge tier-emerging" style="font-size:9px;padding:2px 8px;">EMERGING</span>.</p>
 
     <div class="legend-sep"></div>
 

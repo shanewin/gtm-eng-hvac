@@ -83,6 +83,29 @@ body {
   flex-direction: column;
   gap: 8px;
 }
+.tier-guide {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+.tier-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.tier-row .tier-badge {
+  flex: 0 0 auto;
+  margin-top: 2px;
+}
+.tier-detail {
+  font-size: 13px;
+  color: #333;
+  line-height: 1.55;
+}
+.tier-detail strong {
+  color: #1a1a1a;
+}
 .badge-row {
   display: flex;
   align-items: baseline;
@@ -292,7 +315,7 @@ body {
   letter-spacing: 0.6px;
   white-space: nowrap;
 }
-.tier-high { background: #fde8e8; color: #9a1a1a; }
+.tier-high { background: #e6f4ea; color: #14532d; }
 .tier-strong { background: #fff4d6; color: #8a5a00; }
 .tier-emerging { background: #e6f2ff; color: #003b7a; }
 .call-sheet {
@@ -404,12 +427,35 @@ body {
 
   <div class="legend">
 
-    <h2>How to work this list</h2>
-    <div class="legend-badges">
-      <div class="badge-row">
-        <span class="tier-badge tier-high">HIGH INTENT</span>
-        <span class="badge-desc">Work this week. Four or more signals firing in the same direction.</span>
+    <h2>Priority tiers</h2>
+    <div class="tier-guide">
+      <div class="tier-row">
+        <span class="tier-badge tier-high">TOP PRIORITY</span>
+        <div class="tier-detail">
+          <strong>Score 40+ · Call this week.</strong>
+          Multiple independent signals converging — pain complaints, hiring posts, review surges, no FSM platform. These contractors have the loudest buying signals in the pool.
+        </div>
       </div>
+      <div class="tier-row">
+        <span class="tier-badge tier-strong">STRONG INTENT</span>
+        <div class="tier-detail">
+          <strong>Score 25–39 · Call within two weeks.</strong>
+          Clear signal in at least one dimension. Worth the time — some dimension is clearly firing, but the full pattern hasn't converged yet.
+        </div>
+      </div>
+      <div class="tier-row">
+        <span class="tier-badge tier-emerging">EMERGING</span>
+        <div class="tier-detail">
+          <strong>Score below 25 · Work if there's capacity.</strong>
+          Early or thin signals. May be a future top-priority account — worth monitoring, not urgent.
+        </div>
+      </div>
+    </div>
+
+    <div class="legend-sep"></div>
+
+    <h2>What the badges mean</h2>
+    <div class="legend-badges">
       <div class="badge-row">
         <span class="chip chip-hiring">HIRING DISPATCH</span>
         <span class="badge-desc">Lead with the job posting in your opener. They're actively hiring for the exact role your software is designed to support.</span>
@@ -432,14 +478,14 @@ body {
       </div>
       <div class="badge-row">
         <span class="chip chip-warn">THIN SAMPLE (#)</span>
-        <span class="badge-desc">Warning: scored on limited review data. Treat the intent score with caution and verify by phone.</span>
+        <span class="badge-desc">Buying signals are present but based on a smaller data set. Still worth a call — just verify the situation hasn't changed.</span>
       </div>
     </div>
 
     <div class="legend-sep"></div>
 
     <h2>How the score works</h2>
-    <p class="trust-para">Each contractor is scored across seven dimensions drawn from independent public data sources: state licensing records, website technology fingerprinting, Google Jobs hiring posts, Google Business Profile review patterns, and AZ ROC bond filings. A multi-signal bonus rewards contractors where independent sources point the same direction — a single complaint could be a bad day, but a complaint plus a dispatcher hiring post plus customers switching from a competitor is a pattern. Contractors whose websites show modern booking platforms or whose customers praise automated workflows get points deducted — they've likely already bought. Scores are discounted when data samples are thin, so no single source can dominate the ranking. Contractors scoring 40+ are tagged <span class="tier-badge tier-high" style="font-size:9px;padding:2px 8px;">HIGH INTENT</span>, 25–39 are <span class="tier-badge tier-strong" style="font-size:9px;padding:2px 8px;">STRONG INTENT</span>, and below 25 are <span class="tier-badge tier-emerging" style="font-size:9px;padding:2px 8px;">EMERGING INTENT</span>.</p>
+    <p class="trust-para">Each contractor is scored across seven dimensions drawn from independent public data sources: state licensing records, website technology fingerprinting, Google Jobs hiring posts, Google Business Profile review patterns, and AZ ROC bond filings. A multi-signal bonus rewards contractors where independent sources point the same direction — a single complaint could be a bad day, but a complaint plus a dispatcher hiring post plus customers switching from a competitor is a pattern. Contractors whose websites show modern booking platforms or whose customers praise automated workflows get points deducted — they've likely already bought. Scores are discounted when data samples are thin, so no single source can dominate the ranking. Contractors scoring 40+ are tagged <span class="tier-badge tier-high" style="font-size:9px;padding:2px 8px;">TOP PRIORITY</span>, 25–39 are <span class="tier-badge tier-strong" style="font-size:9px;padding:2px 8px;">STRONG INTENT</span>, and below 25 are <span class="tier-badge tier-emerging" style="font-size:9px;padding:2px 8px;">EMERGING</span>.</p>
 
     <div class="legend-sep"></div>
 
@@ -474,7 +520,7 @@ body {
         <div class="lead-header">
           <h3><a href="dossier_v4_01_Grand_Canyon_Home_Services_LLC.html">Grand Canyon Home Services LLC</a></h3>
           <div class="lead-badges">
-            <span class="tier-badge tier-high">HIGH INTENT</span>
+            <span class="tier-badge tier-high">TOP PRIORITY</span>
           </div>
         </div>
         <div class="chips"><span class="chip chip-growth">GROWTH<span class="chip-val">25</span></span><span class="chip chip-demand">DEMAND PULL<span class="chip-val">13</span></span><span class="chip chip-nofsm">NO FSM</span><span class="chip chip-hiring">HIRING DISPATCH (5)</span></div>
@@ -498,7 +544,7 @@ body {
         <div class="lead-header">
           <h3><a href="dossier_v4_02_Comfort_Experts_LLC.html">Comfort Experts LLC</a></h3>
           <div class="lead-badges">
-            <span class="tier-badge tier-high">HIGH INTENT</span>
+            <span class="tier-badge tier-high">TOP PRIORITY</span>
           </div>
         </div>
         <div class="chips"><span class="chip chip-growth">GROWTH<span class="chip-val">25</span></span><span class="chip chip-demand">DEMAND PULL<span class="chip-val">9</span></span><span class="chip chip-nofsm">NO FSM</span><span class="chip chip-hiring">HIRING DISPATCH</span></div>
@@ -522,7 +568,7 @@ body {
         <div class="lead-header">
           <h3><a href="dossier_v4_03_D_W_Plumbing_Heating_Cooling_Inc.html">D W Plumbing Heating &amp; Cooling Inc</a></h3>
           <div class="lead-badges">
-            <span class="tier-badge tier-high">HIGH INTENT</span>
+            <span class="tier-badge tier-high">TOP PRIORITY</span>
           </div>
         </div>
         <div class="chips"><span class="chip chip-growth">GROWTH<span class="chip-val">24</span></span><span class="chip chip-demand">DEMAND PULL<span class="chip-val">7</span></span><span class="chip chip-nofsm">NO FSM</span></div>
@@ -546,7 +592,7 @@ body {
         <div class="lead-header">
           <h3><a href="dossier_v4_04_Air_Water_Mechanical_Services_LLC.html">Air &amp; Water Mechanical Services LLC</a></h3>
           <div class="lead-badges">
-            <span class="tier-badge tier-high">HIGH INTENT</span>
+            <span class="tier-badge tier-high">TOP PRIORITY</span>
           </div>
         </div>
         <div class="chips"><span class="chip chip-growth">GROWTH<span class="chip-val">25</span></span><span class="chip chip-demand">DEMAND PULL<span class="chip-val">9</span></span><span class="chip chip-nofsm">NO FSM</span></div>
@@ -570,7 +616,7 @@ body {
         <div class="lead-header">
           <h3><a href="dossier_v4_05_Total_Care_Heating_Cooling_LLC.html">Total Care Heating &amp; Cooling LLC</a></h3>
           <div class="lead-badges">
-            <span class="tier-badge tier-high">HIGH INTENT</span>
+            <span class="tier-badge tier-high">TOP PRIORITY</span>
           </div>
         </div>
         <div class="chips"><span class="chip chip-growth">GROWTH<span class="chip-val">16</span></span><span class="chip chip-demand">DEMAND PULL<span class="chip-val">17</span></span><span class="chip chip-nofsm">NO FSM</span></div>
@@ -594,7 +640,7 @@ body {
         <div class="lead-header">
           <h3><a href="dossier_v4_06_Tropical_Companies_LLC.html">Tropical Companies LLC</a></h3>
           <div class="lead-badges">
-            <span class="tier-badge tier-high">HIGH INTENT</span>
+            <span class="tier-badge tier-high">TOP PRIORITY</span>
           </div>
         </div>
         <div class="chips"><span class="chip chip-pain">PAIN<span class="chip-val">12</span></span><span class="chip chip-growth">GROWTH<span class="chip-val">10</span></span><span class="chip chip-demand">DEMAND PULL<span class="chip-val">7</span></span><span class="chip chip-nofsm">NO FSM</span></div>
@@ -858,7 +904,7 @@ body {
         <div class="lead-header">
           <h3><a href="dossier_v4_17_Martin_Air_LLC.html">Martin Air LLC</a></h3>
           <div class="lead-badges">
-            <span class="tier-badge tier-emerging">EMERGING INTENT</span>
+            <span class="tier-badge tier-emerging">EMERGING</span>
           </div>
         </div>
         <div class="chips"><span class="chip chip-growth">GROWTH<span class="chip-val">12</span></span><span class="chip chip-nofsm">NO FSM</span></div>
@@ -882,7 +928,7 @@ body {
         <div class="lead-header">
           <h3><a href="dossier_v4_18_Hil_Co_Mechanical_Corporation.html">Hil-Co Mechanical Corporation</a></h3>
           <div class="lead-badges">
-            <span class="tier-badge tier-emerging">EMERGING INTENT</span>
+            <span class="tier-badge tier-emerging">EMERGING</span>
           </div>
         </div>
         <div class="chips"><span class="chip chip-growth">GROWTH<span class="chip-val">10</span></span><span class="chip chip-nofsm">NO FSM</span></div>
@@ -906,7 +952,7 @@ body {
         <div class="lead-header">
           <h3><a href="dossier_v4_19_Second_Opinion_Plumbing_LLC.html">Second Opinion Plumbing LLC</a></h3>
           <div class="lead-badges">
-            <span class="tier-badge tier-emerging">EMERGING INTENT</span>
+            <span class="tier-badge tier-emerging">EMERGING</span>
           </div>
         </div>
         <div class="chips"><span class="chip chip-demand">DEMAND PULL<span class="chip-val">9</span></span><span class="chip chip-nofsm">NO FSM</span></div>
@@ -930,7 +976,7 @@ body {
         <div class="lead-header">
           <h3><a href="dossier_v4_20_Cardinal_Heating_Cooling_LLC.html">Cardinal Heating &amp; Cooling LLC</a></h3>
           <div class="lead-badges">
-            <span class="tier-badge tier-emerging">EMERGING INTENT</span>
+            <span class="tier-badge tier-emerging">EMERGING</span>
           </div>
         </div>
         <div class="chips"><span class="chip chip-growth">GROWTH<span class="chip-val">5</span></span><span class="chip chip-demand">DEMAND PULL<span class="chip-val">6</span></span><span class="chip chip-nofsm">NO FSM</span><span class="chip chip-warn">THIN SAMPLE (6)</span></div>
@@ -954,7 +1000,7 @@ body {
         <div class="lead-header">
           <h3><a href="dossier_v4_21_AA_Mechanical_And_HVAC_LLC.html">A&amp;A Mechanical And HVAC, LLC</a></h3>
           <div class="lead-badges">
-            <span class="tier-badge tier-emerging">EMERGING INTENT</span>
+            <span class="tier-badge tier-emerging">EMERGING</span>
           </div>
         </div>
         <div class="chips"><span class="chip chip-growth">GROWTH<span class="chip-val">14</span></span><span class="chip chip-nofsm">NO FSM</span></div>
@@ -978,7 +1024,7 @@ body {
         <div class="lead-header">
           <h3><a href="dossier_v4_22_JDL_Refrigeration_LLC.html">JDL Refrigeration LLC</a></h3>
           <div class="lead-badges">
-            <span class="tier-badge tier-emerging">EMERGING INTENT</span>
+            <span class="tier-badge tier-emerging">EMERGING</span>
           </div>
         </div>
         <div class="chips"><span class="chip chip-nofsm">NO FSM</span><span class="chip chip-warn">THIN SAMPLE (5)</span></div>
@@ -1002,7 +1048,7 @@ body {
         <div class="lead-header">
           <h3><a href="dossier_v4_23_All_Area_AC_Heating_Inc.html">All Area A/C &amp; Heating Inc</a></h3>
           <div class="lead-badges">
-            <span class="tier-badge tier-emerging">EMERGING INTENT</span>
+            <span class="tier-badge tier-emerging">EMERGING</span>
           </div>
         </div>
         <div class="chips"><span class="chip chip-demand">DEMAND PULL<span class="chip-val">11</span></span><span class="chip chip-nofsm">NO FSM</span><span class="chip chip-warn">THIN SAMPLE (7)</span></div>
@@ -1026,7 +1072,7 @@ body {
         <div class="lead-header">
           <h3><a href="dossier_v4_24_SG_Mechanical_LLC.html">SG Mechanical LLC</a></h3>
           <div class="lead-badges">
-            <span class="tier-badge tier-emerging">EMERGING INTENT</span>
+            <span class="tier-badge tier-emerging">EMERGING</span>
           </div>
         </div>
         <div class="chips"><span class="chip chip-growth">GROWTH<span class="chip-val">7</span></span><span class="chip chip-nofsm">NO FSM</span></div>
@@ -1050,7 +1096,7 @@ body {
         <div class="lead-header">
           <h3><a href="dossier_v4_25_Desert_Sun_Air_LLC.html">Desert Sun Air LLC</a></h3>
           <div class="lead-badges">
-            <span class="tier-badge tier-emerging">EMERGING INTENT</span>
+            <span class="tier-badge tier-emerging">EMERGING</span>
           </div>
         </div>
         <div class="chips"><span class="chip chip-nofsm">NO FSM</span></div>
