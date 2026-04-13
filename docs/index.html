@@ -78,25 +78,63 @@ body {
   font-weight: 700;
   margin: 0 0 14px;
 }
-.legend-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px 28px;
-}
-.legend-item {
+.legend-badges {
   display: flex;
-  align-items: flex-start;
+  flex-direction: column;
+  gap: 8px;
+}
+.badge-row {
+  display: flex;
+  align-items: baseline;
   gap: 10px;
-  font-size: 12px;
+  font-size: 13px;
   color: #333;
   line-height: 1.5;
-  padding: 4px 0;
 }
-.legend-item .chip {
+.badge-row .chip, .badge-row .tier-badge {
   flex: 0 0 auto;
-  margin-top: 1px;
 }
-.legend-item .desc strong { color: #1a1a1a; }
+.badge-desc {
+  flex: 1;
+}
+.trust-para {
+  font-size: 13px;
+  color: #444;
+  line-height: 1.65;
+  margin: 0;
+}
+.methodology-details {
+  margin: 0;
+}
+.methodology-details summary {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #666;
+  cursor: pointer;
+  padding: 8px 0;
+  list-style: none;
+}
+.methodology-details summary::before {
+  content: "▸ ";
+}
+.methodology-details[open] summary::before {
+  content: "▾ ";
+}
+.methodology-details summary::-webkit-details-marker { display: none; }
+.methodology-body {
+  padding: 12px 0 0;
+}
+.meth-note {
+  font-size: 12px;
+  color: #666;
+  line-height: 1.55;
+  margin: 12px 0 0;
+}
+.meth-note strong {
+  color: #444;
+}
 .legend-sep {
   border-top: 1px solid #eef0f3;
   margin: 16px 0 14px;
@@ -364,63 +402,68 @@ body {
   </div>
 
   <div class="legend">
-    <h2>How to read this page</h2>
-    <div class="legend-grid">
-      <div class="legend-item">
-        <span class="chip chip-pain">PAIN <span class="chip-val">##</span></span>
-        <div class="desc"><strong>Pain signal.</strong> Customers complaining in reviews about dispatch failures, missed callbacks, or abandoned jobs. Number shows the pain dimension score (0-40).</div>
+
+    <h2>How to work this list</h2>
+    <div class="legend-badges">
+      <div class="badge-row">
+        <span class="tier-badge tier-high">HIGH INTENT</span>
+        <span class="badge-desc">Work this week. Four or more signals firing in the same direction.</span>
       </div>
-      <div class="legend-item">
-        <span class="chip chip-growth">GROWTH <span class="chip-val">##</span></span>
-        <div class="desc"><strong>Growth signal.</strong> Hiring postings, review velocity acceleration, or momentum language in reviews. Number shows the growth dimension score (0-25).</div>
-      </div>
-      <div class="legend-item">
-        <span class="chip chip-demand">DEMAND PULL <span class="chip-val">##</span></span>
-        <div class="desc"><strong>Demand pull.</strong> Signs the business is winning on reputation rather than scale: customers switching from competitors, owner named by first name in reviews, positive review bursts. Number shows the demand-pull score (0-20).</div>
-      </div>
-      <div class="legend-item">
-        <span class="chip chip-nofsm">NO FSM</span>
-        <div class="desc"><strong>No field service platform.</strong> Website fingerprinting detected no ServiceTitan, Housecall Pro, Jobber, or online booking widget. Bookings likely go through phone or web form.</div>
-      </div>
-      <div class="legend-item">
+      <div class="badge-row">
         <span class="chip chip-hiring">HIRING DISPATCH</span>
-        <div class="desc"><strong>Actively hiring a dispatcher.</strong> Open job posting titled Dispatcher, Scheduling Coordinator, or CSR — an ops role FSM software is designed to support.</div>
+        <span class="badge-desc">Lead with the job posting in your opener. They're actively hiring for the exact role your software is designed to support.</span>
       </div>
-      <div class="legend-item">
+      <div class="badge-row">
+        <span class="chip chip-nofsm">NO FSM</span>
+        <span class="badge-desc">Qualification confirmed. They're booking through phone or web form, so there's no competitor to displace — just a greenfield install.</span>
+      </div>
+      <div class="badge-row">
+        <span class="chip chip-pain">PAIN <span class="chip-val">##</span></span>
+        <span class="badge-desc">Reference the complaint directly. Reviews mention dispatch failures, missed callbacks, or abandoned jobs — position your product as the fix.</span>
+      </div>
+      <div class="badge-row">
+        <span class="chip chip-growth">GROWTH <span class="chip-val">##</span></span>
+        <span class="badge-desc">They're scaling and the wheels are starting to wobble. Hiring posts, accelerating review volume, or momentum language in reviews.</span>
+      </div>
+      <div class="badge-row">
+        <span class="chip chip-demand">DEMAND PULL <span class="chip-val">##</span></span>
+        <span class="badge-desc">They're winning on reputation, not process. Customers switching from competitors, owner named by first name in reviews — which means the owner is still running dispatch off a whiteboard.</span>
+      </div>
+      <div class="badge-row">
         <span class="chip chip-warn">THIN SAMPLE (#)</span>
-        <div class="desc"><strong>Thin sample warning.</strong> LLM review analysis ran on fewer than 10 cached reviews. Signal scores derived from review text are discounted proportionally.</div>
+        <span class="badge-desc">Warning: scored on limited review data. Treat the intent score with caution and verify by phone.</span>
       </div>
     </div>
 
     <div class="legend-sep"></div>
 
-    <h2>Scoring dimensions</h2>
-    <div class="legend-scoring">
-      <div class="line"><span class="dim">Direct pain</span><span>Review complaints, strained dispatch, crisis bursts</span><span class="cap">0–40</span></div>
-      <div class="line"><span class="dim">Scaling strain</span><span>Hiring, velocity, momentum quotes</span><span class="cap">0–25</span></div>
-      <div class="line"><span class="dim">Demand pull</span><span>Competitor switches, founder dependency, surge bursts</span><span class="cap">0–20</span></div>
-      <div class="line"><span class="dim">Multi-signal</span><span>Bonus when multiple sources fire</span><span class="cap">0–15</span></div>
-      <div class="line"><span class="dim">Operational</span><span>Website, reviews, license years</span><span class="cap">0–10</span></div>
-      <div class="line"><span class="dim">Disqualifiers</span><span>Smooth-ops indicators</span><span class="cap">-15–0</span></div>
-    </div>
-    <p style="font-size:11px;color:#888;margin:10px 0 0;">Pain and scaling-strain scores are multiplied by a thin-sample discount when the LLM analyzed fewer than 15 cached reviews. This prevents small contractors with 5-8 reviews from maxing out a dimension on one angry customer.</p>
+    <h2>How the score works</h2>
+    <p class="trust-para">Each contractor is scored across six dimensions: direct pain from review complaints, scaling strain from hiring and momentum language, demand pull from competitor switches and reputation signals, plus operational tells from their website and tech stack. A multi-signal bonus rewards contractors where independent sources point the same direction — one complaint could be a bad day, but a complaint plus a hiring post plus a competitor switch is a pattern. Contractors showing smooth operations — clean recent reviews, modern booking widgets — get points deducted, because they're unlikely to be in pain. Scores are discounted when review samples are thin, so a contractor with one angry review can't max out on pain alone. Contractors scoring 40+ are tagged <span class="tier-badge tier-high" style="font-size:9px;padding:2px 8px;">HIGH INTENT</span>, 25–39 are <span class="tier-badge tier-strong" style="font-size:9px;padding:2px 8px;">STRONG INTENT</span>, and below 25 are <span class="tier-badge tier-emerging" style="font-size:9px;padding:2px 8px;">EMERGING INTENT</span>.</p>
 
     <div class="legend-sep"></div>
 
-    <h2>Intent tier badge</h2>
-    <div class="legend-tiers">
-      <span><span class="tier-badge tier-high">HIGH INTENT</span><span style="color:#555;">score ≥ 40</span></span>
-      <span><span class="tier-badge tier-strong">STRONG INTENT</span><span style="color:#555;">25-39</span></span>
-      <span><span class="tier-badge tier-emerging">EMERGING INTENT</span><span style="color:#555;">below 25</span></span>
-    </div>
+    <details class="methodology-details">
+      <summary>View scoring methodology</summary>
+      <div class="methodology-body">
+        <div class="legend-scoring">
+          <div class="line"><span class="dim">Direct pain</span><span>Review complaints, strained dispatch, crisis bursts</span><span class="cap">0–40</span></div>
+          <div class="line"><span class="dim">Scaling strain</span><span>Hiring, velocity, momentum quotes</span><span class="cap">0–25</span></div>
+          <div class="line"><span class="dim">Demand pull</span><span>Competitor switches, founder dependency, surge bursts</span><span class="cap">0–20</span></div>
+          <div class="line"><span class="dim">Multi-signal bonus</span><span>Extra weight when multiple independent sources fire</span><span class="cap">0–15</span></div>
+          <div class="line"><span class="dim">Operational tells</span><span>Website, reviews, license years</span><span class="cap">0–10</span></div>
+          <div class="line"><span class="dim">Smooth-ops penalty</span><span>Deduction when operations look clean</span><span class="cap">−15–0</span></div>
+        </div>
+        <p class="meth-note"><strong>Thin-sample discount.</strong> Pain and scaling-strain scores are multiplied by a discount factor when fewer than 15 cached reviews were analyzed. This prevents small contractors with 5–8 reviews from maxing out a dimension on one angry customer.</p>
+        <p class="meth-note"><strong>Left-edge accent color.</strong> Each dossier card is accented on the left edge by its dominant signal:</p>
+        <div class="legend-accent">
+          <span><span class="swatch sw-pain"></span>dominant pain</span>
+          <span><span class="swatch sw-growth"></span>dominant growth</span>
+          <span><span class="swatch sw-demand"></span>dominant demand pull</span>
+          <span><span class="swatch sw-none"></span>no dominant signal</span>
+        </div>
+      </div>
+    </details>
 
-    <h2 style="margin-top:16px;">Left-edge accent</h2>
-    <div class="legend-accent">
-      <span><span class="swatch sw-pain"></span>dominant pain</span>
-      <span><span class="swatch sw-growth"></span>dominant growth</span>
-      <span><span class="swatch sw-demand"></span>dominant demand pull</span>
-      <span><span class="swatch sw-none"></span>no dominant signal</span>
-    </div>
   </div>
 
   
