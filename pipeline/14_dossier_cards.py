@@ -3633,6 +3633,7 @@ def render_index(scored: pd.DataFrame, contacts: pd.DataFrame) -> str:
 <div class="page">
 
   <div class="page-header">
+    <p class="sub" style="margin:0 0 4px;font-size:13px;color:#888;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;">Phoenix HVAC Contractors</p>
     <h1>{week_label}: Hidden Gem Call List</h1>
     <p class="sub">
       Ranked by multi-signal scoring from AZ contractor license data, Google reviews,
