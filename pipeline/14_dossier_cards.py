@@ -1443,48 +1443,33 @@ body {
   letter-spacing: -1px;
   line-height: 1;
   font-variant-numeric: tabular-nums;
+  padding-top: 6px;
 }
-.lead-body h3 {
+.lead-body {
+  flex: 1;
+  min-width: 0;
+}
+.lead-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+.lead-header h3 {
   margin: 0 0 4px;
   font-size: 20px;
   font-weight: 700;
   letter-spacing: -0.2px;
 }
-.lead-body h3 a {
+.lead-header h3 a {
   color: #0a0a1a;
   text-decoration: none;
 }
-.lead-body h3 a:hover { color: #0066cc; }
-.lead-meta {
-  font-size: 12px;
-  color: #888;
-  margin: 0 0 12px;
+.lead-header h3 a:hover { color: #0066cc; }
+.lead-badges {
+  flex-shrink: 0;
 }
-.lead-bullets {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.lead-bullets li {
-  padding: 5px 0 5px 20px;
-  font-size: 13px;
-  color: #333;
-  line-height: 1.5;
-  position: relative;
-}
-.lead-bullets li::before {
-  content: "▸";
-  position: absolute;
-  left: 4px;
-  top: 5px;
-  color: #e6a700;
-  font-weight: 700;
-}
-.lead-action {
-  text-align: right;
-  min-width: 130px;
-}
-.lead-action .tier-badge {
+.lead-badges .tier-badge {
   display: inline-block;
   padding: 5px 12px;
   border-radius: 999px;
@@ -1492,12 +1477,79 @@ body {
   font-weight: 700;
   letter-spacing: 0.6px;
   white-space: nowrap;
-  margin-bottom: 10px;
 }
 .tier-high { background: #fde8e8; color: #9a1a1a; }
 .tier-strong { background: #fff4d6; color: #8a5a00; }
 .tier-emerging { background: #e6f2ff; color: #003b7a; }
-.lead-action .view-link {
+.call-sheet {
+  margin: 10px 0;
+  padding: 12px 14px;
+  background: #f8f9fb;
+  border: 1px solid #e8ebf0;
+  border-radius: 6px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.cs-row {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 1px 0;
+}
+.cs-icon {
+  flex-shrink: 0;
+  width: 18px;
+  text-align: center;
+  font-size: 12px;
+}
+.cs-row a {
+  color: #0066cc;
+  text-decoration: none;
+}
+.cs-row a:hover { text-decoration: underline; }
+.cs-row strong { font-weight: 600; color: #1a1a1a; }
+.no-fsm {
+  color: #1a8c4a;
+  font-weight: 600;
+}
+.has-fsm {
+  color: #9a1a1a;
+  font-weight: 600;
+}
+.pitches {
+  margin: 12px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.pitch {
+  padding: 10px 14px;
+  background: #fffdf5;
+  border: 1px solid #f0e8c8;
+  border-radius: 6px;
+  font-size: 13px;
+  line-height: 1.55;
+}
+.pitch-label {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  color: #8a5a00;
+  background: #fff4d6;
+  padding: 2px 8px;
+  border-radius: 3px;
+  margin-bottom: 4px;
+}
+.pitch-text {
+  margin: 4px 0 0;
+  color: #333;
+  font-style: italic;
+}
+.lead-footer {
+  margin-top: 10px;
+}
+.view-link {
   display: inline-block;
   padding: 6px 12px;
   background: #0066cc;
@@ -1507,7 +1559,7 @@ body {
   font-size: 12px;
   font-weight: 600;
 }
-.lead-action .view-link:hover { background: #0052a3; }
+.view-link:hover { background: #0052a3; }
 .page-footer {
   text-align: center;
   color: #888;
@@ -3145,50 +3197,296 @@ def _render_chips(chips: list[dict]) -> str:
     return f'<div class="chips">{"".join(items)}</div>'
 
 
+def generate_pitches(
+    row: pd.Series, contact: pd.Series, max_pitches: int = 3
+) -> list[dict]:
+    """
+    Generate up to 3 sales pitches per contractor, ordered by signal
+    strength. Each pitch is a dict with:
+      - label: short signal tag (GROWTH, HIRING, TEAM, etc.)
+      - text: the pitch script with real data filled in
+      - priority: numeric, higher = stronger signal
+
+    Template-based, not LLM. The rep should edit before using — these
+    are 80%-there starting points, not polished scripts.
+    """
+    biz = s(row.get("business_name"))
+    owner_first = s(contact.get("primary_owner_first_name"))
+    place_id = s(row.get("place_id"))
+    revenue_band = s(row.get("revenue_band"))
+
+    candidates: list[dict] = []
+
+    # 1. Review velocity surge
+    recent_90 = i(row.get("recent_90d_reviews"))
+    prior_90 = i(row.get("prior_90d_reviews"))
+    vel_ratio = f(row.get("velocity_ratio"))
+    if vel_ratio >= 2.5 and recent_90 >= 5:
+        ratio_str = f"{vel_ratio:.0f}x" if vel_ratio >= 2 else f"{vel_ratio:.1f}x"
+        candidates.append({
+            "label": "GROWTH",
+            "priority": 90 + min(vel_ratio, 20),
+            "text": (
+                f"I noticed your review volume surged — {recent_90} reviews in "
+                f"the last 90 days versus {prior_90} in the prior 90. That's "
+                f"{ratio_str} growth. To help you keep up with that momentum, "
+                f"I'd love to show you how our platform can help you scale "
+                f"operations without adding overhead."
+            ),
+        })
+
+    # 2. Hiring ops role
+    ops_count = i(row.get("hiring_ops_pain_count"))
+    ops_title = s(row.get("hiring_sample_ops_pain_title"))
+    if ops_count > 0 and ops_title:
+        # Clean up long job titles
+        short_title = ops_title.split(" at ")[0].split(" - ")[0].strip()
+        if len(short_title) > 50:
+            short_title = short_title[:47] + "..."
+        candidates.append({
+            "label": "HIRING",
+            "priority": 85 + ops_count * 5,
+            "text": (
+                f"I see you recently posted for a {short_title}. With your "
+                f"growth trajectory, I'm sure demand is picking up fast. "
+                f"I can show you how our software handles dispatching and "
+                f"scheduling at a fraction of the cost of a new hire — and "
+                f"it scales with you as you grow."
+            ),
+        })
+
+    # 3. Named techs from reviews
+    llm_parsed, _ = load_llm_analysis(place_id)
+    referenced_people = llm_parsed.get("referenced_people") or []
+    # Dedupe against owner
+    owner_first_lower = (owner_first or "").lower().strip()
+    techs = [
+        p for p in referenced_people
+        if p.get("name") and p["name"].split()[0].lower() != owner_first_lower
+    ]
+    techs.sort(key=lambda p: -int(p.get("mention_count") or 0))
+    if len(techs) >= 2:
+        top_names = [t["name"].split()[0] for t in techs[:3]]
+        name_str = ", ".join(top_names[:-1]) + " and " + top_names[-1] if len(top_names) > 1 else top_names[0]
+        candidates.append({
+            "label": "TEAM",
+            "priority": 70 + len(techs) * 3,
+            "text": (
+                f"I see {name_str} are getting great reviews from your "
+                f"customers. Our software can free up their time on "
+                f"paperwork, scheduling, and follow-ups — so they spend "
+                f"more time in the field doing what they're best at."
+            ),
+        })
+
+    # 4. Customer switchers
+    refugees = i(row.get("llm_customer_refugee_mentions"))
+    if refugees >= 2:
+        candidates.append({
+            "label": "DEMAND",
+            "priority": 75 + refugees * 5,
+            "text": (
+                f"At least {refugees} of your recent reviews mention "
+                f"customers who switched from another HVAC company to yours. "
+                f"That's a strong signal — people are choosing you over the "
+                f"competition. The right systems can help you capture that "
+                f"demand without burning out your team."
+            ),
+        })
+
+    # 5. No FSM + revenue band (for bigger contractors)
+    has_fsm = row.get("has_any_booking_tool")
+    if not has_fsm and revenue_band in ("$500K–$1.5M", "$1.5M–$5M", "$5M+"):
+        candidates.append({
+            "label": "TECH GAP",
+            "priority": 65,
+            "text": (
+                f"Your business is doing {revenue_band} in annual volume, "
+                f"and from what I can see, you're running operations without "
+                f"a field service platform. Most contractors at your size "
+                f"find that the phones-and-paper approach starts creating "
+                f"bottlenecks. I'd love to show you what's possible."
+            ),
+        })
+
+    # 6. One-person / founder dependency
+    founder = s(row.get("llm_founder_involvement"))
+    key_person = s(row.get("llm_key_person_dependency"))
+    if founder == "heavy" or key_person == "heavy":
+        person = owner_first or "the owner"
+        candidates.append({
+            "label": "CAPACITY",
+            "priority": 60,
+            "text": (
+                f"Your customers clearly love working with {person} — "
+                f"that personal touch is what sets you apart. The challenge "
+                f"is that it doesn't scale past one person. Our software "
+                f"can systematize the parts that don't need {person}'s "
+                f"personal attention, so the quality stays high as you grow."
+            ),
+        })
+
+    # 7. Pain / complaints
+    pain_score = i(row.get("llm_pain_score"))
+    if pain_score >= 4:
+        candidates.append({
+            "label": "OPERATIONS",
+            "priority": 55 + pain_score,
+            "text": (
+                f"I've been looking at your recent customer feedback, and "
+                f"while your overall ratings are strong, there are a few "
+                f"mentions of scheduling and communication gaps. That's "
+                f"actually very common for growing shops — our platform "
+                f"automates the follow-ups and scheduling that tend to slip "
+                f"when things get busy."
+            ),
+        })
+
+    # 8. Crisis burst
+    burst_cat = s(row.get("burst_category"))
+    if burst_cat in ("active_crisis", "recent_crisis"):
+        candidates.append({
+            "label": "URGENT",
+            "priority": 50,
+            "text": (
+                f"I noticed you had a cluster of tough reviews recently. "
+                f"That happens to every growing business — volume picks up "
+                f"and the operational cracks show. Our platform is built "
+                f"specifically to close those gaps so a rough week doesn't "
+                f"become a trend."
+            ),
+        })
+
+    # Sort by priority descending, take top N
+    candidates.sort(key=lambda c: -c["priority"])
+    return candidates[:max_pitches]
+
+
 def render_lead_row(row: pd.Series, contact: pd.Series) -> tuple[str, dict]:
-    """Render a single lead row for the index page. Returns (html, stats_dict)."""
+    """Render a single lead row as a mini call sheet for the index page."""
     biz = s(row.get("business_name"))
     rank = i(row.get("final_rank"))
     city = s(row.get("city"))
+    state = s(row.get("state")) or "AZ"
+    zipcode = s(row.get("zip"))
+    address = s(row.get("address"))
     years = f(row.get("license_years"))
     review_count = i(row.get("place_review_count"))
     rating = f(row.get("place_rating"))
     score = f(row.get("score_total"))
     tier_label, tier_class = intent_tier(score)
+    place_id = s(row.get("place_id"))
+    website = s(row.get("place_website"))
+    phone = s(row.get("place_phone"))
+    revenue_band = s(row.get("revenue_band"))
+    has_fsm = row.get("has_any_booking_tool")
+    cls_code = s(row.get("class"))
 
     owner = s(contact.get("primary_owner_name"))
+    owner_first = s(contact.get("primary_owner_first_name"))
+    biz_email = s(contact.get("business_email"))
 
-    place_id = s(row.get("place_id"))
+    # Validator-approved social URLs
+    validated = load_validator_cache(place_id)
+    def _kept(cat):
+        return [str(it.get("value") or "") for it in (validated.get(cat) or []) if it.get("belongs") and it.get("value")]
+    fb_urls = _kept("facebook_urls")
+    li_urls = _kept("linkedin_company_urls")
+    ig_urls = _kept("instagram_urls")
+    discovered_emails = _kept("emails")
+
+    # Discovered email: prefer validator-kept, fall back to business_email
+    email_display = discovered_emails[0] if discovered_emails else biz_email
+
+    # Jobs + chips + accent
     reviews = load_reviews(place_id)
-    jobs, _ = load_jobs(place_id, s(row.get("business_name")))
-    bullets = build_why_bullets(row, contact, reviews, jobs)
+    jobs, _ = load_jobs(place_id, biz)
     chips = build_signal_chips(row, jobs)
     accent_cls = dominant_signal_color(row)
 
-    display_bullets = bullets[:5]
-    bullet_html = "".join(f"<li>{esc(b)}</li>" for b in display_bullets)
-    more_bullets = ""
-    if len(bullets) > 5:
-        more_bullets = f'<li style="color:#888;font-style:italic;">+ {len(bullets) - 5} more signal{"s" if len(bullets) - 5 != 1 else ""}</li>'
+    # Pitches
+    pitches = generate_pitches(row, contact)
 
     slug = slugify(biz)
     dossier_path = f"dossier_v4_{rank:02d}_{slug}.html"
 
-    meta_bits = []
-    if owner:
-        meta_bits.append(esc(owner))
-    if city:
-        meta_bits.append(esc(city))
+    # License info line
+    license_bits = []
     if years:
-        meta_bits.append(f"{years:.0f} yrs licensed")
-    if review_count:
-        meta_bits.append(f"{review_count} reviews · {rating:.1f}★")
+        license_bits.append(f"{years:.0f} yrs licensed")
+    scope = "Dual-scope (CR-39)" if cls_code == "CR-39" else (
+        f"Residential ({cls_code})" if cls_code in ("R-39", "R-39R") else ""
+    )
+    if scope:
+        license_bits.append(scope)
+    license_line = " · ".join(license_bits)
+
+    # Address line
+    addr_parts = []
+    if address:
+        addr_parts.append(address)
+    if city:
+        addr_parts.append(city)
+    addr_parts.append(state)
+    if zipcode:
+        addr_parts.append(zipcode)
+    addr_line = ", ".join(addr_parts)
+
+    # Owner / decision maker line
+    owner_line = ""
+    if owner:
+        owner_parts = [f"<strong>{esc(owner)}</strong>"]
+        if phone:
+            tel = re.sub(r"[^\d+]", "", phone)
+            owner_parts.append(f'<a href="tel:{tel}">{esc(phone)}</a>')
+        if email_display:
+            owner_parts.append(f'<a href="mailto:{esc(email_display)}">{esc(email_display)}</a>')
+        owner_line = " · ".join(owner_parts)
+
+    # Links line
+    link_parts = []
+    if website:
+        clean_url = website.split("?")[0].rstrip("/")
+        link_parts.append(f'<a href="{esc(website)}" target="_blank">Website</a>')
+    gbp_url = f"https://www.google.com/maps/place/?q=place_id:{place_id}" if place_id else ""
+    if gbp_url:
+        link_parts.append(
+            f'<a href="{esc(gbp_url)}" target="_blank">Google ({review_count} reviews, {rating:.1f}★)</a>'
+        )
+    if fb_urls:
+        link_parts.append(f'<a href="{esc(fb_urls[0])}" target="_blank">Facebook</a>')
+    if li_urls:
+        link_parts.append(f'<a href="{esc(li_urls[0])}" target="_blank">LinkedIn</a>')
+    if ig_urls:
+        link_parts.append(f'<a href="{esc(ig_urls[0])}" target="_blank">Instagram</a>')
+    links_line = " · ".join(link_parts)
+
+    # Revenue + FSM line
+    rev_fsm_parts = []
+    if revenue_band and revenue_band != "Unknown":
+        rev_fsm_parts.append(f"<strong>{esc(revenue_band)}</strong> est. revenue")
+    fsm_text = '<span class="no-fsm">No FSM detected</span>' if not has_fsm else '<span class="has-fsm">FSM detected</span>'
+    rev_fsm_parts.append(fsm_text)
+    rev_fsm_line = " · ".join(rev_fsm_parts)
+
+    # Pitch cards
+    pitch_html = ""
+    if pitches:
+        pitch_items = []
+        for p in pitches:
+            pitch_items.append(
+                f'<div class="pitch">'
+                f'<span class="pitch-label">{esc(p["label"])}</span>'
+                f'<p class="pitch-text">"{esc(p["text"])}"</p>'
+                f'</div>'
+            )
+        pitch_html = f'<div class="pitches">{"".join(pitch_items)}</div>'
 
     stats = {
         "has_jobs": bool(jobs),
-        "has_fsm_gap": not row.get("has_any_booking_tool"),
+        "has_fsm_gap": not has_fsm,
         "tier": tier_class,
-        "bullet_count": len(bullets),
+        "pitch_count": len(pitches),
         "accent": accent_cls,
     }
 
@@ -3196,14 +3494,24 @@ def render_lead_row(row: pd.Series, contact: pd.Series) -> tuple[str, dict]:
     <div class="lead {accent_cls}">
       <div class="lead-rank">{rank:02d}</div>
       <div class="lead-body">
-        <h3><a href="{esc(dossier_path)}">{esc(biz)}</a></h3>
-        <p class="lead-meta">{" · ".join(meta_bits)}</p>
+        <div class="lead-header">
+          <h3><a href="{esc(dossier_path)}">{esc(biz)}</a></h3>
+          <div class="lead-badges">
+            <span class="tier-badge {tier_class}">{tier_label}</span>
+          </div>
+        </div>
         {_render_chips(chips)}
-        <ul class="lead-bullets">{bullet_html}{more_bullets}</ul>
-      </div>
-      <div class="lead-action">
-        <div><span class="tier-badge {tier_class}">{tier_label}</span></div>
-        <a class="view-link" href="{esc(dossier_path)}">View dossier →</a>
+        <div class="call-sheet">
+          <div class="cs-row"><span class="cs-icon">📋</span>{esc(license_line)}</div>
+          <div class="cs-row"><span class="cs-icon">📍</span>{esc(addr_line)}</div>
+          <div class="cs-row"><span class="cs-icon">👤</span>{owner_line}</div>
+          <div class="cs-row"><span class="cs-icon">🔗</span>{links_line}</div>
+          <div class="cs-row"><span class="cs-icon">💰</span>{rev_fsm_line}</div>
+        </div>
+        {pitch_html}
+        <div class="lead-footer">
+          <a class="view-link" href="{esc(dossier_path)}">View full dossier →</a>
+        </div>
       </div>
     </div>
     """
