@@ -3613,18 +3613,27 @@ def render_index(scored: pd.DataFrame, contacts: pd.DataFrame) -> str:
 
     generated = datetime.now(timezone.utc).strftime("%Y-%m-%d")
 
+    # Compute the Monday–Friday window for the current week
+    today = datetime.now(timezone.utc).date()
+    monday = today - timedelta(days=today.weekday())
+    friday = monday + timedelta(days=4)
+    week_label = (
+        f"{monday.strftime('%A, %B %-d')} – "
+        f"{friday.strftime('%A, %B %-d')}"
+    )
+
     return f"""<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>HVAC Phoenix — Top 25 Hidden Gems</title>
+<title>Phoenix HVAC — Hidden Gem Call List</title>
 <style>{INDEX_CSS}</style>
 </head>
 <body>
 <div class="page">
 
   <div class="page-header">
-    <h1>Phoenix HVAC contractors · Top 25 hidden gems</h1>
+    <h1>{week_label}: Hidden Gem Call List</h1>
     <p class="sub">
       Ranked by multi-signal scoring from AZ contractor license data, Google reviews,
       website technology fingerprinting, public job postings, and public
