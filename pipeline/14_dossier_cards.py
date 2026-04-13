@@ -3848,22 +3848,22 @@ def render_index(scored: pd.DataFrame, contacts: pd.DataFrame) -> str:
       <div class="tier-row">
         <span class="tier-badge tier-high">TOP PRIORITY</span>
         <div class="tier-detail">
-          <strong>Score 40+ · Call this week.</strong>
-          Multiple independent signals converging — pain complaints, hiring posts, review surges, no FSM platform. These contractors have the loudest buying signals in the pool.
+          <strong>Score 40+.</strong>
+          Multiple independent signals converging — pain complaints, hiring posts, review surges, no FSM platform. Loudest buying signals in the pool.
         </div>
       </div>
       <div class="tier-row">
         <span class="tier-badge tier-strong">STRONG INTENT</span>
         <div class="tier-detail">
-          <strong>Score 25–39 · Call within two weeks.</strong>
-          Clear signal in at least one dimension. Worth the time — some dimension is clearly firing, but the full pattern hasn't converged yet.
+          <strong>Score 25–39.</strong>
+          Clear signal in at least one dimension — something is clearly firing, but the full pattern hasn't converged yet.
         </div>
       </div>
       <div class="tier-row">
         <span class="tier-badge tier-emerging">EMERGING</span>
         <div class="tier-detail">
-          <strong>Score below 25 · Work if there's capacity.</strong>
-          Early or thin signals. May be a future top-priority account — worth monitoring, not urgent.
+          <strong>Score below 25.</strong>
+          Early or thin signals. May be a future top-priority account.
         </div>
       </div>
     </div>
