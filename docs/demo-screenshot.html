@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Demo Screenshot</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #1a1a1a;
+  background: #eceef2;
+  padding: 0;
+  line-height: 1.55;
+  width: 1080px;
+  height: 1080px;
+  overflow: hidden;
+}
+.page {
+  max-width: 1080px;
+  margin: 0;
+  padding: 28px 32px;
+  background: white;
+  min-height: 1080px;
+}
+.lead {
+  display: flex;
+  gap: 20px;
+  padding: 24px 28px;
+  border-bottom: 1px solid #f0f2f5;
+  border-left: 5px solid #e6a700;
+  background: #fffdf5;
+  border-radius: 10px;
+  margin-bottom: 0;
+}
+.lead-rank {
+  font-size: 36px;
+  font-weight: 800;
+  color: #c9cdd5;
+  letter-spacing: -1px;
+  line-height: 1;
+  padding-top: 6px;
+}
+.lead-body { flex: 1; min-width: 0; }
+.lead-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+.lead-header h3 {
+  margin: 0 0 4px;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+  color: #0a0a1a;
+}
+.tier-badge {
+  display: inline-block;
+  padding: 5px 14px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  white-space: nowrap;
+}
+.tier-high { background: #fde8e8; color: #9a1a1a; }
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 8px 0 0;
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  white-space: nowrap;
+  border: 1px solid transparent;
+}
+.chip .chip-val {
+  background: rgba(255,255,255,0.55);
+  color: inherit;
+  padding: 1px 6px;
+  border-radius: 999px;
+  font-size: 9px;
+  font-weight: 700;
+}
+.chip-growth { background: #fff4d6; color: #7a4d00; border-color: #f0d896; }
+.chip-demand { background: #efe8ff; color: #4a2a9a; border-color: #d8c8ff; }
+.chip-nofsm  { background: #eceff4; color: #3d4656; border-color: #d0d6e0; }
+.call-sheet {
+  margin: 12px 0;
+  padding: 14px 16px;
+  background: #f8f9fb;
+  border: 1px solid #e8ebf0;
+  border-radius: 6px;
+  font-size: 14px;
+  line-height: 1.7;
+}
+.cs-row {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 1px 0;
+}
+.cs-icon { flex-shrink: 0; width: 20px; text-align: center; font-size: 13px; }
+.cs-row a { color: #0066cc; text-decoration: none; }
+.cs-row strong { font-weight: 600; color: #1a1a1a; }
+.no-fsm { color: #1a8c4a; font-weight: 600; }
+.pitches {
+  margin: 14px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.pitch {
+  padding: 12px 16px;
+  background: #fffdf5;
+  border: 1px solid #f0e8c8;
+  border-radius: 6px;
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+.pitch-label {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  color: #8a5a00;
+  background: #fff4d6;
+  padding: 2px 8px;
+  border-radius: 3px;
+  margin-bottom: 5px;
+}
+.pitch-text {
+  margin: 4px 0 0;
+  color: #333;
+  font-style: italic;
+}
+.lead-footer { margin-top: 14px; }
+.view-link {
+  display: inline-block;
+  padding: 8px 16px;
+  background: #0066cc;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 13px;
+  font-weight: 600;
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="lead">
+  <div class="lead-rank">04</div>
+  <div class="lead-body">
+    <div class="lead-header">
+      <h3>[DEMO] Acme Property Management LLC</h3>
+      <div><span class="tier-badge tier-high">HIGH INTENT</span></div>
+    </div>
+    <div class="chips">
+      <span class="chip chip-growth">GROWTH <span class="chip-val">23</span></span>
+      <span class="chip chip-demand">DEMAND PULL <span class="chip-val">11</span></span>
+      <span class="chip chip-nofsm">NO PMS</span>
+    </div>
+    <div class="call-sheet">
+      <div class="cs-row"><span class="cs-icon">📋</span>8 yrs licensed · NY Real Estate Broker (#DEMO-00000000)</div>
+      <div class="cs-row"><span class="cs-icon">📍</span>123 Example Ave, Anytown, NY, 10001</div>
+      <div class="cs-row"><span class="cs-icon">👤</span><strong>Jane Doe</strong> · <a href="#">(555) 555-0123</a></div>
+      <div class="cs-row"><span class="cs-icon">🔗</span><a href="#">Website</a> · <a href="#">Google (94 reviews, 4.7★)</a> · <a href="#">LinkedIn</a></div>
+      <div class="cs-row"><span class="cs-icon">💰</span><strong>$1.5M–$5M</strong> est. revenue · <span class="no-fsm">No PMS detected</span></div>
+    </div>
+    <div class="pitches">
+      <div class="pitch">
+        <span class="pitch-label">GROWTH</span>
+        <p class="pitch-text">"I noticed you added 14 units to your portfolio in the last 6 months based on new listings under your brokerage. That kind of growth usually means spreadsheets start breaking — happy to show you how our platform handles scaling doors without adding a leasing coordinator."</p>
+      </div>
+      <div class="pitch">
+        <span class="pitch-label">DEMAND</span>
+        <p class="pitch-text">"At least 3 of your recent reviews mention tenants who left another management company to come to you — one specifically called out 'finally getting calls returned.' That's a strong signal. The right systems can help you capture that demand without burning out your team."</p>
+      </div>
+      <div class="pitch">
+        <span class="pitch-label">TEAM</span>
+        <p class="pitch-text">"I see [Employee A] and [Employee B] are getting great reviews from your tenants — especially for maintenance response time. Our software can free up their time on work order routing and tenant communication, so they spend more time on the relationships that actually drive renewals."</p>
+      </div>
+    </div>
+    <div class="lead-footer">
+      <a class="view-link" href="#">View full dossier →</a>
+    </div>
+  </div>
+</div>
+
+</div>
+</body>
+</html>
