@@ -3214,6 +3214,8 @@ def generate_pitches(
     owner_first = s(contact.get("primary_owner_first_name"))
     place_id = s(row.get("place_id"))
     revenue_band = s(row.get("revenue_band"))
+    review_count = i(row.get("place_review_count"))
+    years = f(row.get("license_years"))
 
     candidates: list[dict] = []
 
@@ -3294,20 +3296,40 @@ def generate_pitches(
             ),
         })
 
-    # 5. No FSM + revenue band (for bigger contractors)
+    # 5. No FSM — lead with a growth indicator, not revenue
     has_fsm = row.get("has_any_booking_tool")
-    if not has_fsm and revenue_band in ("$500K–$1.5M", "$1.5M–$5M", "$5M+"):
-        candidates.append({
-            "label": "TECH GAP",
-            "priority": 65,
-            "text": (
-                f"Your business is doing {revenue_band} in annual volume, "
-                f"and from what I can see, you're running operations without "
-                f"a field service platform. Most contractors at your size "
-                f"find that the phones-and-paper approach starts creating "
-                f"bottlenecks. I'd love to show you what's possible."
-            ),
-        })
+    if not has_fsm:
+        # Pick the strongest growth fact we have for the opener
+        if vel_ratio >= 2.0 and recent_90 >= 5:
+            growth_hook = (
+                f"With {recent_90} reviews in just the last 90 days, "
+                f"it's clear your business is picking up momentum"
+            )
+        elif review_count and review_count >= 200:
+            growth_hook = (
+                f"With {review_count} Google reviews and a {f(row.get('place_rating')):.1f} "
+                f"rating, you've clearly built something customers trust"
+            )
+        elif years and years >= 10:
+            growth_hook = (
+                f"After {years:.0f} years in business, you've built a "
+                f"reputation that speaks for itself"
+            )
+        else:
+            growth_hook = None
+
+        if growth_hook:
+            candidates.append({
+                "label": "TECH GAP",
+                "priority": 65,
+                "text": (
+                    f"{growth_hook}. From what I can see, you're managing "
+                    f"all of that without a field service platform — which "
+                    f"is impressive, but it usually means there's a ceiling "
+                    f"coming. I'd love to show you how the right tools can "
+                    f"help you keep growing without the growing pains."
+                ),
+            })
 
     # 6. One-person / founder dependency
     founder = s(row.get("llm_founder_involvement"))
