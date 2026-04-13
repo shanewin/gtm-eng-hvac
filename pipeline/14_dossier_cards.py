@@ -1355,6 +1355,18 @@ body {
   padding: 22px 28px;
   margin-bottom: 24px;
 }
+.legend-toggle {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1a1a1a;
+  cursor: pointer;
+  list-style: none;
+  padding: 0 0 8px;
+}
+.legend-toggle::-webkit-details-marker { display: none; }
+.legend-toggle::before { content: "▾ "; color: #888; }
+.legend:not([open]) .legend-toggle::before { content: "▸ "; }
+.legend:not([open]) { padding: 16px 28px; }
 .legend h2 {
   font-size: 11px;
   text-transform: uppercase;
@@ -3841,7 +3853,8 @@ def render_index(scored: pd.DataFrame, contacts: pd.DataFrame) -> str:
     </div>
   </div>
 
-  <div class="legend">
+  <details class="legend" open>
+    <summary class="legend-toggle">Guide — Priority tiers, badges, and scoring</summary>
 
     <h2>Priority tiers</h2>
     <div class="tier-guide">
@@ -3927,7 +3940,7 @@ def render_index(scored: pd.DataFrame, contacts: pd.DataFrame) -> str:
       </div>
     </details>
 
-  </div>
+  </details>
 
   {"".join(rows)}
 
