@@ -1188,6 +1188,17 @@ blockquote.evidence.grouped .obs .obs-label {
 .tech-row .v.yes { color: #1a8c4a; font-weight: 600; }
 .tech-row .v.no { color: #c4332b; font-weight: 600; }
 
+.back-nav {
+  max-width: 860px;
+  margin: 0 auto 12px;
+}
+.back-nav a {
+  font-size: 13px;
+  font-weight: 600;
+  color: #0066cc;
+  text-decoration: none;
+}
+.back-nav a:hover { text-decoration: underline; }
 .footer {
   padding: 16px 36px;
   background: #fafbfd;
@@ -3210,6 +3221,7 @@ def render_dossier(row: pd.Series, contact: pd.Series) -> str:
 <style>{CSS}</style>
 </head>
 <body>
+<div class="back-nav"><a href="index.html">← Back to list</a></div>
 <div class="dossier">
 {body}
 <div class="footer">Rank {final_rank} · Generated {generated} · HVAC Signals pipeline</div>
