@@ -1084,6 +1084,56 @@ blockquote.evidence.grouped .obs .obs-label {
 }
 .job-list .meta a:hover { text-decoration: underline; }
 
+.call-sheet {
+  padding: 12px 14px;
+  background: #f8f9fb;
+  border: 1px solid #e8ebf0;
+  border-radius: 6px;
+  font-size: 13px;
+  line-height: 1.7;
+}
+.cs-row {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 1px 0;
+}
+.cs-icon { flex-shrink: 0; width: 18px; text-align: center; font-size: 12px; }
+.cs-row a { color: #0066cc; text-decoration: none; }
+.cs-row a:hover { text-decoration: underline; }
+.cs-row strong { font-weight: 600; color: #1a1a1a; }
+.no-fsm { color: #1a8c4a; font-weight: 600; }
+.has-fsm { color: #9a1a1a; font-weight: 600; }
+.pitches {
+  margin: 12px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.pitch {
+  padding: 10px 14px;
+  background: #fffdf5;
+  border: 1px solid #f0e8c8;
+  border-radius: 6px;
+  font-size: 13px;
+  line-height: 1.55;
+}
+.pitch-label {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  color: #8a5a00;
+  background: #fff4d6;
+  padding: 2px 8px;
+  border-radius: 3px;
+  margin-bottom: 4px;
+}
+.pitch-text {
+  margin: 4px 0 0;
+  color: #333;
+  font-style: italic;
+}
 .contact-card {
   background: #f8f9fb;
   border: 1px solid #e8ebf0;
@@ -3184,6 +3234,127 @@ def render_tech_card(row: pd.Series) -> str:
 
 # ---------- orchestration ----------
 
+def render_call_sheet_card(row: pd.Series, contact: pd.Series) -> str:
+    """
+    The sales call sheet card — sits at the top of every dossier, right
+    after the header. Contains the same contact info, revenue band, and
+    pitch scripts that appear on the index page, so a rep opening a
+    single dossier has everything they need without going back to the list.
+    """
+    biz = s(row.get("business_name"))
+    place_id = s(row.get("place_id"))
+    city = s(row.get("city"))
+    state = s(row.get("state")) or "AZ"
+    zipcode = s(row.get("zip"))
+    address = s(row.get("address"))
+    years = f(row.get("license_years"))
+    review_count = i(row.get("place_review_count"))
+    rating = f(row.get("place_rating"))
+    website = s(row.get("place_website"))
+    phone = s(row.get("place_phone"))
+    revenue_band = s(row.get("revenue_band"))
+    has_fsm = row.get("has_any_booking_tool")
+    cls_code = s(row.get("class"))
+
+    owner = s(contact.get("primary_owner_name"))
+    owner_first = s(contact.get("primary_owner_first_name"))
+    biz_email = s(contact.get("business_email"))
+
+    # Validator-approved social URLs
+    validated = load_validator_cache(place_id)
+    def _kept_cs(cat):
+        return [str(it.get("value") or "") for it in (validated.get(cat) or []) if it.get("belongs") and it.get("value")]
+    fb_urls = _kept_cs("facebook_urls")
+    li_urls = _kept_cs("linkedin_company_urls")
+    ig_urls = _kept_cs("instagram_urls")
+    discovered_emails = _kept_cs("emails")
+    email_display = discovered_emails[0] if discovered_emails else biz_email
+
+    # License line
+    license_bits = []
+    if years:
+        license_bits.append(f"{years:.0f} yrs licensed")
+    scope = "Dual-scope (CR-39)" if cls_code == "CR-39" else (
+        f"Residential ({cls_code})" if cls_code in ("R-39", "R-39R") else ""
+    )
+    if scope:
+        license_bits.append(scope)
+    license_line = " · ".join(license_bits)
+
+    # Address
+    addr_parts = []
+    if address:
+        addr_parts.append(address)
+    if city:
+        addr_parts.append(city)
+    addr_parts.append(state)
+    if zipcode:
+        addr_parts.append(zipcode)
+    addr_line = ", ".join(addr_parts)
+
+    # Owner line
+    owner_line = ""
+    if owner:
+        owner_parts = [f"<strong>{esc(owner)}</strong>"]
+        if phone:
+            tel = re.sub(r"[^\d+]", "", phone)
+            owner_parts.append(f'<a href="tel:{tel}">{esc(phone)}</a>')
+        if email_display:
+            owner_parts.append(f'<a href="mailto:{esc(email_display)}">{esc(email_display)}</a>')
+        owner_line = " · ".join(owner_parts)
+
+    # Links
+    link_parts = []
+    if website:
+        link_parts.append(f'<a href="{esc(website)}" target="_blank">Website</a>')
+    gbp_url = f"https://www.google.com/maps/place/?q=place_id:{place_id}" if place_id else ""
+    if gbp_url:
+        link_parts.append(f'<a href="{esc(gbp_url)}" target="_blank">Google ({review_count} reviews, {rating:.1f}★)</a>')
+    if fb_urls:
+        link_parts.append(f'<a href="{esc(fb_urls[0])}" target="_blank">Facebook</a>')
+    if li_urls:
+        link_parts.append(f'<a href="{esc(li_urls[0])}" target="_blank">LinkedIn</a>')
+    if ig_urls:
+        link_parts.append(f'<a href="{esc(ig_urls[0])}" target="_blank">Instagram</a>')
+    links_line = " · ".join(link_parts)
+
+    # Revenue + FSM
+    rev_fsm_parts = []
+    if revenue_band and revenue_band != "Unknown":
+        rev_fsm_parts.append(f"<strong>{esc(revenue_band)}</strong> est. revenue")
+    fsm_text = '<span class="no-fsm">No FSM detected</span>' if not has_fsm else '<span class="has-fsm">FSM detected</span>'
+    rev_fsm_parts.append(fsm_text)
+    rev_fsm_line = " · ".join(rev_fsm_parts)
+
+    # Pitches
+    pitches = generate_pitches(row, contact)
+    pitch_html = ""
+    if pitches:
+        pitch_items = []
+        for p in pitches:
+            pitch_items.append(
+                f'<div class="pitch">'
+                f'<span class="pitch-label">{esc(p["label"])}</span>'
+                f'<p class="pitch-text">"{esc(p["text"])}"</p>'
+                f'</div>'
+            )
+        pitch_html = f'<div class="pitches">{"".join(pitch_items)}</div>'
+
+    return f"""
+    <div class="card">
+      <p class="card-label">Call sheet</p>
+      <div class="call-sheet" style="margin:8px 0;">
+        <div class="cs-row"><span class="cs-icon">📋</span>{esc(license_line)}</div>
+        <div class="cs-row"><span class="cs-icon">📍</span>{esc(addr_line)}</div>
+        <div class="cs-row"><span class="cs-icon">👤</span>{owner_line}</div>
+        <div class="cs-row"><span class="cs-icon">🔗</span>{links_line}</div>
+        <div class="cs-row"><span class="cs-icon">💰</span>{rev_fsm_line}</div>
+      </div>
+      {pitch_html}
+    </div>
+    """
+
+
 def render_dossier(row: pd.Series, contact: pd.Series) -> str:
     biz = s(row.get("business_name"))
     final_rank = i(row.get("final_rank"))
@@ -3193,11 +3364,9 @@ def render_dossier(row: pd.Series, contact: pd.Series) -> str:
     reviews = load_reviews(place_id)
     jobs, _ = load_jobs(place_id, s(row.get("business_name")))
 
-    # "Why this is a good lead" comes FIRST as the 5-second summary.
-    # Then tech stack gap (loudest objective signal).
-    # Then decision maker, then all the evidence cards as proof.
     sections = [
         render_header(row, jobs),
+        render_call_sheet_card(row, contact),
         render_why_card(row, contact, reviews, jobs),
         render_tech_card(row),
         render_decision_maker(contact),
