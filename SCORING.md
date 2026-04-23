@@ -8,7 +8,7 @@ Every contractor in the qualified pool gets a score across seven independent dim
 
 Ranking is a sort by `score_total`, descending, with one hard exclusion: contractors whose job postings explicitly require experience with a named FSM platform (ServiceTitan, Jobber, Housecall Pro, etc.) are suppressed from the top 25 regardless of their score. They already bought — we don't pitch our own customers.
 
-Two non-scoring display fields also appear on every dossier: a **size tier** (S/M/L/XL) computed from license tenure and review volume, and a **signal freshness** badge when 25%+ of the contractor's dated signals come from the last 30 days.
+Two non-scoring display fields appear on the dossier header alongside the score: a **revenue band** computed from the contractor's AZ ROC surety bond amount — shown on every dossier with 100% pool coverage — and a **signal freshness** badge that fires when 25%+ of the contractor's dated signals come from the last 30 days. A **size tier** (S/M/L/XL) derived from license tenure and review volume is also stored in the scored CSV as a fallback for contexts where bond data is unavailable, but it does not render when a revenue band is present.
 
 Every claim inside a score traces back to a specific cached piece of evidence — a review quote with a date, a job posting URL, a public-record license, a dispatch time extracted from review text. There are no opinion-based adjustments and no "gut feel" overrides.
 
@@ -250,7 +250,7 @@ Being honest about the edges:
 - **Score 15–25**, `light_signal`: thin data. Worth a look if there's capacity, skip if there isn't.
 - **Score < 15**: the score model can't make a confident statement. These don't appear in the top 25.
 - **Any contractor with a FRESH badge**: call them first regardless of rank. The badge means their pain is *now*, not six months ago.
-- **`size_tier = L` or `XL`**: route to the enterprise sales motion. `S` or `M`: route to SMB.
+- **Revenue band `$1.5M+`**: route to the enterprise sales motion. Anything below: route to SMB.
 - **`score_icp_fit = +5` (Dual-scope)**: commercial customer segment is available to them, which matters for enterprise FSM pitches. `+2` (Residential-only) is a Jobber / Housecall Pro shape.
 
 **Also on every dossier (not part of the scoring model):**
@@ -258,4 +258,16 @@ Being honest about the edges:
 - **Referenced people.** First names of technicians, dispatchers, and office staff that customers mention in reviews (from `pipeline/08b_review_llm.py`). Rendered inline on the decision-maker card as "Also named in reviews — ask for any of these by first name." The owner is deduped so the same person doesn't appear twice. These are not a scoring signal — they're a sales-call aid.
 - **Validated contacts.** Emails, phones, social URLs, and job postings, each with a written reason from the LLM validator explaining why it belongs to this contractor. No fuzzy matching — every contact on every dossier traces back to a specific validator decision.
 
-The scoring model fits in one Python file ([pipeline/11_scoring.py](pipeline/11_scoring.py)), under 800 lines, with no opinion-based weights that can't be traced back to specific cached evidence. Every number in every dossier header can be reconstructed from the raw signal caches by re-running the scorer. That reproducibility is the point.
+The scoring model fits in one Python file ([pipeline/11_scoring.py](pipeline/11_scoring.py)), under 1,000 lines, with no opinion-based weights that can't be traced back to specific cached evidence. Every number in every dossier header can be reconstructed from the raw signal caches by re-running the scorer. That reproducibility is the point.
+
+## TL;DR
+
+- **Seven additive dimensions.** Direct pain (0–40), scaling strain (0–25), demand pull (0–20), multi-signal convergence bonus (0–15), operational readiness (0–10), ICP fit (0–5), disqualifiers (−30–0).
+- **Independent sources, same direction.** The convergence bonus rewards agreement across six sources (LLM NLP, regex NLP, hiring, dispatch, burst, velocity) — no contractor reaches the top on one signal.
+- **Thin-sample discount.** Direct pain and scaling strain are multiplied by `reviews_analyzed / 15` when fewer than 15 reviews were LLM-analyzed. Demand pull, readiness, convergence, and disqualifiers are not discounted.
+- **Hard exclusion.** Job postings that require a named FSM platform (ServiceTitan, Jobber, Housecall Pro, etc.) trigger `already_fsm_customer` and push the contractor to the bottom of the sort regardless of score.
+- **180-day recency window.** All review-derived signals (pain, momentum, switcher, dispatch) only count evidence from the last six months.
+- **Confidence tier, not score, gates trust.** High-confidence needs 3+ sources firing and 15+ reviews analyzed; anything under 10 reviews is capped at low.
+- **Primary narrative.** One-word story — `active_pain`, `scaling_strain`, `demand_pull`, `mixed`, `light_signal`, or `unclear` — drives the call motion.
+- **Two non-scoring display fields.** Revenue band from the ROC bond amount (primary size indicator, 100% coverage) and a FRESH/RECENT badge when dated signals concentrate in the last 30 days. Size tier is a CSV fallback.
+- **Final rank.** Sort by `already_fsm_customer` ascending, then `score_total` descending. Top 25 get dossiers; the other 45 stay in the pool.

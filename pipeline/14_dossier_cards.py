@@ -3853,7 +3853,7 @@ def render_index(scored: pd.DataFrame, contacts: pd.DataFrame) -> str:
     </div>
   </div>
 
-  <details class="legend" open>
+  <details class="legend">
     <summary class="legend-toggle">Guide — Priority tiers, badges, and scoring</summary>
 
     <h2>Priority tiers</h2>
