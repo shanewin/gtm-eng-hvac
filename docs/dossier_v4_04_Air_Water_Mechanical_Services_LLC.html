@@ -65,6 +65,47 @@ body {
 .chip-hiring  { background: #4a0808; color: #ffdcdc; border-color: #4a0808; }
 .chip-hiring .chip-val { color: #ffdcdc; background: rgba(255,255,255,0.15); }
 .chip-warn    { background: #fff9d6; color: #7a5c00; border-color: #f0d896; }
+.chip-help {
+  display: inline-flex;
+  width: 13px; height: 13px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.08);
+  color: inherit;
+  font-size: 9px;
+  font-weight: 700;
+  align-items: center;
+  justify-content: center;
+  margin-left: 2px;
+  opacity: 0.55;
+}
+.chip-hiring .chip-help { background: rgba(255,255,255,0.2); }
+.chip[data-tip] { position: relative; cursor: help; }
+.chip[data-tip]:hover .chip-help { opacity: 1; }
+.chip[data-tip]::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1a1f2a;
+  color: #f5f6f8;
+  padding: 8px 11px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  text-transform: none;
+  white-space: normal;
+  width: max-content;
+  max-width: 260px;
+  line-height: 1.45;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms ease;
+  z-index: 20;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+}
+.chip[data-tip]:hover::after { opacity: 1; }
 .header-top {
   display: flex;
   justify-content: space-between;
@@ -106,6 +147,47 @@ body {
 .tier-high { background: #e6f4ea; color: #14532d; }
 .tier-strong { background: #fff4d6; color: #8a5a00; }
 .tier-emerging { background: #e6f2ff; color: #003b7a; }
+.score-badge {
+  display: inline-block;
+  padding: 7px 14px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  white-space: nowrap;
+  background: #eef2ff;
+  color: #3730a3;
+  border: 1px solid #c7d2fe;
+  font-variant-numeric: tabular-nums;
+}
+.score-badge[data-tip] {
+  position: relative;
+  cursor: help;
+}
+.score-badge[data-tip]::after {
+  content: attr(data-tip);
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  background: #1a1f2a;
+  color: #f5f6f8;
+  padding: 8px 11px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  text-transform: none;
+  white-space: normal;
+  width: max-content;
+  max-width: 260px;
+  line-height: 1.45;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms ease;
+  z-index: 30;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+}
+.score-badge[data-tip]:hover::after { opacity: 1; }
 
 .badge-stack {
   display: flex;
@@ -532,9 +614,9 @@ blockquote.evidence.grouped .obs .obs-label {
           <h1 class="biz-name">Air &amp; Water Mechanical Services LLC</h1>
           <p class="biz-meta">Mesa, AZ · 6 years licensed in AZ · Dual-scope HVAC license (commercial + residential) · 170 Google reviews · 4.8★</p>
           <p class="links"><a href="https://airwateraz.com/" target="_blank" rel="noopener">Company website ↗</a><a href="https://www.google.com/maps/place/?q=place_id:ChIJdwwuMHKoK4cRn6X60RGl7pM" target="_blank" rel="noopener">Google Business Profile ↗</a></p>
-          <div class="chips"><span class="chip chip-growth">GROWTH<span class="chip-val">25</span></span><span class="chip chip-demand">DEMAND PULL<span class="chip-val">9</span></span><span class="chip chip-nofsm">NO FSM</span></div>
+          <div class="chips"><span class="chip chip-growth" data-tip="Business is scaling faster than its infrastructure can handle — ops hiring, review velocity acceleration, momentum language." title="Business is scaling faster than its infrastructure can handle — ops hiring, review velocity acceleration, momentum language.">GROWTH<span class="chip-val">25</span><span class="chip-help" aria-hidden="true">?</span></span><span class="chip chip-demand" data-tip="Customers switching from competitors, or one person personally handling the work. The capacity-ceiling pattern that forces a software decision." title="Customers switching from competitors, or one person personally handling the work. The capacity-ceiling pattern that forces a software decision.">DEMAND PULL<span class="chip-val">9</span><span class="chip-help" aria-hidden="true">?</span></span><span class="chip chip-nofsm" data-tip="No field service management platform detected on their website. By definition, they&#x27;re a prospect — not someone else&#x27;s customer." title="No field service management platform detected on their website. By definition, they&#x27;re a prospect — not someone else&#x27;s customer.">NO FSM<span class="chip-help" aria-hidden="true">?</span></span></div>
         </div>
-        <div class="badge-stack"><span class="tier-badge tier-high">TOP PRIORITY</span><span class="size-badge">$500K–$1.5M est. annual revenue</span><span class="fresh-badge fresh-warm" title="3 of 7 dated signals are in the last 30 days">RECENT · 42% last 30d</span></div>
+        <div class="badge-stack"><span class="score-badge" data-tip="Total score across 7 weighted dimensions. Top score in the current pool: 59. Higher means a louder buying signal.">Score 50</span><span class="tier-badge tier-high">TOP PRIORITY</span><span class="size-badge">$500K–$1.5M est. annual revenue</span></div>
       </div>
     </div>
     
@@ -547,7 +629,7 @@ blockquote.evidence.grouped .obs .obs-label {
         <div class="cs-row"><span class="cs-icon">🔗</span><a href="https://airwateraz.com/" target="_blank">Website</a> · <a href="https://www.google.com/maps/place/?q=place_id:ChIJdwwuMHKoK4cRn6X60RGl7pM" target="_blank">Google (170 reviews, 4.8★)</a> · <a href="https://www.facebook.com/airandwatermechanical/" target="_blank">Facebook</a></div>
         <div class="cs-row"><span class="cs-icon">💰</span><strong>$500K–$1.5M</strong> est. revenue · <span class="no-fsm">No FSM detected</span></div>
       </div>
-      <div class="pitches"><div class="pitch"><span class="pitch-label">GROWTH</span><p class="pitch-text">"I noticed your review volume surged — 19 reviews in the last 90 days versus 4 in the prior 90. That&#x27;s 5x growth. To help you keep up with that momentum, I&#x27;d love to show you how our platform can help you scale operations without adding overhead."</p></div><div class="pitch"><span class="pitch-label">DEMAND</span><p class="pitch-text">"At least 2 of your recent reviews mention customers who switched from another HVAC company to yours. That&#x27;s a strong signal — people are choosing you over the competition. The right systems can help you capture that demand without burning out your team."</p></div><div class="pitch"><span class="pitch-label">TEAM</span><p class="pitch-text">"I see Ryan, Bryan and Chris are getting great reviews from your customers. Our software can free up their time on paperwork, scheduling, and follow-ups — so they spend more time in the field doing what they&#x27;re best at."</p></div></div>
+      <p class="card-label" style="margin-top:14px;">Suggested openers</p><div class="pitches"><div class="pitch"><span class="pitch-label">GROWTH</span><p class="pitch-text">"Your Google reviews jumped from 4 to 19 in the last 90 days — 5x growth. We see this surge pattern a lot with contractors whose demand is outpacing their ops capacity. Our platform is built to absorb that volume without you having to hire ahead of it."</p></div><div class="pitch"><span class="pitch-label">DEMAND</span><p class="pitch-text">"2 of your recent reviews are from customers who left another HVAC company to come to you. We&#x27;ve watched this exact pattern with our clients — contractors winning on reputation eventually break when the inbound catches up. Our platform is what most of them wish they&#x27;d had before they needed it."</p></div><div class="pitch"><span class="pitch-label">TEAM</span><p class="pitch-text">"Your customers keep name-dropping Ryan, Bryan and Chris in reviews — that kind of loyalty is rare. The shops we work with in that spot usually find their best techs are stuck on admin instead of in the field. Our platform takes the paperwork and scheduling off their plate."</p></div></div>
     </div>
     
     <div class="card why-card">
@@ -665,7 +747,7 @@ blockquote.evidence.grouped .obs .obs-label {
       <div style="margin:14px 0;"><svg width="740" height="220" viewBox="0 0 740 220"><line x1="40" y1="178.0" x2="720" y2="178.0" stroke="#eef0f3" stroke-width="1"/><text x="34" y="182.0" text-anchor="end" font-size="10" fill="#888">0</text><line x1="40" y1="138.5" x2="720" y2="138.5" stroke="#eef0f3" stroke-width="1"/><text x="34" y="142.5" text-anchor="end" font-size="10" fill="#888">3</text><line x1="40" y1="99.0" x2="720" y2="99.0" stroke="#eef0f3" stroke-width="1"/><text x="34" y="103.0" text-anchor="end" font-size="10" fill="#888">7</text><line x1="40" y1="59.5" x2="720" y2="59.5" stroke="#eef0f3" stroke-width="1"/><text x="34" y="63.5" text-anchor="end" font-size="10" fill="#888">11</text><line x1="40" y1="20.0" x2="720" y2="20.0" stroke="#eef0f3" stroke-width="1"/><text x="34" y="24.0" text-anchor="end" font-size="10" fill="#888">15</text><path d="M 40.0,178 L 40.0,167.46666666666667 L 101.81818181818181,178.0 L 163.63636363636363,167.46666666666667 L 225.45454545454547,167.46666666666667 L 287.27272727272725,167.46666666666667 L 349.09090909090907,167.46666666666667 L 410.90909090909093,167.46666666666667 L 472.72727272727275,146.4 L 534.5454545454545,51.599999999999994 L 596.3636363636364,167.46666666666667 L 658.1818181818181,125.33333333333334 L 720.0,167.46666666666667 L 720.0,178 Z" fill="#0066cc" fill-opacity="0.08"/><path d="M 40.0,167.46666666666667 L 101.81818181818181,178.0 L 163.63636363636363,167.46666666666667 L 225.45454545454547,167.46666666666667 L 287.27272727272725,167.46666666666667 L 349.09090909090907,167.46666666666667 L 410.90909090909093,167.46666666666667 L 472.72727272727275,146.4 L 534.5454545454545,51.599999999999994 L 596.3636363636364,167.46666666666667 L 658.1818181818181,125.33333333333334 L 720.0,167.46666666666667" fill="none" stroke="#0066cc" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/><circle cx="40.0" cy="167.46666666666667" r="3.5" fill="#0066cc" stroke="white" stroke-width="1.5"/><text x="40.0" y="158.46666666666667" text-anchor="middle" font-size="11" fill="#333" font-weight="600">1</text><text x="40.0" y="196" text-anchor="middle" font-size="10" fill="#666">May 25</text><circle cx="101.81818181818181" cy="178.0" r="3.5" fill="#d0d4db" stroke="white" stroke-width="1.5"/><text x="101.81818181818181" y="196" text-anchor="middle" font-size="10" fill="#666">Jun 25</text><circle cx="163.63636363636363" cy="167.46666666666667" r="3.5" fill="#0066cc" stroke="white" stroke-width="1.5"/><text x="163.63636363636363" y="158.46666666666667" text-anchor="middle" font-size="11" fill="#333" font-weight="600">1</text><text x="163.63636363636363" y="196" text-anchor="middle" font-size="10" fill="#666">Jul 25</text><circle cx="225.45454545454547" cy="167.46666666666667" r="3.5" fill="#0066cc" stroke="white" stroke-width="1.5"/><text x="225.45454545454547" y="158.46666666666667" text-anchor="middle" font-size="11" fill="#333" font-weight="600">1</text><text x="225.45454545454547" y="196" text-anchor="middle" font-size="10" fill="#666">Aug 25</text><circle cx="287.27272727272725" cy="167.46666666666667" r="3.5" fill="#0066cc" stroke="white" stroke-width="1.5"/><text x="287.27272727272725" y="158.46666666666667" text-anchor="middle" font-size="11" fill="#333" font-weight="600">1</text><text x="287.27272727272725" y="196" text-anchor="middle" font-size="10" fill="#666">Sep 25</text><circle cx="349.09090909090907" cy="167.46666666666667" r="3.5" fill="#0066cc" stroke="white" stroke-width="1.5"/><text x="349.09090909090907" y="158.46666666666667" text-anchor="middle" font-size="11" fill="#333" font-weight="600">1</text><text x="349.09090909090907" y="196" text-anchor="middle" font-size="10" fill="#666">Oct 25</text><circle cx="410.90909090909093" cy="167.46666666666667" r="3.5" fill="#0066cc" stroke="white" stroke-width="1.5"/><text x="410.90909090909093" y="158.46666666666667" text-anchor="middle" font-size="11" fill="#333" font-weight="600">1</text><text x="410.90909090909093" y="196" text-anchor="middle" font-size="10" fill="#666">Nov 25</text><circle cx="472.72727272727275" cy="146.4" r="3.5" fill="#0066cc" stroke="white" stroke-width="1.5"/><text x="472.72727272727275" y="137.4" text-anchor="middle" font-size="11" fill="#333" font-weight="600">3</text><text x="472.72727272727275" y="196" text-anchor="middle" font-size="10" fill="#666">Dec 25</text><circle cx="534.5454545454545" cy="51.599999999999994" r="3.5" fill="#0066cc" stroke="white" stroke-width="1.5"/><text x="534.5454545454545" y="42.599999999999994" text-anchor="middle" font-size="11" fill="#333" font-weight="600">12</text><text x="534.5454545454545" y="196" text-anchor="middle" font-size="10" fill="#666">Jan 26</text><circle cx="596.3636363636364" cy="167.46666666666667" r="3.5" fill="#0066cc" stroke="white" stroke-width="1.5"/><text x="596.3636363636364" y="158.46666666666667" text-anchor="middle" font-size="11" fill="#333" font-weight="600">1</text><text x="596.3636363636364" y="196" text-anchor="middle" font-size="10" fill="#666">Feb 26</text><circle cx="658.1818181818181" cy="125.33333333333334" r="3.5" fill="#0066cc" stroke="white" stroke-width="1.5"/><text x="658.1818181818181" y="116.33333333333334" text-anchor="middle" font-size="11" fill="#333" font-weight="600">5</text><text x="658.1818181818181" y="196" text-anchor="middle" font-size="10" fill="#666">Mar 26</text><circle cx="720.0" cy="167.46666666666667" r="3.5" fill="#0066cc" stroke="white" stroke-width="1.5"/><text x="720.0" y="158.46666666666667" text-anchor="middle" font-size="11" fill="#333" font-weight="600">1</text><text x="720.0" y="196" text-anchor="middle" font-size="10" fill="#666">Apr 26</text></svg></div>
     </div>
     
-<div class="footer">Rank 4 · Generated 2026-04-13 · HVAC Signals pipeline</div>
+<div class="footer">Rank 4 · Generated 2026-04-24 · HVAC Signals pipeline</div>
 </div>
 </body>
 </html>

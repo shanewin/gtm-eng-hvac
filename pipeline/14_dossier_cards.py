@@ -133,15 +133,27 @@ def build_signal_chips(row: pd.Series, jobs: list[dict]) -> list[dict]:
     demand = f(row.get("score_demand_pull"))
 
     if direct_pain >= 5:
-        chips.append({"label": "PAIN", "value": f"{direct_pain:.0f}", "cls": "chip-pain"})
+        chips.append({
+            "label": "PAIN", "value": f"{direct_pain:.0f}", "cls": "chip-pain",
+            "tip": "Customers are actively complaining in reviews about missed calls, no-shows, or slow dispatch. Score comes from LLM + regex review analysis.",
+        })
     if scaling >= 5:
-        chips.append({"label": "GROWTH", "value": f"{scaling:.0f}", "cls": "chip-growth"})
+        chips.append({
+            "label": "GROWTH", "value": f"{scaling:.0f}", "cls": "chip-growth",
+            "tip": "Business is scaling faster than its infrastructure can handle — ops hiring, review velocity acceleration, momentum language.",
+        })
     if demand >= 5:
-        chips.append({"label": "DEMAND PULL", "value": f"{demand:.0f}", "cls": "chip-demand"})
+        chips.append({
+            "label": "DEMAND PULL", "value": f"{demand:.0f}", "cls": "chip-demand",
+            "tip": "Customers switching from competitors, or one person personally handling the work. The capacity-ceiling pattern that forces a software decision.",
+        })
 
     # FSM stack gap
     if not row.get("has_any_booking_tool"):
-        chips.append({"label": "NO FSM", "value": "", "cls": "chip-nofsm"})
+        chips.append({
+            "label": "NO FSM", "value": "", "cls": "chip-nofsm",
+            "tip": "No field service management platform detected on their website. By definition, they're a prospect — not someone else's customer.",
+        })
 
     # FSM buyer role actively hiring
     buyer_jobs = [j for j in jobs if fsm_buyer_role(j["title"])]
@@ -151,12 +163,16 @@ def build_signal_chips(row: pd.Series, jobs: list[dict]) -> list[dict]:
             "label": f"HIRING DISPATCH" + ("" if n == 1 else f" ({n})"),
             "value": "",
             "cls": "chip-hiring",
+            "tip": "Actively hiring a dispatcher, scheduler, or CSR — the exact operations role field service management software is designed to replace.",
         })
 
     # Thin sample warning
     sample = i(row.get("llm_review_count_analyzed"))
     if 0 < sample < 10:
-        chips.append({"label": f"THIN SAMPLE ({sample})", "value": "", "cls": "chip-warn"})
+        chips.append({
+            "label": f"THIN SAMPLE ({sample})", "value": "", "cls": "chip-warn",
+            "tip": f"Only {sample} reviews were LLM-analyzed. Pain and growth scores are discounted proportionally; treat signal strength with caution.",
+        })
 
     return chips
 
@@ -831,6 +847,47 @@ body {
 .chip-hiring  { background: #4a0808; color: #ffdcdc; border-color: #4a0808; }
 .chip-hiring .chip-val { color: #ffdcdc; background: rgba(255,255,255,0.15); }
 .chip-warn    { background: #fff9d6; color: #7a5c00; border-color: #f0d896; }
+.chip-help {
+  display: inline-flex;
+  width: 13px; height: 13px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.08);
+  color: inherit;
+  font-size: 9px;
+  font-weight: 700;
+  align-items: center;
+  justify-content: center;
+  margin-left: 2px;
+  opacity: 0.55;
+}
+.chip-hiring .chip-help { background: rgba(255,255,255,0.2); }
+.chip[data-tip] { position: relative; cursor: help; }
+.chip[data-tip]:hover .chip-help { opacity: 1; }
+.chip[data-tip]::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1a1f2a;
+  color: #f5f6f8;
+  padding: 8px 11px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  text-transform: none;
+  white-space: normal;
+  width: max-content;
+  max-width: 260px;
+  line-height: 1.45;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms ease;
+  z-index: 20;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+}
+.chip[data-tip]:hover::after { opacity: 1; }
 .header-top {
   display: flex;
   justify-content: space-between;
@@ -872,6 +929,47 @@ body {
 .tier-high { background: #e6f4ea; color: #14532d; }
 .tier-strong { background: #fff4d6; color: #8a5a00; }
 .tier-emerging { background: #e6f2ff; color: #003b7a; }
+.score-badge {
+  display: inline-block;
+  padding: 7px 14px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  white-space: nowrap;
+  background: #eef2ff;
+  color: #3730a3;
+  border: 1px solid #c7d2fe;
+  font-variant-numeric: tabular-nums;
+}
+.score-badge[data-tip] {
+  position: relative;
+  cursor: help;
+}
+.score-badge[data-tip]::after {
+  content: attr(data-tip);
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  background: #1a1f2a;
+  color: #f5f6f8;
+  padding: 8px 11px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  text-transform: none;
+  white-space: normal;
+  width: max-content;
+  max-width: 260px;
+  line-height: 1.45;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms ease;
+  z-index: 30;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+}
+.score-badge[data-tip]:hover::after { opacity: 1; }
 
 .badge-stack {
   display: flex;
@@ -1348,6 +1446,37 @@ body {
   margin-top: 6px;
 }
 
+.export-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 18px;
+  flex-wrap: wrap;
+}
+.export-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px;
+  background: #0a0a1a;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  border: 1px solid #0a0a1a;
+  transition: background 120ms ease, transform 60ms ease;
+}
+.export-btn:hover { background: #222238; }
+.export-btn:active { transform: translateY(1px); }
+.export-btn .export-icon { font-size: 14px; line-height: 1; }
+.export-note {
+  font-size: 11px;
+  color: #888;
+  letter-spacing: 0.2px;
+}
+
 .legend {
   background: white;
   border-radius: 14px;
@@ -1570,6 +1699,47 @@ body {
 .chip-hiring  { background: #4a0808; color: #ffdcdc; border-color: #4a0808; }
 .chip-hiring .chip-val { color: #ffdcdc; background: rgba(255,255,255,0.15); }
 .chip-warn    { background: #fff9d6; color: #7a5c00; border-color: #f0d896; }
+.chip-help {
+  display: inline-flex;
+  width: 13px; height: 13px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.08);
+  color: inherit;
+  font-size: 9px;
+  font-weight: 700;
+  align-items: center;
+  justify-content: center;
+  margin-left: 2px;
+  opacity: 0.55;
+}
+.chip-hiring .chip-help { background: rgba(255,255,255,0.2); }
+.chip[data-tip] { position: relative; cursor: help; }
+.chip[data-tip]:hover .chip-help { opacity: 1; }
+.chip[data-tip]::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1a1f2a;
+  color: #f5f6f8;
+  padding: 8px 11px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  text-transform: none;
+  white-space: normal;
+  width: max-content;
+  max-width: 260px;
+  line-height: 1.45;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms ease;
+  z-index: 20;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+}
+.chip[data-tip]:hover::after { opacity: 1; }
 .lead-rank {
   font-size: 32px;
   font-weight: 800;
@@ -1602,8 +1772,12 @@ body {
 .lead-header h3 a:hover { color: #0066cc; }
 .lead-badges {
   flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
-.lead-badges .tier-badge {
+.lead-badges .tier-badge,
+.lead-badges .score-badge {
   display: inline-block;
   padding: 5px 12px;
   border-radius: 999px;
@@ -1612,6 +1786,40 @@ body {
   letter-spacing: 0.6px;
   white-space: nowrap;
 }
+.lead-badges .score-badge {
+  background: #eef2ff;
+  color: #3730a3;
+  border: 1px solid #c7d2fe;
+  font-variant-numeric: tabular-nums;
+}
+.lead-badges .score-badge[data-tip] {
+  position: relative;
+  cursor: help;
+}
+.lead-badges .score-badge[data-tip]::after {
+  content: attr(data-tip);
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  background: #1a1f2a;
+  color: #f5f6f8;
+  padding: 8px 11px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  text-transform: none;
+  white-space: normal;
+  width: max-content;
+  max-width: 260px;
+  line-height: 1.45;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms ease;
+  z-index: 30;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+}
+.lead-badges .score-badge[data-tip]:hover::after { opacity: 1; }
 .tier-high { background: #e6f4ea; color: #14532d; }
 .tier-strong { background: #fff4d6; color: #8a5a00; }
 .tier-emerging { background: #e6f2ff; color: #003b7a; }
@@ -2012,7 +2220,10 @@ def render_header(row: pd.Series, jobs: list[dict] | None = None) -> str:
     revenue_band = s(row.get("revenue_band"))
     bond_amount = row.get("bond_amount")
 
-    badges_html = [f'<span class="tier-badge {tier_class}">{tier_label}</span>']
+    badges_html = [
+        f'<span class="score-badge" data-tip="Total score across 7 weighted dimensions. Top score in the current pool: 59. Higher means a louder buying signal.">Score {score:.0f}</span>',
+        f'<span class="tier-badge {tier_class}">{tier_label}</span>',
+    ]
     if revenue_band and revenue_band != "Unknown":
         badges_html.append(
             f'<span class="size-badge">{esc(revenue_band)} est. annual revenue</span>'
@@ -3373,7 +3584,10 @@ def render_call_sheet_card(row: pd.Series, contact: pd.Series) -> str:
                 f'<p class="pitch-text">"{esc(p["text"])}"</p>'
                 f'</div>'
             )
-        pitch_html = f'<div class="pitches">{"".join(pitch_items)}</div>'
+        pitch_html = (
+            f'<p class="card-label" style="margin-top:14px;">Suggested openers</p>'
+            f'<div class="pitches">{"".join(pitch_items)}</div>'
+        )
 
     return f"""
     <div class="card">
@@ -3447,7 +3661,14 @@ def _render_chips(chips: list[dict]) -> str:
     for c in chips:
         val = c.get("value") or ""
         val_html = f'<span class="chip-val">{esc(val)}</span>' if val else ""
-        items.append(f'<span class="chip {c["cls"]}">{esc(c["label"])}{val_html}</span>')
+        tip = c.get("tip") or ""
+        tip_attr = f' data-tip="{esc(tip)}" title="{esc(tip)}"' if tip else ""
+        help_html = '<span class="chip-help" aria-hidden="true">?</span>' if tip else ""
+        items.append(
+            f'<span class="chip {c["cls"]}"{tip_attr}>'
+            f'{esc(c["label"])}{val_html}{help_html}'
+            f'</span>'
+        )
     return f'<div class="chips">{"".join(items)}</div>'
 
 
@@ -3473,6 +3694,12 @@ def generate_pitches(
 
     candidates: list[dict] = []
 
+    # Each pitch follows a three-beat structure: (1) a specific observation
+    # that proves homework, (2) social proof that normalizes the pattern
+    # via other customers, (3) a short pointer to how the solution helps.
+    # No open-ended questions — the rep will ask those themselves. Keep
+    # each pitch to ~3 sentences so it fits on one line of a call script.
+
     # 1. Review velocity surge
     recent_90 = i(row.get("recent_90d_reviews"))
     prior_90 = i(row.get("prior_90d_reviews"))
@@ -3483,11 +3710,11 @@ def generate_pitches(
             "label": "GROWTH",
             "priority": 90 + min(vel_ratio, 20),
             "text": (
-                f"I noticed your review volume surged — {recent_90} reviews in "
-                f"the last 90 days versus {prior_90} in the prior 90. That's "
-                f"{ratio_str} growth. To help you keep up with that momentum, "
-                f"I'd love to show you how our platform can help you scale "
-                f"operations without adding overhead."
+                f"Your Google reviews jumped from {prior_90} to {recent_90} "
+                f"in the last 90 days — {ratio_str} growth. We see this surge "
+                f"pattern a lot with contractors whose demand is outpacing "
+                f"their ops capacity. Our platform is built to absorb that "
+                f"volume without you having to hire ahead of it."
             ),
         })
 
@@ -3495,7 +3722,6 @@ def generate_pitches(
     ops_count = i(row.get("hiring_ops_pain_count"))
     ops_title = s(row.get("hiring_sample_ops_pain_title"))
     if ops_count > 0 and ops_title:
-        # Clean up long job titles
         short_title = ops_title.split(" at ")[0].split(" - ")[0].strip()
         if len(short_title) > 50:
             short_title = short_title[:47] + "..."
@@ -3503,18 +3729,16 @@ def generate_pitches(
             "label": "HIRING",
             "priority": 85 + ops_count * 5,
             "text": (
-                f"I see you recently posted for a {short_title}. With your "
-                f"growth trajectory, I'm sure demand is picking up fast. "
-                f"I can show you how our software handles dispatching and "
-                f"scheduling at a fraction of the cost of a new hire — and "
-                f"it scales with you as you grow."
+                f"Saw your posting for a {short_title}. Most of our customers "
+                f"who add that role are hitting a scheduling ceiling before "
+                f"they realize it. Our platform solves the same bottleneck "
+                f"at a fraction of the fully-loaded cost of the hire."
             ),
         })
 
     # 3. Named techs from reviews
     llm_parsed, _ = load_llm_analysis(place_id)
     referenced_people = llm_parsed.get("referenced_people") or []
-    # Dedupe against owner
     owner_first_lower = (owner_first or "").lower().strip()
     techs = [
         p for p in referenced_people
@@ -3528,10 +3752,11 @@ def generate_pitches(
             "label": "TEAM",
             "priority": 70 + len(techs) * 3,
             "text": (
-                f"I see {name_str} are getting great reviews from your "
-                f"customers. Our software can free up their time on "
-                f"paperwork, scheduling, and follow-ups — so they spend "
-                f"more time in the field doing what they're best at."
+                f"Your customers keep name-dropping {name_str} in reviews — "
+                f"that kind of loyalty is rare. The shops we work with in "
+                f"that spot usually find their best techs are stuck on "
+                f"admin instead of in the field. Our platform takes the "
+                f"paperwork and scheduling off their plate."
             ),
         })
 
@@ -3542,46 +3767,37 @@ def generate_pitches(
             "label": "DEMAND",
             "priority": 75 + refugees * 5,
             "text": (
-                f"At least {refugees} of your recent reviews mention "
-                f"customers who switched from another HVAC company to yours. "
-                f"That's a strong signal — people are choosing you over the "
-                f"competition. The right systems can help you capture that "
-                f"demand without burning out your team."
+                f"{refugees} of your recent reviews are from customers who "
+                f"left another HVAC company to come to you. We've watched "
+                f"this exact pattern with our clients — contractors winning "
+                f"on reputation eventually break when the inbound catches "
+                f"up. Our platform is what most of them wish they'd had "
+                f"before they needed it."
             ),
         })
 
-    # 5. No FSM — lead with a growth indicator, not revenue
+    # 5. No FSM — lead with the most concrete growth fact we have
     has_fsm = row.get("has_any_booking_tool")
     if not has_fsm:
-        # Pick the strongest growth fact we have for the opener
         if vel_ratio >= 2.0 and recent_90 >= 5:
-            growth_hook = (
-                f"With {recent_90} reviews in just the last 90 days, "
-                f"it's clear your business is picking up momentum"
-            )
+            hook = f"{recent_90} reviews in the last 90 days"
         elif review_count and review_count >= 200:
-            growth_hook = (
-                f"With {review_count} Google reviews and a {f(row.get('place_rating')):.1f} "
-                f"rating, you've clearly built something customers trust"
-            )
+            hook = f"{review_count} Google reviews at {f(row.get('place_rating')):.1f}★"
         elif years and years >= 10:
-            growth_hook = (
-                f"After {years:.0f} years in business, you've built a "
-                f"reputation that speaks for itself"
-            )
+            hook = f"{years:.0f} years in business"
         else:
-            growth_hook = None
+            hook = None
 
-        if growth_hook:
+        if hook:
             candidates.append({
                 "label": "TECH GAP",
                 "priority": 65,
                 "text": (
-                    f"{growth_hook}. From what I can see, you're managing "
-                    f"all of that without a field service platform — which "
-                    f"is impressive, but it usually means there's a ceiling "
-                    f"coming. I'd love to show you how the right tools can "
-                    f"help you keep growing without the growing pains."
+                    f"{hook} and no field service platform on the backend yet. "
+                    f"Every contractor we work with at your scale hits the "
+                    f"same wall — spreadsheets and notebooks stop working "
+                    f"around 5–10 trucks. Our platform is designed to take "
+                    f"you from where you are now to 50+ without rebuilding twice."
                 ),
             })
 
@@ -3594,11 +3810,11 @@ def generate_pitches(
             "label": "CAPACITY",
             "priority": 60,
             "text": (
-                f"Your customers clearly love working with {person} — "
-                f"that personal touch is what sets you apart. The challenge "
-                f"is that it doesn't scale past one person. Our software "
-                f"can systematize the parts that don't need {person}'s "
-                f"personal attention, so the quality stays high as you grow."
+                f"{person} is showing up personally in most of your reviews. "
+                f"Most of our successful customers started exactly there — "
+                f"the owner carries the brand until the ops catch up. Our "
+                f"platform is what lets the personal touch stay even after "
+                f"{person}'s calendar stops being the bottleneck."
             ),
         })
 
@@ -3609,12 +3825,12 @@ def generate_pitches(
             "label": "OPERATIONS",
             "priority": 55 + pain_score,
             "text": (
-                f"I've been looking at your recent customer feedback, and "
-                f"while your overall ratings are strong, there are a few "
-                f"mentions of scheduling and communication gaps. That's "
-                f"actually very common for growing shops — our platform "
-                f"automates the follow-ups and scheduling that tend to slip "
-                f"when things get busy."
+                f"Your reviews are strong overall, but a few scheduling and "
+                f"communication gaps are creeping in. We see this with "
+                f"growing contractors all the time — it's the first sign "
+                f"that call volume is outrunning the current system. Our "
+                f"platform closes those gaps automatically before they "
+                f"become a trend."
             ),
         })
 
@@ -3625,11 +3841,10 @@ def generate_pitches(
             "label": "URGENT",
             "priority": 50,
             "text": (
-                f"I noticed you had a cluster of tough reviews recently. "
-                f"That happens to every growing business — volume picks up "
-                f"and the operational cracks show. Our platform is built "
-                f"specifically to close those gaps so a rough week doesn't "
-                f"become a trend."
+                f"You had a cluster of rough reviews recently. We've seen "
+                f"this pattern with contractors during demand spikes — ops "
+                f"capacity gets stretched and a few jobs slip. Our platform "
+                f"is built to stop that from turning into a rating drop."
             ),
         })
 
@@ -3756,7 +3971,10 @@ def render_lead_row(row: pd.Series, contact: pd.Series) -> tuple[str, dict]:
                 f'<p class="pitch-text">"{esc(p["text"])}"</p>'
                 f'</div>'
             )
-        pitch_html = f'<div class="pitches">{"".join(pitch_items)}</div>'
+        pitch_html = (
+            f'<p class="card-label" style="margin-top:14px;">Suggested openers</p>'
+            f'<div class="pitches">{"".join(pitch_items)}</div>'
+        )
 
     stats = {
         "has_jobs": bool(jobs),
@@ -3773,6 +3991,7 @@ def render_lead_row(row: pd.Series, contact: pd.Series) -> tuple[str, dict]:
         <div class="lead-header">
           <h3><a href="{esc(dossier_path)}">{esc(biz)}</a></h3>
           <div class="lead-badges">
+            <span class="score-badge" data-tip="Total score across 7 weighted dimensions. Top score in the current pool: 59. Higher means a louder buying signal.">Score {score:.0f}</span>
             <span class="tier-badge {tier_class}">{tier_label}</span>
           </div>
         </div>
@@ -3792,6 +4011,113 @@ def render_lead_row(row: pd.Series, contact: pd.Series) -> tuple[str, dict]:
     </div>
     """
     return html_row, stats
+
+
+# Matches common secondary-address tokens so we can split a one-line
+# street address ("1610 N Rosemont Suite 113") into Address 1 + Address 2.
+# Anchored at a word boundary and greedy through end-of-string.
+_ADDRESS2_RX = re.compile(
+    r"\s+(?=(?:suite|ste\.?|unit|apt\.?|#)\b)",
+    re.IGNORECASE,
+)
+
+
+def split_address(full: str) -> tuple[str, str]:
+    """
+    Split a mashed-together street address into (address_1, address_2).
+    Returns ("", "") when the input is empty. Returns (full, "") when
+    no suite/unit/apt/# token is found — a PO Box or plain street.
+    """
+    if not full:
+        return "", ""
+    parts = _ADDRESS2_RX.split(full, maxsplit=1)
+    if len(parts) == 2:
+        return parts[0].rstrip(", ").strip(), parts[1].strip()
+    return full.strip(), ""
+
+
+def write_leads_csv(
+    scored: pd.DataFrame, contacts: pd.DataFrame, out_path: Path
+) -> int:
+    """
+    Write a sales-actionable CSV of the top 25 leads to disk.
+
+    Deliberately a subset of the scored columns — the goal is a file a
+    rep can paste into a CRM, sort in Excel, or forward over Slack.
+    Every column is either (1) a sort key the rep might use, (2) contact
+    info, or (3) a one-glance signal summary. Raw debug columns from the
+    pipeline stay in scored.csv for anyone who needs them.
+    """
+    top = scored[scored["final_rank"] <= 25].sort_values("final_rank")
+    rows: list[dict] = []
+    for _, r in top.iterrows():
+        lic = r["license_no"]
+        crows = contacts[contacts["license_no"] == lic]
+        c = crows.iloc[0] if not crows.empty else pd.Series(dtype=object)
+
+        score = f(r.get("score_total"))
+        tier_label, _ = intent_tier(score)
+        place_id = s(r.get("place_id"))
+
+        # Only ship emails we can actually stand behind: Apollo-verified,
+        # parsed business_email from the site, or LLM-validator-approved
+        # discoveries. No pattern guesses — an unvalidated email@domain
+        # in a CRM is worse than a blank cell because it looks authoritative.
+        email_verified = s(c.get("apollo_verified_email")) or s(c.get("business_email"))
+        if not email_verified:
+            validated = load_validator_cache(place_id)
+            kept_emails = [
+                str(it.get("value") or "")
+                for it in (validated.get("emails") or [])
+                if it.get("belongs") and it.get("value")
+            ]
+            if kept_emails:
+                email_verified = kept_emails[0]
+
+        # Build a short signals summary using the same gates as the chips
+        # on the index row, so what the rep sees on the page matches what
+        # they get in the CSV.
+        signals: list[str] = []
+        if f(r.get("score_direct_pain")) >= 5:
+            signals.append("PAIN")
+        if f(r.get("score_scaling_strain")) >= 5:
+            signals.append("GROWTH")
+        if f(r.get("score_demand_pull")) >= 5:
+            signals.append("DEMAND_PULL")
+        if not r.get("has_any_booking_tool"):
+            signals.append("NO_FSM")
+        if i(r.get("hiring_ops_pain_count")) > 0:
+            signals.append("HIRING_DISPATCH")
+        sample = i(r.get("llm_review_count_analyzed"))
+        if 0 < sample < 10:
+            signals.append("THIN_SAMPLE")
+
+        rows.append({
+            "rank": i(r.get("final_rank")),
+            "business_name": s(r.get("business_name")),
+            "intent_tier": tier_label,
+            "score": round(score, 1),
+            "primary_narrative": s(r.get("primary_narrative")),
+            "owner_name": s(c.get("primary_owner_name")),
+            "phone": s(c.get("booking_phone")) or s(r.get("place_phone")),
+            "email_verified": email_verified,
+            "website": s(r.get("place_website")),
+            "address_1": split_address(s(r.get("address")))[0],
+            "address_2": split_address(s(r.get("address")))[1],
+            "city": s(r.get("city")),
+            "state": s(r.get("state")) or "AZ",
+            "zip": s(r.get("zip")),
+            "revenue_band": s(r.get("revenue_band")),
+            "years_licensed": round(f(r.get("license_years")), 1),
+            "google_reviews": i(r.get("place_review_count")),
+            "google_rating": round(f(r.get("place_rating")), 1),
+            "has_fsm": "No" if not r.get("has_any_booking_tool") else "Yes",
+            "signals_firing": "|".join(signals),
+        })
+
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    pd.DataFrame(rows).to_csv(out_path, index=False)
+    return len(rows)
 
 
 def render_index(scored: pd.DataFrame, contacts: pd.DataFrame) -> str:
@@ -3857,6 +4183,13 @@ def render_index(scored: pd.DataFrame, contacts: pd.DataFrame) -> str:
       <div class="ss"><span class="val">{strong_intent}</span><span class="lbl">Strong intent</span></div>
       <div class="ss"><span class="val">{with_hiring}</span><span class="lbl">Actively hiring</span></div>
       <div class="ss"><span class="val">{with_fsm_gap}</span><span class="lbl">No FSM platform</span></div>
+    </div>
+    <div class="export-row">
+      <a class="export-btn" href="leads.csv" download>
+        <span class="export-icon" aria-hidden="true">⬇</span>
+        Export leads to CSV
+      </a>
+      <span class="export-note">{total} leads · owner, phone, address, score, and firing signals</span>
     </div>
   </div>
 
@@ -3991,7 +4324,10 @@ def main() -> None:
         index_html = render_index(scored, contacts)
         index_path = OUT_DIR / "index.html"
         index_path.write_text(index_html)
+        leads_path = OUT_DIR / "leads.csv"
+        n = write_leads_csv(scored, contacts, leads_path)
         print(f"Index: {index_path.relative_to(ROOT)}")
+        print(f"Leads CSV: {leads_path.relative_to(ROOT)} ({n} rows)")
         return
 
     if args.all:
@@ -4022,13 +4358,16 @@ def main() -> None:
         except Exception as e:
             print(f"         ERROR: {type(e).__name__}: {e}")
 
-    # If --all, also generate the index
+    # If --all, also generate the index and leads CSV
     if args.all:
         index_html = render_index(scored, contacts)
         index_path = OUT_DIR / "index.html"
         index_path.write_text(index_html)
+        leads_path = OUT_DIR / "leads.csv"
+        n = write_leads_csv(scored, contacts, leads_path)
         print()
         print(f"Index: {index_path.relative_to(ROOT)}")
+        print(f"Leads CSV: {leads_path.relative_to(ROOT)} ({n} rows)")
 
     print()
     print(f"Output dir: {OUT_DIR.relative_to(ROOT)}")

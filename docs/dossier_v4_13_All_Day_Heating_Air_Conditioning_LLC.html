@@ -65,6 +65,47 @@ body {
 .chip-hiring  { background: #4a0808; color: #ffdcdc; border-color: #4a0808; }
 .chip-hiring .chip-val { color: #ffdcdc; background: rgba(255,255,255,0.15); }
 .chip-warn    { background: #fff9d6; color: #7a5c00; border-color: #f0d896; }
+.chip-help {
+  display: inline-flex;
+  width: 13px; height: 13px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.08);
+  color: inherit;
+  font-size: 9px;
+  font-weight: 700;
+  align-items: center;
+  justify-content: center;
+  margin-left: 2px;
+  opacity: 0.55;
+}
+.chip-hiring .chip-help { background: rgba(255,255,255,0.2); }
+.chip[data-tip] { position: relative; cursor: help; }
+.chip[data-tip]:hover .chip-help { opacity: 1; }
+.chip[data-tip]::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1a1f2a;
+  color: #f5f6f8;
+  padding: 8px 11px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  text-transform: none;
+  white-space: normal;
+  width: max-content;
+  max-width: 260px;
+  line-height: 1.45;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms ease;
+  z-index: 20;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+}
+.chip[data-tip]:hover::after { opacity: 1; }
 .header-top {
   display: flex;
   justify-content: space-between;
@@ -106,6 +147,47 @@ body {
 .tier-high { background: #e6f4ea; color: #14532d; }
 .tier-strong { background: #fff4d6; color: #8a5a00; }
 .tier-emerging { background: #e6f2ff; color: #003b7a; }
+.score-badge {
+  display: inline-block;
+  padding: 7px 14px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  white-space: nowrap;
+  background: #eef2ff;
+  color: #3730a3;
+  border: 1px solid #c7d2fe;
+  font-variant-numeric: tabular-nums;
+}
+.score-badge[data-tip] {
+  position: relative;
+  cursor: help;
+}
+.score-badge[data-tip]::after {
+  content: attr(data-tip);
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  background: #1a1f2a;
+  color: #f5f6f8;
+  padding: 8px 11px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  text-transform: none;
+  white-space: normal;
+  width: max-content;
+  max-width: 260px;
+  line-height: 1.45;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms ease;
+  z-index: 30;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+}
+.score-badge[data-tip]:hover::after { opacity: 1; }
 
 .badge-stack {
   display: flex;
@@ -532,9 +614,9 @@ blockquote.evidence.grouped .obs .obs-label {
           <h1 class="biz-name">All Day Heating &amp; Air Conditioning LLC</h1>
           <p class="biz-meta">Mesa, AZ · 7 years licensed in AZ · Dual-scope HVAC license (commercial + residential) · 59 Google reviews · 4.9★</p>
           <p class="links"><a href="https://alldayac.com/" target="_blank" rel="noopener">Company website ↗</a><a href="https://www.google.com/maps/place/?q=place_id:ChIJ90tmiq6xK4cRWXcdlTq4aS0" target="_blank" rel="noopener">Google Business Profile ↗</a></p>
-          <div class="chips"><span class="chip chip-growth">GROWTH<span class="chip-val">8</span></span><span class="chip chip-demand">DEMAND PULL<span class="chip-val">8</span></span><span class="chip chip-nofsm">NO FSM</span><span class="chip chip-warn">THIN SAMPLE (9)</span></div>
+          <div class="chips"><span class="chip chip-growth" data-tip="Business is scaling faster than its infrastructure can handle — ops hiring, review velocity acceleration, momentum language." title="Business is scaling faster than its infrastructure can handle — ops hiring, review velocity acceleration, momentum language.">GROWTH<span class="chip-val">8</span><span class="chip-help" aria-hidden="true">?</span></span><span class="chip chip-demand" data-tip="Customers switching from competitors, or one person personally handling the work. The capacity-ceiling pattern that forces a software decision." title="Customers switching from competitors, or one person personally handling the work. The capacity-ceiling pattern that forces a software decision.">DEMAND PULL<span class="chip-val">8</span><span class="chip-help" aria-hidden="true">?</span></span><span class="chip chip-nofsm" data-tip="No field service management platform detected on their website. By definition, they&#x27;re a prospect — not someone else&#x27;s customer." title="No field service management platform detected on their website. By definition, they&#x27;re a prospect — not someone else&#x27;s customer.">NO FSM<span class="chip-help" aria-hidden="true">?</span></span><span class="chip chip-warn" data-tip="Only 9 reviews were LLM-analyzed. Pain and growth scores are discounted proportionally; treat signal strength with caution." title="Only 9 reviews were LLM-analyzed. Pain and growth scores are discounted proportionally; treat signal strength with caution.">THIN SAMPLE (9)<span class="chip-help" aria-hidden="true">?</span></span></div>
         </div>
-        <div class="badge-stack"><span class="tier-badge tier-strong">STRONG INTENT</span><span class="size-badge">$150K–$500K est. annual revenue</span></div>
+        <div class="badge-stack"><span class="score-badge" data-tip="Total score across 7 weighted dimensions. Top score in the current pool: 59. Higher means a louder buying signal.">Score 30</span><span class="tier-badge tier-strong">STRONG INTENT</span><span class="size-badge">$150K–$500K est. annual revenue</span></div>
       </div>
     </div>
     
@@ -547,7 +629,7 @@ blockquote.evidence.grouped .obs .obs-label {
         <div class="cs-row"><span class="cs-icon">🔗</span><a href="https://alldayac.com/" target="_blank">Website</a> · <a href="https://www.google.com/maps/place/?q=place_id:ChIJ90tmiq6xK4cRWXcdlTq4aS0" target="_blank">Google (59 reviews, 4.9★)</a> · <a href="https://www.facebook.com/alldayheatingandairconditioning/" target="_blank">Facebook</a></div>
         <div class="cs-row"><span class="cs-icon">💰</span><strong>$150K–$500K</strong> est. revenue · <span class="no-fsm">No FSM detected</span></div>
       </div>
-      <div class="pitches"><div class="pitch"><span class="pitch-label">GROWTH</span><p class="pitch-text">"I noticed your review volume surged — 11 reviews in the last 90 days versus 3 in the prior 90. That&#x27;s 4x growth. To help you keep up with that momentum, I&#x27;d love to show you how our platform can help you scale operations without adding overhead."</p></div><div class="pitch"><span class="pitch-label">TECH GAP</span><p class="pitch-text">"With 11 reviews in just the last 90 days, it&#x27;s clear your business is picking up momentum. From what I can see, you&#x27;re managing all of that without a field service platform — which is impressive, but it usually means there&#x27;s a ceiling coming. I&#x27;d love to show you how the right tools can help you keep growing without the growing pains."</p></div><div class="pitch"><span class="pitch-label">CAPACITY</span><p class="pitch-text">"Your customers clearly love working with Steven — that personal touch is what sets you apart. The challenge is that it doesn&#x27;t scale past one person. Our software can systematize the parts that don&#x27;t need Steven&#x27;s personal attention, so the quality stays high as you grow."</p></div></div>
+      <p class="card-label" style="margin-top:14px;">Suggested openers</p><div class="pitches"><div class="pitch"><span class="pitch-label">GROWTH</span><p class="pitch-text">"Your Google reviews jumped from 3 to 11 in the last 90 days — 4x growth. We see this surge pattern a lot with contractors whose demand is outpacing their ops capacity. Our platform is built to absorb that volume without you having to hire ahead of it."</p></div><div class="pitch"><span class="pitch-label">TECH GAP</span><p class="pitch-text">"11 reviews in the last 90 days and no field service platform on the backend yet. Every contractor we work with at your scale hits the same wall — spreadsheets and notebooks stop working around 5–10 trucks. Our platform is designed to take you from where you are now to 50+ without rebuilding twice."</p></div><div class="pitch"><span class="pitch-label">CAPACITY</span><p class="pitch-text">"Steven is showing up personally in most of your reviews. Most of our successful customers started exactly there — the owner carries the brand until the ops catch up. Our platform is what lets the personal touch stay even after Steven&#x27;s calendar stops being the bottleneck."</p></div></div>
     </div>
     
     <div class="card why-card">
@@ -615,7 +697,7 @@ blockquote.evidence.grouped .obs .obs-label {
       <div style="margin:14px 0;"><svg width="740" height="220" viewBox="0 0 740 220"><line x1="40" y1="178.0" x2="720" y2="178.0" stroke="#eef0f3" stroke-width="1"/><text x="34" y="182.0" text-anchor="end" font-size="10" fill="#888">0</text><line x1="40" y1="138.5" x2="720" y2="138.5" stroke="#eef0f3" stroke-width="1"/><text x="34" y="142.5" text-anchor="end" font-size="10" fill="#888">1</text><line x1="40" y1="99.0" x2="720" y2="99.0" stroke="#eef0f3" stroke-width="1"/><text x="34" y="103.0" text-anchor="end" font-size="10" fill="#888">2</text><line x1="40" y1="59.5" x2="720" y2="59.5" stroke="#eef0f3" stroke-width="1"/><text x="34" y="63.5" text-anchor="end" font-size="10" fill="#888">3</text><line x1="40" y1="20.0" x2="720" y2="20.0" stroke="#eef0f3" stroke-width="1"/><text x="34" y="24.0" text-anchor="end" font-size="10" fill="#888">5</text><path d="M 40.0,178 L 40.0,178.0 L 101.81818181818181,178.0 L 163.63636363636363,178.0 L 225.45454545454547,178.0 L 287.27272727272725,83.2 L 349.09090909090907,146.4 L 410.90909090909093,146.4 L 472.72727272727275,114.8 L 534.5454545454545,146.4 L 596.3636363636364,83.2 L 658.1818181818181,20.0 L 720.0,114.8 L 720.0,178 Z" fill="#0066cc" fill-opacity="0.08"/><path d="M 40.0,178.0 L 101.81818181818181,178.0 L 163.63636363636363,178.0 L 225.45454545454547,178.0 L 287.27272727272725,83.2 L 349.09090909090907,146.4 L 410.90909090909093,146.4 L 472.72727272727275,114.8 L 534.5454545454545,146.4 L 596.3636363636364,83.2 L 658.1818181818181,20.0 L 720.0,114.8" fill="none" stroke="#0066cc" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/><circle cx="40.0" cy="178.0" r="3.5" fill="#d0d4db" stroke="white" stroke-width="1.5"/><text x="40.0" y="196" text-anchor="middle" font-size="10" fill="#666">May 25</text><circle cx="101.81818181818181" cy="178.0" r="3.5" fill="#d0d4db" stroke="white" stroke-width="1.5"/><text x="101.81818181818181" y="196" text-anchor="middle" font-size="10" fill="#666">Jun 25</text><circle cx="163.63636363636363" cy="178.0" r="3.5" fill="#d0d4db" stroke="white" stroke-width="1.5"/><text x="163.63636363636363" y="196" text-anchor="middle" font-size="10" fill="#666">Jul 25</text><circle cx="225.45454545454547" cy="178.0" r="3.5" fill="#d0d4db" stroke="white" stroke-width="1.5"/><text x="225.45454545454547" y="196" text-anchor="middle" font-size="10" fill="#666">Aug 25</text><circle cx="287.27272727272725" cy="83.2" r="3.5" fill="#0066cc" stroke="white" stroke-width="1.5"/><text x="287.27272727272725" y="74.2" text-anchor="middle" font-size="11" fill="#333" font-weight="600">3</text><text x="287.27272727272725" y="196" text-anchor="middle" font-size="10" fill="#666">Sep 25</text><circle cx="349.09090909090907" cy="146.4" r="3.5" fill="#0066cc" stroke="white" stroke-width="1.5"/><text x="349.09090909090907" y="137.4" text-anchor="middle" font-size="11" fill="#333" font-weight="600">1</text><text x="349.09090909090907" y="196" text-anchor="middle" font-size="10" fill="#666">Oct 25</text><circle cx="410.90909090909093" cy="146.4" r="3.5" fill="#0066cc" stroke="white" stroke-width="1.5"/><text x="410.90909090909093" y="137.4" text-anchor="middle" font-size="11" fill="#333" font-weight="600">1</text><text x="410.90909090909093" y="196" text-anchor="middle" font-size="10" fill="#666">Nov 25</text><circle cx="472.72727272727275" cy="114.8" r="3.5" fill="#0066cc" stroke="white" stroke-width="1.5"/><text x="472.72727272727275" y="105.8" text-anchor="middle" font-size="11" fill="#333" font-weight="600">2</text><text x="472.72727272727275" y="196" text-anchor="middle" font-size="10" fill="#666">Dec 25</text><circle cx="534.5454545454545" cy="146.4" r="3.5" fill="#0066cc" stroke="white" stroke-width="1.5"/><text x="534.5454545454545" y="137.4" text-anchor="middle" font-size="11" fill="#333" font-weight="600">1</text><text x="534.5454545454545" y="196" text-anchor="middle" font-size="10" fill="#666">Jan 26</text><circle cx="596.3636363636364" cy="83.2" r="3.5" fill="#0066cc" stroke="white" stroke-width="1.5"/><text x="596.3636363636364" y="74.2" text-anchor="middle" font-size="11" fill="#333" font-weight="600">3</text><text x="596.3636363636364" y="196" text-anchor="middle" font-size="10" fill="#666">Feb 26</text><circle cx="658.1818181818181" cy="20.0" r="3.5" fill="#0066cc" stroke="white" stroke-width="1.5"/><text x="658.1818181818181" y="11.0" text-anchor="middle" font-size="11" fill="#333" font-weight="600">5</text><text x="658.1818181818181" y="196" text-anchor="middle" font-size="10" fill="#666">Mar 26</text><circle cx="720.0" cy="114.8" r="3.5" fill="#0066cc" stroke="white" stroke-width="1.5"/><text x="720.0" y="105.8" text-anchor="middle" font-size="11" fill="#333" font-weight="600">2</text><text x="720.0" y="196" text-anchor="middle" font-size="10" fill="#666">Apr 26</text></svg></div>
     </div>
     
-<div class="footer">Rank 13 · Generated 2026-04-13 · HVAC Signals pipeline</div>
+<div class="footer">Rank 13 · Generated 2026-04-24 · HVAC Signals pipeline</div>
 </div>
 </body>
 </html>

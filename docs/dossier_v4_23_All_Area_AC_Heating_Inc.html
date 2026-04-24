@@ -65,6 +65,47 @@ body {
 .chip-hiring  { background: #4a0808; color: #ffdcdc; border-color: #4a0808; }
 .chip-hiring .chip-val { color: #ffdcdc; background: rgba(255,255,255,0.15); }
 .chip-warn    { background: #fff9d6; color: #7a5c00; border-color: #f0d896; }
+.chip-help {
+  display: inline-flex;
+  width: 13px; height: 13px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.08);
+  color: inherit;
+  font-size: 9px;
+  font-weight: 700;
+  align-items: center;
+  justify-content: center;
+  margin-left: 2px;
+  opacity: 0.55;
+}
+.chip-hiring .chip-help { background: rgba(255,255,255,0.2); }
+.chip[data-tip] { position: relative; cursor: help; }
+.chip[data-tip]:hover .chip-help { opacity: 1; }
+.chip[data-tip]::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1a1f2a;
+  color: #f5f6f8;
+  padding: 8px 11px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  text-transform: none;
+  white-space: normal;
+  width: max-content;
+  max-width: 260px;
+  line-height: 1.45;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms ease;
+  z-index: 20;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+}
+.chip[data-tip]:hover::after { opacity: 1; }
 .header-top {
   display: flex;
   justify-content: space-between;
@@ -106,6 +147,47 @@ body {
 .tier-high { background: #e6f4ea; color: #14532d; }
 .tier-strong { background: #fff4d6; color: #8a5a00; }
 .tier-emerging { background: #e6f2ff; color: #003b7a; }
+.score-badge {
+  display: inline-block;
+  padding: 7px 14px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  white-space: nowrap;
+  background: #eef2ff;
+  color: #3730a3;
+  border: 1px solid #c7d2fe;
+  font-variant-numeric: tabular-nums;
+}
+.score-badge[data-tip] {
+  position: relative;
+  cursor: help;
+}
+.score-badge[data-tip]::after {
+  content: attr(data-tip);
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  background: #1a1f2a;
+  color: #f5f6f8;
+  padding: 8px 11px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  text-transform: none;
+  white-space: normal;
+  width: max-content;
+  max-width: 260px;
+  line-height: 1.45;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms ease;
+  z-index: 30;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+}
+.score-badge[data-tip]:hover::after { opacity: 1; }
 
 .badge-stack {
   display: flex;
@@ -532,9 +614,9 @@ blockquote.evidence.grouped .obs .obs-label {
           <h1 class="biz-name">All Area A/C &amp; Heating Inc</h1>
           <p class="biz-meta">Phoenix, AZ · 8 years licensed in AZ · Dual-scope HVAC license (commercial + residential) · 214 Google reviews · 5.0★</p>
           <p class="links"><a href="https://allareaacandheating.com/" target="_blank" rel="noopener">Company website ↗</a><a href="https://www.google.com/maps/place/?q=place_id:ChIJ2f8aj_cQK4cRWpQ0vW6IpD0" target="_blank" rel="noopener">Google Business Profile ↗</a></p>
-          <div class="chips"><span class="chip chip-demand">DEMAND PULL<span class="chip-val">11</span></span><span class="chip chip-nofsm">NO FSM</span><span class="chip chip-warn">THIN SAMPLE (7)</span></div>
+          <div class="chips"><span class="chip chip-demand" data-tip="Customers switching from competitors, or one person personally handling the work. The capacity-ceiling pattern that forces a software decision." title="Customers switching from competitors, or one person personally handling the work. The capacity-ceiling pattern that forces a software decision.">DEMAND PULL<span class="chip-val">11</span><span class="chip-help" aria-hidden="true">?</span></span><span class="chip chip-nofsm" data-tip="No field service management platform detected on their website. By definition, they&#x27;re a prospect — not someone else&#x27;s customer." title="No field service management platform detected on their website. By definition, they&#x27;re a prospect — not someone else&#x27;s customer.">NO FSM<span class="chip-help" aria-hidden="true">?</span></span><span class="chip chip-warn" data-tip="Only 7 reviews were LLM-analyzed. Pain and growth scores are discounted proportionally; treat signal strength with caution." title="Only 7 reviews were LLM-analyzed. Pain and growth scores are discounted proportionally; treat signal strength with caution.">THIN SAMPLE (7)<span class="chip-help" aria-hidden="true">?</span></span></div>
         </div>
-        <div class="badge-stack"><span class="tier-badge tier-emerging">EMERGING</span><span class="size-badge">$150K–$500K est. annual revenue</span></div>
+        <div class="badge-stack"><span class="score-badge" data-tip="Total score across 7 weighted dimensions. Top score in the current pool: 59. Higher means a louder buying signal.">Score 22</span><span class="tier-badge tier-emerging">EMERGING</span><span class="size-badge">$150K–$500K est. annual revenue</span></div>
       </div>
     </div>
     
@@ -547,13 +629,13 @@ blockquote.evidence.grouped .obs .obs-label {
         <div class="cs-row"><span class="cs-icon">🔗</span><a href="https://allareaacandheating.com/" target="_blank">Website</a> · <a href="https://www.google.com/maps/place/?q=place_id:ChIJ2f8aj_cQK4cRWpQ0vW6IpD0" target="_blank">Google (214 reviews, 5.0★)</a> · <a href="https://www.facebook.com/allareaac/" target="_blank">Facebook</a></div>
         <div class="cs-row"><span class="cs-icon">💰</span><strong>$150K–$500K</strong> est. revenue · <span class="no-fsm">No FSM detected</span></div>
       </div>
-      <div class="pitches"><div class="pitch"><span class="pitch-label">TECH GAP</span><p class="pitch-text">"With 214 Google reviews and a 5.0 rating, you&#x27;ve clearly built something customers trust. From what I can see, you&#x27;re managing all of that without a field service platform — which is impressive, but it usually means there&#x27;s a ceiling coming. I&#x27;d love to show you how the right tools can help you keep growing without the growing pains."</p></div><div class="pitch"><span class="pitch-label">CAPACITY</span><p class="pitch-text">"Your customers clearly love working with Oscar — that personal touch is what sets you apart. The challenge is that it doesn&#x27;t scale past one person. Our software can systematize the parts that don&#x27;t need Oscar&#x27;s personal attention, so the quality stays high as you grow."</p></div></div>
+      <p class="card-label" style="margin-top:14px;">Suggested openers</p><div class="pitches"><div class="pitch"><span class="pitch-label">TECH GAP</span><p class="pitch-text">"214 Google reviews at 5.0★ and no field service platform on the backend yet. Every contractor we work with at your scale hits the same wall — spreadsheets and notebooks stop working around 5–10 trucks. Our platform is designed to take you from where you are now to 50+ without rebuilding twice."</p></div><div class="pitch"><span class="pitch-label">CAPACITY</span><p class="pitch-text">"Oscar is showing up personally in most of your reviews. Most of our successful customers started exactly there — the owner carries the brand until the ops catch up. Our platform is what lets the personal touch stay even after Oscar&#x27;s calendar stops being the bottleneck."</p></div></div>
     </div>
     
     <div class="card why-card">
       <p class="card-label">Why this is a good lead</p>
       <h3 class="card-headline">3 signals fired</h3>
-      <ul class="why-list"><li>No field service platform detected. Bookings likely go through phone or web form (WordPress site).</li><li>Oscar Santiago Zeballos is named by first name in 7 of 8 cached reviews (87%). Customers associate this shop with a specific person.</li><li>Fast dispatch in recent reviews: 100% same-day, 2h median. Responsiveness is the competitive edge here.</li></ul>
+      <ul class="why-list"><li>No field service platform detected. Bookings likely go through phone or web form (WordPress site).</li><li>Oscar Santiago Zeballos is named by first name in 7 of 8 cached reviews (87%). Customers associate this shop with a specific person.</li><li>Fast dispatch in recent reviews: 100% same-day, 13h median. Responsiveness is the competitive edge here.</li></ul>
     </div>
     
     <div class="card">
@@ -603,13 +685,13 @@ blockquote.evidence.grouped .obs .obs-label {
       <p class="card-subtitle">Every dot is a real cached review from the last 6 months. Hours estimated from review text.</p>
       
     <div class="card-stats">
-      <div class="stat"><span class="val">2h</span><span class="lbl">Median response</span></div>
+      <div class="stat"><span class="val">13h</span><span class="lbl">Median response</span></div>
       <div class="stat"><span class="val">24h</span><span class="lbl">Slowest job</span></div>
       <div class="stat"><span class="val">100%</span><span class="lbl">Same-day</span></div>
-      <div class="stat"><span class="val">3</span><span class="lbl">Reviews with data</span></div>
+      <div class="stat"><span class="val">2</span><span class="lbl">Reviews with data</span></div>
     </div>
     
-      <div style="margin:16px 0;"><svg width="740" height="140" viewBox="0 0 740 140"><line x1="20" y1="88" x2="720" y2="88" stroke="#cfd3dc" stroke-width="2"/><line x1="20.0" y1="83" x2="20.0" y2="93" stroke="#9aa2b0" stroke-width="1"/><text x="20.0" y="110" text-anchor="middle" font-size="11" fill="#666">0h</text><line x1="36.666666666666664" y1="83" x2="36.666666666666664" y2="93" stroke="#9aa2b0" stroke-width="1"/><text x="36.666666666666664" y="110" text-anchor="middle" font-size="11" fill="#666">4h</text><line x1="53.33333333333333" y1="83" x2="53.33333333333333" y2="93" stroke="#9aa2b0" stroke-width="1"/><text x="53.33333333333333" y="110" text-anchor="middle" font-size="11" fill="#666">8h</text><line x1="120.0" y1="83" x2="120.0" y2="93" stroke="#9aa2b0" stroke-width="1"/><text x="120.0" y="110" text-anchor="middle" font-size="11" fill="#666">24h</text><line x1="220.0" y1="83" x2="220.0" y2="93" stroke="#9aa2b0" stroke-width="1"/><text x="220.0" y="110" text-anchor="middle" font-size="11" fill="#666">48h</text><line x1="320.0" y1="83" x2="320.0" y2="93" stroke="#9aa2b0" stroke-width="1"/><text x="320.0" y="110" text-anchor="middle" font-size="11" fill="#666">72h</text><line x1="720.0" y1="83" x2="720.0" y2="93" stroke="#9aa2b0" stroke-width="1"/><text x="720.0" y="110" text-anchor="middle" font-size="11" fill="#666">1 week</text><circle cx="28.333333333333332" cy="57.0" r="8" fill="#1a8c4a" stroke="white" stroke-width="2" opacity="0.92"/><circle cx="28.333333333333332" cy="71.0" r="8" fill="#1a8c4a" stroke="white" stroke-width="2" opacity="0.92"/><circle cx="120.0" cy="64.0" r="8" fill="#9aa2b0" stroke="white" stroke-width="2" opacity="0.92"/><circle cx="28" cy="125" r="6" fill="#1a8c4a"/><text x="40" y="129" font-size="11" fill="#555">positive</text><circle cx="110" cy="125" r="6" fill="#9aa2b0"/><text x="122" y="129" font-size="11" fill="#555">neutral</text><circle cx="188" cy="125" r="6" fill="#c4332b"/><text x="200" y="129" font-size="11" fill="#555">negative</text><text x="720" y="129" text-anchor="end" font-size="11" fill="#888">each dot = one review</text></svg></div>
+      <div style="margin:16px 0;"><svg width="740" height="140" viewBox="0 0 740 140"><line x1="20" y1="88" x2="720" y2="88" stroke="#cfd3dc" stroke-width="2"/><line x1="20.0" y1="83" x2="20.0" y2="93" stroke="#9aa2b0" stroke-width="1"/><text x="20.0" y="110" text-anchor="middle" font-size="11" fill="#666">0h</text><line x1="36.666666666666664" y1="83" x2="36.666666666666664" y2="93" stroke="#9aa2b0" stroke-width="1"/><text x="36.666666666666664" y="110" text-anchor="middle" font-size="11" fill="#666">4h</text><line x1="53.33333333333333" y1="83" x2="53.33333333333333" y2="93" stroke="#9aa2b0" stroke-width="1"/><text x="53.33333333333333" y="110" text-anchor="middle" font-size="11" fill="#666">8h</text><line x1="120.0" y1="83" x2="120.0" y2="93" stroke="#9aa2b0" stroke-width="1"/><text x="120.0" y="110" text-anchor="middle" font-size="11" fill="#666">24h</text><line x1="220.0" y1="83" x2="220.0" y2="93" stroke="#9aa2b0" stroke-width="1"/><text x="220.0" y="110" text-anchor="middle" font-size="11" fill="#666">48h</text><line x1="320.0" y1="83" x2="320.0" y2="93" stroke="#9aa2b0" stroke-width="1"/><text x="320.0" y="110" text-anchor="middle" font-size="11" fill="#666">72h</text><line x1="720.0" y1="83" x2="720.0" y2="93" stroke="#9aa2b0" stroke-width="1"/><text x="720.0" y="110" text-anchor="middle" font-size="11" fill="#666">1 week</text><circle cx="28.333333333333332" cy="64.0" r="8" fill="#1a8c4a" stroke="white" stroke-width="2" opacity="0.92"/><circle cx="120.0" cy="64.0" r="8" fill="#9aa2b0" stroke="white" stroke-width="2" opacity="0.92"/><circle cx="28" cy="125" r="6" fill="#1a8c4a"/><text x="40" y="129" font-size="11" fill="#555">positive</text><circle cx="110" cy="125" r="6" fill="#9aa2b0"/><text x="122" y="129" font-size="11" fill="#555">neutral</text><circle cx="188" cy="125" r="6" fill="#c4332b"/><text x="200" y="129" font-size="11" fill="#555">negative</text><text x="720" y="129" text-anchor="end" font-size="11" fill="#888">each dot = one review</text></svg></div>
       <div style="margin-top:18px;">
         <p class="card-subtitle" style="margin-bottom:8px;">Verbatim dispatch quotes:</p>
         
@@ -627,17 +709,10 @@ blockquote.evidence.grouped .obs .obs-label {
           </span>
         </blockquote>
         
-        <blockquote class="evidence positive">
-          My AC is fixed within 2 hours
-          <span class="cite" style="color:#1a8c4a;">
-            2h response · 5★ · positive · 2025-10-21
-          </span>
-        </blockquote>
-        
       </div>
     </div>
     
-<div class="footer">Rank 23 · Generated 2026-04-13 · HVAC Signals pipeline</div>
+<div class="footer">Rank 23 · Generated 2026-04-24 · HVAC Signals pipeline</div>
 </div>
 </body>
 </html>

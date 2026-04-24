@@ -65,6 +65,47 @@ body {
 .chip-hiring  { background: #4a0808; color: #ffdcdc; border-color: #4a0808; }
 .chip-hiring .chip-val { color: #ffdcdc; background: rgba(255,255,255,0.15); }
 .chip-warn    { background: #fff9d6; color: #7a5c00; border-color: #f0d896; }
+.chip-help {
+  display: inline-flex;
+  width: 13px; height: 13px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.08);
+  color: inherit;
+  font-size: 9px;
+  font-weight: 700;
+  align-items: center;
+  justify-content: center;
+  margin-left: 2px;
+  opacity: 0.55;
+}
+.chip-hiring .chip-help { background: rgba(255,255,255,0.2); }
+.chip[data-tip] { position: relative; cursor: help; }
+.chip[data-tip]:hover .chip-help { opacity: 1; }
+.chip[data-tip]::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1a1f2a;
+  color: #f5f6f8;
+  padding: 8px 11px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  text-transform: none;
+  white-space: normal;
+  width: max-content;
+  max-width: 260px;
+  line-height: 1.45;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms ease;
+  z-index: 20;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+}
+.chip[data-tip]:hover::after { opacity: 1; }
 .header-top {
   display: flex;
   justify-content: space-between;
@@ -106,6 +147,47 @@ body {
 .tier-high { background: #e6f4ea; color: #14532d; }
 .tier-strong { background: #fff4d6; color: #8a5a00; }
 .tier-emerging { background: #e6f2ff; color: #003b7a; }
+.score-badge {
+  display: inline-block;
+  padding: 7px 14px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  white-space: nowrap;
+  background: #eef2ff;
+  color: #3730a3;
+  border: 1px solid #c7d2fe;
+  font-variant-numeric: tabular-nums;
+}
+.score-badge[data-tip] {
+  position: relative;
+  cursor: help;
+}
+.score-badge[data-tip]::after {
+  content: attr(data-tip);
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  background: #1a1f2a;
+  color: #f5f6f8;
+  padding: 8px 11px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  text-transform: none;
+  white-space: normal;
+  width: max-content;
+  max-width: 260px;
+  line-height: 1.45;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms ease;
+  z-index: 30;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+}
+.score-badge[data-tip]:hover::after { opacity: 1; }
 
 .badge-stack {
   display: flex;
@@ -532,9 +614,9 @@ blockquote.evidence.grouped .obs .obs-label {
           <h1 class="biz-name">Desert Sun Air LLC</h1>
           <p class="biz-meta">Tolleson, AZ · 12 years licensed in AZ · Dual-scope HVAC license (commercial + residential) · 441 Google reviews · 4.7★</p>
           <p class="links"><a href="http://www.desertsunhvac.com/" target="_blank" rel="noopener">Company website ↗</a><a href="https://www.google.com/maps/place/?q=place_id:ChIJQS1obfZrKocRtDq32sCgjE8" target="_blank" rel="noopener">Google Business Profile ↗</a></p>
-          <div class="chips"><span class="chip chip-nofsm">NO FSM</span></div>
+          <div class="chips"><span class="chip chip-nofsm" data-tip="No field service management platform detected on their website. By definition, they&#x27;re a prospect — not someone else&#x27;s customer." title="No field service management platform detected on their website. By definition, they&#x27;re a prospect — not someone else&#x27;s customer.">NO FSM<span class="chip-help" aria-hidden="true">?</span></span></div>
         </div>
-        <div class="badge-stack"><span class="tier-badge tier-emerging">EMERGING</span><span class="size-badge">$500K–$1.5M est. annual revenue</span><span class="fresh-badge fresh-warm" title="1 of 4 dated signals are in the last 30 days">RECENT · 25% last 30d</span></div>
+        <div class="badge-stack"><span class="score-badge" data-tip="Total score across 7 weighted dimensions. Top score in the current pool: 59. Higher means a louder buying signal.">Score 19</span><span class="tier-badge tier-emerging">EMERGING</span><span class="size-badge">$500K–$1.5M est. annual revenue</span><span class="fresh-badge fresh-warm" title="1 of 4 dated signals are in the last 30 days">RECENT · 25% last 30d</span></div>
       </div>
     </div>
     
@@ -547,13 +629,13 @@ blockquote.evidence.grouped .obs .obs-label {
         <div class="cs-row"><span class="cs-icon">🔗</span><a href="http://www.desertsunhvac.com/" target="_blank">Website</a> · <a href="https://www.google.com/maps/place/?q=place_id:ChIJQS1obfZrKocRtDq32sCgjE8" target="_blank">Google (441 reviews, 4.7★)</a> · <a href="https://www.facebook.com/DesertSunHVAC/" target="_blank">Facebook</a></div>
         <div class="cs-row"><span class="cs-icon">💰</span><strong>$500K–$1.5M</strong> est. revenue · <span class="no-fsm">No FSM detected</span></div>
       </div>
-      <div class="pitches"><div class="pitch"><span class="pitch-label">TEAM</span><p class="pitch-text">"I see Keith and Alberto are getting great reviews from your customers. Our software can free up their time on paperwork, scheduling, and follow-ups — so they spend more time in the field doing what they&#x27;re best at."</p></div><div class="pitch"><span class="pitch-label">TECH GAP</span><p class="pitch-text">"With 441 Google reviews and a 4.7 rating, you&#x27;ve clearly built something customers trust. From what I can see, you&#x27;re managing all of that without a field service platform — which is impressive, but it usually means there&#x27;s a ceiling coming. I&#x27;d love to show you how the right tools can help you keep growing without the growing pains."</p></div></div>
+      <p class="card-label" style="margin-top:14px;">Suggested openers</p><div class="pitches"><div class="pitch"><span class="pitch-label">TEAM</span><p class="pitch-text">"Your customers keep name-dropping Keith and Alberto in reviews — that kind of loyalty is rare. The shops we work with in that spot usually find their best techs are stuck on admin instead of in the field. Our platform takes the paperwork and scheduling off their plate."</p></div><div class="pitch"><span class="pitch-label">TECH GAP</span><p class="pitch-text">"441 Google reviews at 4.7★ and no field service platform on the backend yet. Every contractor we work with at your scale hits the same wall — spreadsheets and notebooks stop working around 5–10 trucks. Our platform is designed to take you from where you are now to 50+ without rebuilding twice."</p></div></div>
     </div>
     
     <div class="card why-card">
       <p class="card-label">Why this is a good lead</p>
-      <h3 class="card-headline">3 signals fired</h3>
-      <ul class="why-list"><li>No field service platform detected. Bookings likely go through phone or web form (WebsiteBuilder site).</li><li>1 review mention customers switching from a competitor to this shop (most recent: 2026-02-17).</li><li>Dispatch is slow: median 36 hours to respond.</li></ul>
+      <h3 class="card-headline">2 signals fired</h3>
+      <ul class="why-list"><li>No field service platform detected. Bookings likely go through phone or web form (WebsiteBuilder site).</li><li>1 review mention customers switching from a competitor to this shop (most recent: 2026-02-17).</li></ul>
     </div>
     
     <div class="card">
@@ -588,18 +670,18 @@ blockquote.evidence.grouped .obs .obs-label {
     
     <div class="card">
       <p class="card-label">Dispatch distribution</p>
-      <h3 class="card-headline">Dispatch response is slow</h3>
+      <h3 class="card-headline">Dispatch performance</h3>
       
       <p class="card-subtitle">Every dot is a real cached review from the last 6 months. Hours estimated from review text.</p>
       
     <div class="card-stats">
-      <div class="stat"><span class="val">36h</span><span class="lbl">Median response</span></div>
+      <div class="stat"><span class="val">48h</span><span class="lbl">Median response</span></div>
       <div class="stat"><span class="val">48h</span><span class="lbl">Slowest job</span></div>
-      <div class="stat"><span class="val">50%</span><span class="lbl">Same-day</span></div>
-      <div class="stat"><span class="val">2</span><span class="lbl">Reviews with data</span></div>
+      <div class="stat"><span class="val">0%</span><span class="lbl">Same-day</span></div>
+      <div class="stat"><span class="val">1</span><span class="lbl">Reviews with data</span></div>
     </div>
     
-      <div style="margin:16px 0;"><svg width="740" height="140" viewBox="0 0 740 140"><line x1="20" y1="88" x2="720" y2="88" stroke="#cfd3dc" stroke-width="2"/><line x1="20.0" y1="83" x2="20.0" y2="93" stroke="#9aa2b0" stroke-width="1"/><text x="20.0" y="110" text-anchor="middle" font-size="11" fill="#666">0h</text><line x1="36.666666666666664" y1="83" x2="36.666666666666664" y2="93" stroke="#9aa2b0" stroke-width="1"/><text x="36.666666666666664" y="110" text-anchor="middle" font-size="11" fill="#666">4h</text><line x1="53.33333333333333" y1="83" x2="53.33333333333333" y2="93" stroke="#9aa2b0" stroke-width="1"/><text x="53.33333333333333" y="110" text-anchor="middle" font-size="11" fill="#666">8h</text><line x1="120.0" y1="83" x2="120.0" y2="93" stroke="#9aa2b0" stroke-width="1"/><text x="120.0" y="110" text-anchor="middle" font-size="11" fill="#666">24h</text><line x1="220.0" y1="83" x2="220.0" y2="93" stroke="#9aa2b0" stroke-width="1"/><text x="220.0" y="110" text-anchor="middle" font-size="11" fill="#666">48h</text><line x1="320.0" y1="83" x2="320.0" y2="93" stroke="#9aa2b0" stroke-width="1"/><text x="320.0" y="110" text-anchor="middle" font-size="11" fill="#666">72h</text><line x1="720.0" y1="83" x2="720.0" y2="93" stroke="#9aa2b0" stroke-width="1"/><text x="720.0" y="110" text-anchor="middle" font-size="11" fill="#666">1 week</text><circle cx="220.0" cy="64.0" r="8" fill="#1a8c4a" stroke="white" stroke-width="2" opacity="0.92"/><circle cx="120.0" cy="64.0" r="8" fill="#9aa2b0" stroke="white" stroke-width="2" opacity="0.92"/><circle cx="28" cy="125" r="6" fill="#1a8c4a"/><text x="40" y="129" font-size="11" fill="#555">positive</text><circle cx="110" cy="125" r="6" fill="#9aa2b0"/><text x="122" y="129" font-size="11" fill="#555">neutral</text><circle cx="188" cy="125" r="6" fill="#c4332b"/><text x="200" y="129" font-size="11" fill="#555">negative</text><text x="720" y="129" text-anchor="end" font-size="11" fill="#888">each dot = one review</text></svg></div>
+      <div style="margin:16px 0;"><svg width="740" height="140" viewBox="0 0 740 140"><line x1="20" y1="88" x2="720" y2="88" stroke="#cfd3dc" stroke-width="2"/><line x1="20.0" y1="83" x2="20.0" y2="93" stroke="#9aa2b0" stroke-width="1"/><text x="20.0" y="110" text-anchor="middle" font-size="11" fill="#666">0h</text><line x1="36.666666666666664" y1="83" x2="36.666666666666664" y2="93" stroke="#9aa2b0" stroke-width="1"/><text x="36.666666666666664" y="110" text-anchor="middle" font-size="11" fill="#666">4h</text><line x1="53.33333333333333" y1="83" x2="53.33333333333333" y2="93" stroke="#9aa2b0" stroke-width="1"/><text x="53.33333333333333" y="110" text-anchor="middle" font-size="11" fill="#666">8h</text><line x1="120.0" y1="83" x2="120.0" y2="93" stroke="#9aa2b0" stroke-width="1"/><text x="120.0" y="110" text-anchor="middle" font-size="11" fill="#666">24h</text><line x1="220.0" y1="83" x2="220.0" y2="93" stroke="#9aa2b0" stroke-width="1"/><text x="220.0" y="110" text-anchor="middle" font-size="11" fill="#666">48h</text><line x1="320.0" y1="83" x2="320.0" y2="93" stroke="#9aa2b0" stroke-width="1"/><text x="320.0" y="110" text-anchor="middle" font-size="11" fill="#666">72h</text><line x1="720.0" y1="83" x2="720.0" y2="93" stroke="#9aa2b0" stroke-width="1"/><text x="720.0" y="110" text-anchor="middle" font-size="11" fill="#666">1 week</text><circle cx="220.0" cy="64.0" r="8" fill="#1a8c4a" stroke="white" stroke-width="2" opacity="0.92"/><circle cx="28" cy="125" r="6" fill="#1a8c4a"/><text x="40" y="129" font-size="11" fill="#555">positive</text><circle cx="110" cy="125" r="6" fill="#9aa2b0"/><text x="122" y="129" font-size="11" fill="#555">neutral</text><circle cx="188" cy="125" r="6" fill="#c4332b"/><text x="200" y="129" font-size="11" fill="#555">negative</text><text x="720" y="129" text-anchor="end" font-size="11" fill="#888">each dot = one review</text></svg></div>
       <div style="margin-top:18px;">
         <p class="card-subtitle" style="margin-bottom:8px;">Verbatim dispatch quotes:</p>
         
@@ -607,13 +689,6 @@ blockquote.evidence.grouped .obs .obs-label {
           Came back on Sunday when it finally went out
           <span class="cite" style="color:#1a8c4a;">
             48h response · 5★ · positive · 2026-03-29
-          </span>
-        </blockquote>
-        
-        <blockquote class="evidence ">
-          I arrived the next day from my summer home
-          <span class="cite" style="color:#666;">
-            24h response · 5★ · neutral · 2025-10-21
           </span>
         </blockquote>
         
@@ -649,7 +724,7 @@ blockquote.evidence.grouped .obs .obs-label {
         
     </div>
     
-<div class="footer">Rank 25 · Generated 2026-04-13 · HVAC Signals pipeline</div>
+<div class="footer">Rank 25 · Generated 2026-04-24 · HVAC Signals pipeline</div>
 </div>
 </body>
 </html>

@@ -70,6 +70,37 @@ body {
   margin-top: 6px;
 }
 
+.export-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 18px;
+  flex-wrap: wrap;
+}
+.export-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px;
+  background: #0a0a1a;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  border: 1px solid #0a0a1a;
+  transition: background 120ms ease, transform 60ms ease;
+}
+.export-btn:hover { background: #222238; }
+.export-btn:active { transform: translateY(1px); }
+.export-btn .export-icon { font-size: 14px; line-height: 1; }
+.export-note {
+  font-size: 11px;
+  color: #888;
+  letter-spacing: 0.2px;
+}
+
 .legend {
   background: white;
   border-radius: 14px;
@@ -292,6 +323,47 @@ body {
 .chip-hiring  { background: #4a0808; color: #ffdcdc; border-color: #4a0808; }
 .chip-hiring .chip-val { color: #ffdcdc; background: rgba(255,255,255,0.15); }
 .chip-warn    { background: #fff9d6; color: #7a5c00; border-color: #f0d896; }
+.chip-help {
+  display: inline-flex;
+  width: 13px; height: 13px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.08);
+  color: inherit;
+  font-size: 9px;
+  font-weight: 700;
+  align-items: center;
+  justify-content: center;
+  margin-left: 2px;
+  opacity: 0.55;
+}
+.chip-hiring .chip-help { background: rgba(255,255,255,0.2); }
+.chip[data-tip] { position: relative; cursor: help; }
+.chip[data-tip]:hover .chip-help { opacity: 1; }
+.chip[data-tip]::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1a1f2a;
+  color: #f5f6f8;
+  padding: 8px 11px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  text-transform: none;
+  white-space: normal;
+  width: max-content;
+  max-width: 260px;
+  line-height: 1.45;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms ease;
+  z-index: 20;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+}
+.chip[data-tip]:hover::after { opacity: 1; }
 .lead-rank {
   font-size: 32px;
   font-weight: 800;
@@ -324,8 +396,12 @@ body {
 .lead-header h3 a:hover { color: #0066cc; }
 .lead-badges {
   flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
-.lead-badges .tier-badge {
+.lead-badges .tier-badge,
+.lead-badges .score-badge {
   display: inline-block;
   padding: 5px 12px;
   border-radius: 999px;
@@ -334,6 +410,40 @@ body {
   letter-spacing: 0.6px;
   white-space: nowrap;
 }
+.lead-badges .score-badge {
+  background: #eef2ff;
+  color: #3730a3;
+  border: 1px solid #c7d2fe;
+  font-variant-numeric: tabular-nums;
+}
+.lead-badges .score-badge[data-tip] {
+  position: relative;
+  cursor: help;
+}
+.lead-badges .score-badge[data-tip]::after {
+  content: attr(data-tip);
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  background: #1a1f2a;
+  color: #f5f6f8;
+  padding: 8px 11px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  text-transform: none;
+  white-space: normal;
+  width: max-content;
+  max-width: 260px;
+  line-height: 1.45;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms ease;
+  z-index: 30;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+}
+.lead-badges .score-badge[data-tip]:hover::after { opacity: 1; }
 .tier-high { background: #e6f4ea; color: #14532d; }
 .tier-strong { background: #fff4d6; color: #8a5a00; }
 .tier-emerging { background: #e6f2ff; color: #003b7a; }
@@ -442,6 +552,13 @@ body {
       <div class="ss"><span class="val">4</span><span class="lbl">Actively hiring</span></div>
       <div class="ss"><span class="val">25</span><span class="lbl">No FSM platform</span></div>
     </div>
+    <div class="export-row">
+      <a class="export-btn" href="leads.csv" download>
+        <span class="export-icon" aria-hidden="true">⬇</span>
+        Export leads to CSV
+      </a>
+      <span class="export-note">25 leads · owner, phone, address, score, and firing signals</span>
+    </div>
   </div>
 
   <details class="legend">
@@ -540,10 +657,11 @@ body {
         <div class="lead-header">
           <h3><a href="dossier_v4_01_Grand_Canyon_Home_Services_LLC.html">Grand Canyon Home Services LLC</a></h3>
           <div class="lead-badges">
+            <span class="score-badge" data-tip="Total score across 7 weighted dimensions. Top score in the current pool: 59. Higher means a louder buying signal.">Score 59</span>
             <span class="tier-badge tier-high">TOP PRIORITY</span>
           </div>
         </div>
-        <div class="chips"><span class="chip chip-growth">GROWTH<span class="chip-val">25</span></span><span class="chip chip-demand">DEMAND PULL<span class="chip-val">13</span></span><span class="chip chip-nofsm">NO FSM</span><span class="chip chip-hiring">HIRING DISPATCH (5)</span></div>
+        <div class="chips"><span class="chip chip-growth" data-tip="Business is scaling faster than its infrastructure can handle — ops hiring, review velocity acceleration, momentum language." title="Business is scaling faster than its infrastructure can handle — ops hiring, review velocity acceleration, momentum language.">GROWTH<span class="chip-val">25</span><span class="chip-help" aria-hidden="true">?</span></span><span class="chip chip-demand" data-tip="Customers switching from competitors, or one person personally handling the work. The capacity-ceiling pattern that forces a software decision." title="Customers switching from competitors, or one person personally handling the work. The capacity-ceiling pattern that forces a software decision.">DEMAND PULL<span class="chip-val">13</span><span class="chip-help" aria-hidden="true">?</span></span><span class="chip chip-nofsm" data-tip="No field service management platform detected on their website. By definition, they&#x27;re a prospect — not someone else&#x27;s customer." title="No field service management platform detected on their website. By definition, they&#x27;re a prospect — not someone else&#x27;s customer.">NO FSM<span class="chip-help" aria-hidden="true">?</span></span><span class="chip chip-hiring" data-tip="Actively hiring a dispatcher, scheduler, or CSR — the exact operations role field service management software is designed to replace." title="Actively hiring a dispatcher, scheduler, or CSR — the exact operations role field service management software is designed to replace.">HIRING DISPATCH (5)<span class="chip-help" aria-hidden="true">?</span></span></div>
         <div class="call-sheet">
           <div class="cs-row"><span class="cs-icon">📋</span>15 yrs licensed · Residential (R-39)</div>
           <div class="cs-row"><span class="cs-icon">📍</span>11315 W Jomax Rd, Peoria, AZ, 85383</div>
@@ -551,7 +669,7 @@ body {
           <div class="cs-row"><span class="cs-icon">🔗</span><a href="https://grandcanyonac.com/surprise-az/?utm_source=gmb&amp;utm_medium=organic&amp;utm_campaign=suprise" target="_blank">Website</a> · <a href="https://www.google.com/maps/place/?q=place_id:ChIJ3zTwX7xFK4cRhSALSKBQM6E" target="_blank">Google (366 reviews, 4.9★)</a> · <a href="https://www.linkedin.com/company/grand-canyon-home-services-llc" target="_blank">LinkedIn</a> · <a href="https://www.instagram.com/grandcanyonhomeservices/" target="_blank">Instagram</a></div>
           <div class="cs-row"><span class="cs-icon">💰</span><strong>$500K–$1.5M</strong> est. revenue · <span class="no-fsm">No FSM detected</span></div>
         </div>
-        <div class="pitches"><div class="pitch"><span class="pitch-label">GROWTH</span><p class="pitch-text">"I noticed your review volume surged — 34 reviews in the last 90 days versus 1 in the prior 90. That&#x27;s 34x growth. To help you keep up with that momentum, I&#x27;d love to show you how our platform can help you scale operations without adding overhead."</p></div><div class="pitch"><span class="pitch-label">HIRING</span><p class="pitch-text">"I see you recently posted for a HVAC and Plumbing Dispatcher. With your growth trajectory, I&#x27;m sure demand is picking up fast. I can show you how our software handles dispatching and scheduling at a fraction of the cost of a new hire — and it scales with you as you grow."</p></div><div class="pitch"><span class="pitch-label">TEAM</span><p class="pitch-text">"I see Todd, Mike and Tyler are getting great reviews from your customers. Our software can free up their time on paperwork, scheduling, and follow-ups — so they spend more time in the field doing what they&#x27;re best at."</p></div></div>
+        <p class="card-label" style="margin-top:14px;">Suggested openers</p><div class="pitches"><div class="pitch"><span class="pitch-label">GROWTH</span><p class="pitch-text">"Your Google reviews jumped from 1 to 34 in the last 90 days — 34x growth. We see this surge pattern a lot with contractors whose demand is outpacing their ops capacity. Our platform is built to absorb that volume without you having to hire ahead of it."</p></div><div class="pitch"><span class="pitch-label">HIRING</span><p class="pitch-text">"Saw your posting for a HVAC and Plumbing Dispatcher. Most of our customers who add that role are hitting a scheduling ceiling before they realize it. Our platform solves the same bottleneck at a fraction of the fully-loaded cost of the hire."</p></div><div class="pitch"><span class="pitch-label">TEAM</span><p class="pitch-text">"Your customers keep name-dropping Todd, Mike and Tyler in reviews — that kind of loyalty is rare. The shops we work with in that spot usually find their best techs are stuck on admin instead of in the field. Our platform takes the paperwork and scheduling off their plate."</p></div></div>
         <div class="lead-footer">
           <a class="view-link" href="dossier_v4_01_Grand_Canyon_Home_Services_LLC.html">View full dossier →</a>
         </div>
@@ -564,10 +682,11 @@ body {
         <div class="lead-header">
           <h3><a href="dossier_v4_02_Comfort_Experts_LLC.html">Comfort Experts LLC</a></h3>
           <div class="lead-badges">
+            <span class="score-badge" data-tip="Total score across 7 weighted dimensions. Top score in the current pool: 59. Higher means a louder buying signal.">Score 58</span>
             <span class="tier-badge tier-high">TOP PRIORITY</span>
           </div>
         </div>
-        <div class="chips"><span class="chip chip-growth">GROWTH<span class="chip-val">25</span></span><span class="chip chip-demand">DEMAND PULL<span class="chip-val">9</span></span><span class="chip chip-nofsm">NO FSM</span><span class="chip chip-hiring">HIRING DISPATCH</span></div>
+        <div class="chips"><span class="chip chip-growth" data-tip="Business is scaling faster than its infrastructure can handle — ops hiring, review velocity acceleration, momentum language." title="Business is scaling faster than its infrastructure can handle — ops hiring, review velocity acceleration, momentum language.">GROWTH<span class="chip-val">25</span><span class="chip-help" aria-hidden="true">?</span></span><span class="chip chip-demand" data-tip="Customers switching from competitors, or one person personally handling the work. The capacity-ceiling pattern that forces a software decision." title="Customers switching from competitors, or one person personally handling the work. The capacity-ceiling pattern that forces a software decision.">DEMAND PULL<span class="chip-val">9</span><span class="chip-help" aria-hidden="true">?</span></span><span class="chip chip-nofsm" data-tip="No field service management platform detected on their website. By definition, they&#x27;re a prospect — not someone else&#x27;s customer." title="No field service management platform detected on their website. By definition, they&#x27;re a prospect — not someone else&#x27;s customer.">NO FSM<span class="chip-help" aria-hidden="true">?</span></span><span class="chip chip-hiring" data-tip="Actively hiring a dispatcher, scheduler, or CSR — the exact operations role field service management software is designed to replace." title="Actively hiring a dispatcher, scheduler, or CSR — the exact operations role field service management software is designed to replace.">HIRING DISPATCH<span class="chip-help" aria-hidden="true">?</span></span></div>
         <div class="call-sheet">
           <div class="cs-row"><span class="cs-icon">📋</span>14 yrs licensed · Dual-scope (CR-39)</div>
           <div class="cs-row"><span class="cs-icon">📍</span>1610 N Rosemont Suite 113, Mesa, AZ, 85205</div>
@@ -575,7 +694,7 @@ body {
           <div class="cs-row"><span class="cs-icon">🔗</span><a href="https://azcomfortexperts.com/?utm_campaign=gmb&amp;utm_medium=referral" target="_blank">Website</a> · <a href="https://www.google.com/maps/place/?q=place_id:ChIJIXuwbKGlK4cROrNZEUAdi2Q" target="_blank">Google (473 reviews, 4.9★)</a> · <a href="https://www.facebook.com/azcomfortexperts/" target="_blank">Facebook</a> · <a href="https://www.linkedin.com/company/az-comfort-experts" target="_blank">LinkedIn</a> · <a href="https://www.instagram.com/comfortexpertsac/" target="_blank">Instagram</a></div>
           <div class="cs-row"><span class="cs-icon">💰</span><strong>$1.5M–$5M</strong> est. revenue · <span class="no-fsm">No FSM detected</span></div>
         </div>
-        <div class="pitches"><div class="pitch"><span class="pitch-label">GROWTH</span><p class="pitch-text">"I noticed your review volume surged — 26 reviews in the last 90 days versus 5 in the prior 90. That&#x27;s 5x growth. To help you keep up with that momentum, I&#x27;d love to show you how our platform can help you scale operations without adding overhead."</p></div><div class="pitch"><span class="pitch-label">TEAM</span><p class="pitch-text">"I see Tom, Peter and Piotr are getting great reviews from your customers. Our software can free up their time on paperwork, scheduling, and follow-ups — so they spend more time in the field doing what they&#x27;re best at."</p></div><div class="pitch"><span class="pitch-label">HIRING</span><p class="pitch-text">"I see you recently posted for a Customer Service Representative/Scheduling Coor.... With your growth trajectory, I&#x27;m sure demand is picking up fast. I can show you how our software handles dispatching and scheduling at a fraction of the cost of a new hire — and it scales with you as you grow."</p></div></div>
+        <p class="card-label" style="margin-top:14px;">Suggested openers</p><div class="pitches"><div class="pitch"><span class="pitch-label">GROWTH</span><p class="pitch-text">"Your Google reviews jumped from 5 to 26 in the last 90 days — 5x growth. We see this surge pattern a lot with contractors whose demand is outpacing their ops capacity. Our platform is built to absorb that volume without you having to hire ahead of it."</p></div><div class="pitch"><span class="pitch-label">TEAM</span><p class="pitch-text">"Your customers keep name-dropping Tom, Peter and Piotr in reviews — that kind of loyalty is rare. The shops we work with in that spot usually find their best techs are stuck on admin instead of in the field. Our platform takes the paperwork and scheduling off their plate."</p></div><div class="pitch"><span class="pitch-label">HIRING</span><p class="pitch-text">"Saw your posting for a Customer Service Representative/Scheduling Coor.... Most of our customers who add that role are hitting a scheduling ceiling before they realize it. Our platform solves the same bottleneck at a fraction of the fully-loaded cost of the hire."</p></div></div>
         <div class="lead-footer">
           <a class="view-link" href="dossier_v4_02_Comfort_Experts_LLC.html">View full dossier →</a>
         </div>
@@ -588,10 +707,11 @@ body {
         <div class="lead-header">
           <h3><a href="dossier_v4_03_D_W_Plumbing_Heating_Cooling_Inc.html">D W Plumbing Heating &amp; Cooling Inc</a></h3>
           <div class="lead-badges">
+            <span class="score-badge" data-tip="Total score across 7 weighted dimensions. Top score in the current pool: 59. Higher means a louder buying signal.">Score 51</span>
             <span class="tier-badge tier-high">TOP PRIORITY</span>
           </div>
         </div>
-        <div class="chips"><span class="chip chip-growth">GROWTH<span class="chip-val">24</span></span><span class="chip chip-demand">DEMAND PULL<span class="chip-val">7</span></span><span class="chip chip-nofsm">NO FSM</span></div>
+        <div class="chips"><span class="chip chip-growth" data-tip="Business is scaling faster than its infrastructure can handle — ops hiring, review velocity acceleration, momentum language." title="Business is scaling faster than its infrastructure can handle — ops hiring, review velocity acceleration, momentum language.">GROWTH<span class="chip-val">24</span><span class="chip-help" aria-hidden="true">?</span></span><span class="chip chip-demand" data-tip="Customers switching from competitors, or one person personally handling the work. The capacity-ceiling pattern that forces a software decision." title="Customers switching from competitors, or one person personally handling the work. The capacity-ceiling pattern that forces a software decision.">DEMAND PULL<span class="chip-val">7</span><span class="chip-help" aria-hidden="true">?</span></span><span class="chip chip-nofsm" data-tip="No field service management platform detected on their website. By definition, they&#x27;re a prospect — not someone else&#x27;s customer." title="No field service management platform detected on their website. By definition, they&#x27;re a prospect — not someone else&#x27;s customer.">NO FSM<span class="chip-help" aria-hidden="true">?</span></span></div>
         <div class="call-sheet">
           <div class="cs-row"><span class="cs-icon">📋</span>9 yrs licensed · Dual-scope (CR-39)</div>
           <div class="cs-row"><span class="cs-icon">📍</span>3719 N 32nd Ave, Phoenix, AZ, 85017</div>
@@ -599,7 +719,7 @@ body {
           <div class="cs-row"><span class="cs-icon">🔗</span><a href="http://www.dwplumbing.com/" target="_blank">Website</a> · <a href="https://www.google.com/maps/place/?q=place_id:ChIJAQAAAMxuK4cRtrwH8V176SY" target="_blank">Google (203 reviews, 4.6★)</a> · <a href="https://www.facebook.com/359235227894883/" target="_blank">Facebook</a> · <a href="https://www.linkedin.com/company/dw-plumbing" target="_blank">LinkedIn</a></div>
           <div class="cs-row"><span class="cs-icon">💰</span><strong>$1.5M–$5M</strong> est. revenue · <span class="no-fsm">No FSM detected</span></div>
         </div>
-        <div class="pitches"><div class="pitch"><span class="pitch-label">TEAM</span><p class="pitch-text">"I see Rachel, Bree and Ivan are getting great reviews from your customers. Our software can free up their time on paperwork, scheduling, and follow-ups — so they spend more time in the field doing what they&#x27;re best at."</p></div><div class="pitch"><span class="pitch-label">GROWTH</span><p class="pitch-text">"I noticed your review volume surged — 76 reviews in the last 90 days versus 29 in the prior 90. That&#x27;s 3x growth. To help you keep up with that momentum, I&#x27;d love to show you how our platform can help you scale operations without adding overhead."</p></div><div class="pitch"><span class="pitch-label">TECH GAP</span><p class="pitch-text">"With 76 reviews in just the last 90 days, it&#x27;s clear your business is picking up momentum. From what I can see, you&#x27;re managing all of that without a field service platform — which is impressive, but it usually means there&#x27;s a ceiling coming. I&#x27;d love to show you how the right tools can help you keep growing without the growing pains."</p></div></div>
+        <p class="card-label" style="margin-top:14px;">Suggested openers</p><div class="pitches"><div class="pitch"><span class="pitch-label">TEAM</span><p class="pitch-text">"Your customers keep name-dropping Rachel, Bree and Ivan in reviews — that kind of loyalty is rare. The shops we work with in that spot usually find their best techs are stuck on admin instead of in the field. Our platform takes the paperwork and scheduling off their plate."</p></div><div class="pitch"><span class="pitch-label">GROWTH</span><p class="pitch-text">"Your Google reviews jumped from 29 to 76 in the last 90 days — 3x growth. We see this surge pattern a lot with contractors whose demand is outpacing their ops capacity. Our platform is built to absorb that volume without you having to hire ahead of it."</p></div><div class="pitch"><span class="pitch-label">TECH GAP</span><p class="pitch-text">"76 reviews in the last 90 days and no field service platform on the backend yet. Every contractor we work with at your scale hits the same wall — spreadsheets and notebooks stop working around 5–10 trucks. Our platform is designed to take you from where you are now to 50+ without rebuilding twice."</p></div></div>
         <div class="lead-footer">
           <a class="view-link" href="dossier_v4_03_D_W_Plumbing_Heating_Cooling_Inc.html">View full dossier →</a>
         </div>
@@ -612,10 +732,11 @@ body {
         <div class="lead-header">
           <h3><a href="dossier_v4_04_Air_Water_Mechanical_Services_LLC.html">Air &amp; Water Mechanical Services LLC</a></h3>
           <div class="lead-badges">
+            <span class="score-badge" data-tip="Total score across 7 weighted dimensions. Top score in the current pool: 59. Higher means a louder buying signal.">Score 50</span>
             <span class="tier-badge tier-high">TOP PRIORITY</span>
           </div>
         </div>
-        <div class="chips"><span class="chip chip-growth">GROWTH<span class="chip-val">25</span></span><span class="chip chip-demand">DEMAND PULL<span class="chip-val">9</span></span><span class="chip chip-nofsm">NO FSM</span></div>
+        <div class="chips"><span class="chip chip-growth" data-tip="Business is scaling faster than its infrastructure can handle — ops hiring, review velocity acceleration, momentum language." title="Business is scaling faster than its infrastructure can handle — ops hiring, review velocity acceleration, momentum language.">GROWTH<span class="chip-val">25</span><span class="chip-help" aria-hidden="true">?</span></span><span class="chip chip-demand" data-tip="Customers switching from competitors, or one person personally handling the work. The capacity-ceiling pattern that forces a software decision." title="Customers switching from competitors, or one person personally handling the work. The capacity-ceiling pattern that forces a software decision.">DEMAND PULL<span class="chip-val">9</span><span class="chip-help" aria-hidden="true">?</span></span><span class="chip chip-nofsm" data-tip="No field service management platform detected on their website. By definition, they&#x27;re a prospect — not someone else&#x27;s customer." title="No field service management platform detected on their website. By definition, they&#x27;re a prospect — not someone else&#x27;s customer.">NO FSM<span class="chip-help" aria-hidden="true">?</span></span></div>
         <div class="call-sheet">
           <div class="cs-row"><span class="cs-icon">📋</span>6 yrs licensed · Dual-scope (CR-39)</div>
           <div class="cs-row"><span class="cs-icon">📍</span>1048 S Sirrine, Mesa, AZ, 85210</div>
@@ -623,7 +744,7 @@ body {
           <div class="cs-row"><span class="cs-icon">🔗</span><a href="https://airwateraz.com/" target="_blank">Website</a> · <a href="https://www.google.com/maps/place/?q=place_id:ChIJdwwuMHKoK4cRn6X60RGl7pM" target="_blank">Google (170 reviews, 4.8★)</a> · <a href="https://www.facebook.com/airandwatermechanical/" target="_blank">Facebook</a></div>
           <div class="cs-row"><span class="cs-icon">💰</span><strong>$500K–$1.5M</strong> est. revenue · <span class="no-fsm">No FSM detected</span></div>
         </div>
-        <div class="pitches"><div class="pitch"><span class="pitch-label">GROWTH</span><p class="pitch-text">"I noticed your review volume surged — 19 reviews in the last 90 days versus 4 in the prior 90. That&#x27;s 5x growth. To help you keep up with that momentum, I&#x27;d love to show you how our platform can help you scale operations without adding overhead."</p></div><div class="pitch"><span class="pitch-label">DEMAND</span><p class="pitch-text">"At least 2 of your recent reviews mention customers who switched from another HVAC company to yours. That&#x27;s a strong signal — people are choosing you over the competition. The right systems can help you capture that demand without burning out your team."</p></div><div class="pitch"><span class="pitch-label">TEAM</span><p class="pitch-text">"I see Ryan, Bryan and Chris are getting great reviews from your customers. Our software can free up their time on paperwork, scheduling, and follow-ups — so they spend more time in the field doing what they&#x27;re best at."</p></div></div>
+        <p class="card-label" style="margin-top:14px;">Suggested openers</p><div class="pitches"><div class="pitch"><span class="pitch-label">GROWTH</span><p class="pitch-text">"Your Google reviews jumped from 4 to 19 in the last 90 days — 5x growth. We see this surge pattern a lot with contractors whose demand is outpacing their ops capacity. Our platform is built to absorb that volume without you having to hire ahead of it."</p></div><div class="pitch"><span class="pitch-label">DEMAND</span><p class="pitch-text">"2 of your recent reviews are from customers who left another HVAC company to come to you. We&#x27;ve watched this exact pattern with our clients — contractors winning on reputation eventually break when the inbound catches up. Our platform is what most of them wish they&#x27;d had before they needed it."</p></div><div class="pitch"><span class="pitch-label">TEAM</span><p class="pitch-text">"Your customers keep name-dropping Ryan, Bryan and Chris in reviews — that kind of loyalty is rare. The shops we work with in that spot usually find their best techs are stuck on admin instead of in the field. Our platform takes the paperwork and scheduling off their plate."</p></div></div>
         <div class="lead-footer">
           <a class="view-link" href="dossier_v4_04_Air_Water_Mechanical_Services_LLC.html">View full dossier →</a>
         </div>
@@ -636,10 +757,11 @@ body {
         <div class="lead-header">
           <h3><a href="dossier_v4_05_Total_Care_Heating_Cooling_LLC.html">Total Care Heating &amp; Cooling LLC</a></h3>
           <div class="lead-badges">
+            <span class="score-badge" data-tip="Total score across 7 weighted dimensions. Top score in the current pool: 59. Higher means a louder buying signal.">Score 49</span>
             <span class="tier-badge tier-high">TOP PRIORITY</span>
           </div>
         </div>
-        <div class="chips"><span class="chip chip-growth">GROWTH<span class="chip-val">16</span></span><span class="chip chip-demand">DEMAND PULL<span class="chip-val">17</span></span><span class="chip chip-nofsm">NO FSM</span></div>
+        <div class="chips"><span class="chip chip-growth" data-tip="Business is scaling faster than its infrastructure can handle — ops hiring, review velocity acceleration, momentum language." title="Business is scaling faster than its infrastructure can handle — ops hiring, review velocity acceleration, momentum language.">GROWTH<span class="chip-val">16</span><span class="chip-help" aria-hidden="true">?</span></span><span class="chip chip-demand" data-tip="Customers switching from competitors, or one person personally handling the work. The capacity-ceiling pattern that forces a software decision." title="Customers switching from competitors, or one person personally handling the work. The capacity-ceiling pattern that forces a software decision.">DEMAND PULL<span class="chip-val">17</span><span class="chip-help" aria-hidden="true">?</span></span><span class="chip chip-nofsm" data-tip="No field service management platform detected on their website. By definition, they&#x27;re a prospect — not someone else&#x27;s customer." title="No field service management platform detected on their website. By definition, they&#x27;re a prospect — not someone else&#x27;s customer.">NO FSM<span class="chip-help" aria-hidden="true">?</span></span></div>
         <div class="call-sheet">
           <div class="cs-row"><span class="cs-icon">📋</span>9 yrs licensed · Dual-scope (CR-39)</div>
           <div class="cs-row"><span class="cs-icon">📍</span>8617 w salter dr, Peoria, AZ, 85382</div>
@@ -647,7 +769,7 @@ body {
           <div class="cs-row"><span class="cs-icon">🔗</span><a href="http://totalcareheatingandcoolingaz.com/" target="_blank">Website</a> · <a href="https://www.google.com/maps/place/?q=place_id:ChIJlzvGJ1FdK4cRuDKmZ2uYPE4" target="_blank">Google (198 reviews, 5.0★)</a></div>
           <div class="cs-row"><span class="cs-icon">💰</span><strong>$150K–$500K</strong> est. revenue · <span class="no-fsm">No FSM detected</span></div>
         </div>
-        <div class="pitches"><div class="pitch"><span class="pitch-label">DEMAND</span><p class="pitch-text">"At least 3 of your recent reviews mention customers who switched from another HVAC company to yours. That&#x27;s a strong signal — people are choosing you over the competition. The right systems can help you capture that demand without burning out your team."</p></div><div class="pitch"><span class="pitch-label">TECH GAP</span><p class="pitch-text">"With 7 reviews in just the last 90 days, it&#x27;s clear your business is picking up momentum. From what I can see, you&#x27;re managing all of that without a field service platform — which is impressive, but it usually means there&#x27;s a ceiling coming. I&#x27;d love to show you how the right tools can help you keep growing without the growing pains."</p></div><div class="pitch"><span class="pitch-label">CAPACITY</span><p class="pitch-text">"Your customers clearly love working with Sammy — that personal touch is what sets you apart. The challenge is that it doesn&#x27;t scale past one person. Our software can systematize the parts that don&#x27;t need Sammy&#x27;s personal attention, so the quality stays high as you grow."</p></div></div>
+        <p class="card-label" style="margin-top:14px;">Suggested openers</p><div class="pitches"><div class="pitch"><span class="pitch-label">DEMAND</span><p class="pitch-text">"3 of your recent reviews are from customers who left another HVAC company to come to you. We&#x27;ve watched this exact pattern with our clients — contractors winning on reputation eventually break when the inbound catches up. Our platform is what most of them wish they&#x27;d had before they needed it."</p></div><div class="pitch"><span class="pitch-label">TECH GAP</span><p class="pitch-text">"7 reviews in the last 90 days and no field service platform on the backend yet. Every contractor we work with at your scale hits the same wall — spreadsheets and notebooks stop working around 5–10 trucks. Our platform is designed to take you from where you are now to 50+ without rebuilding twice."</p></div><div class="pitch"><span class="pitch-label">CAPACITY</span><p class="pitch-text">"Sammy is showing up personally in most of your reviews. Most of our successful customers started exactly there — the owner carries the brand until the ops catch up. Our platform is what lets the personal touch stay even after Sammy&#x27;s calendar stops being the bottleneck."</p></div></div>
         <div class="lead-footer">
           <a class="view-link" href="dossier_v4_05_Total_Care_Heating_Cooling_LLC.html">View full dossier →</a>
         </div>
@@ -660,10 +782,11 @@ body {
         <div class="lead-header">
           <h3><a href="dossier_v4_06_Tropical_Companies_LLC.html">Tropical Companies LLC</a></h3>
           <div class="lead-badges">
+            <span class="score-badge" data-tip="Total score across 7 weighted dimensions. Top score in the current pool: 59. Higher means a louder buying signal.">Score 46</span>
             <span class="tier-badge tier-high">TOP PRIORITY</span>
           </div>
         </div>
-        <div class="chips"><span class="chip chip-pain">PAIN<span class="chip-val">12</span></span><span class="chip chip-growth">GROWTH<span class="chip-val">10</span></span><span class="chip chip-demand">DEMAND PULL<span class="chip-val">7</span></span><span class="chip chip-nofsm">NO FSM</span></div>
+        <div class="chips"><span class="chip chip-pain" data-tip="Customers are actively complaining in reviews about missed calls, no-shows, or slow dispatch. Score comes from LLM + regex review analysis." title="Customers are actively complaining in reviews about missed calls, no-shows, or slow dispatch. Score comes from LLM + regex review analysis.">PAIN<span class="chip-val">12</span><span class="chip-help" aria-hidden="true">?</span></span><span class="chip chip-growth" data-tip="Business is scaling faster than its infrastructure can handle — ops hiring, review velocity acceleration, momentum language." title="Business is scaling faster than its infrastructure can handle — ops hiring, review velocity acceleration, momentum language.">GROWTH<span class="chip-val">10</span><span class="chip-help" aria-hidden="true">?</span></span><span class="chip chip-demand" data-tip="Customers switching from competitors, or one person personally handling the work. The capacity-ceiling pattern that forces a software decision." title="Customers switching from competitors, or one person personally handling the work. The capacity-ceiling pattern that forces a software decision.">DEMAND PULL<span class="chip-val">7</span><span class="chip-help" aria-hidden="true">?</span></span><span class="chip chip-nofsm" data-tip="No field service management platform detected on their website. By definition, they&#x27;re a prospect — not someone else&#x27;s customer." title="No field service management platform detected on their website. By definition, they&#x27;re a prospect — not someone else&#x27;s customer.">NO FSM<span class="chip-help" aria-hidden="true">?</span></span></div>
         <div class="call-sheet">
           <div class="cs-row"><span class="cs-icon">📋</span>7 yrs licensed · Dual-scope (CR-39)</div>
           <div class="cs-row"><span class="cs-icon">📍</span>24518 S 142nd St, Chandler, AZ, 85249</div>
@@ -671,7 +794,7 @@ body {
           <div class="cs-row"><span class="cs-icon">🔗</span><a href="http://www.tropicalcompanies.com/" target="_blank">Website</a> · <a href="https://www.google.com/maps/place/?q=place_id:ChIJ03g1NRutK4cRk8sm3KihucM" target="_blank">Google (112 reviews, 4.8★)</a></div>
           <div class="cs-row"><span class="cs-icon">💰</span><strong>$1.5M–$5M</strong> est. revenue · <span class="no-fsm">No FSM detected</span></div>
         </div>
-        <div class="pitches"><div class="pitch"><span class="pitch-label">GROWTH</span><p class="pitch-text">"I noticed your review volume surged — 21 reviews in the last 90 days versus 8 in the prior 90. That&#x27;s 3x growth. To help you keep up with that momentum, I&#x27;d love to show you how our platform can help you scale operations without adding overhead."</p></div><div class="pitch"><span class="pitch-label">TEAM</span><p class="pitch-text">"I see Kam, Cam and David are getting great reviews from your customers. Our software can free up their time on paperwork, scheduling, and follow-ups — so they spend more time in the field doing what they&#x27;re best at."</p></div><div class="pitch"><span class="pitch-label">TECH GAP</span><p class="pitch-text">"With 21 reviews in just the last 90 days, it&#x27;s clear your business is picking up momentum. From what I can see, you&#x27;re managing all of that without a field service platform — which is impressive, but it usually means there&#x27;s a ceiling coming. I&#x27;d love to show you how the right tools can help you keep growing without the growing pains."</p></div></div>
+        <p class="card-label" style="margin-top:14px;">Suggested openers</p><div class="pitches"><div class="pitch"><span class="pitch-label">GROWTH</span><p class="pitch-text">"Your Google reviews jumped from 8 to 21 in the last 90 days — 3x growth. We see this surge pattern a lot with contractors whose demand is outpacing their ops capacity. Our platform is built to absorb that volume without you having to hire ahead of it."</p></div><div class="pitch"><span class="pitch-label">TEAM</span><p class="pitch-text">"Your customers keep name-dropping Kam, Cam and David in reviews — that kind of loyalty is rare. The shops we work with in that spot usually find their best techs are stuck on admin instead of in the field. Our platform takes the paperwork and scheduling off their plate."</p></div><div class="pitch"><span class="pitch-label">TECH GAP</span><p class="pitch-text">"21 reviews in the last 90 days and no field service platform on the backend yet. Every contractor we work with at your scale hits the same wall — spreadsheets and notebooks stop working around 5–10 trucks. Our platform is designed to take you from where you are now to 50+ without rebuilding twice."</p></div></div>
         <div class="lead-footer">
           <a class="view-link" href="dossier_v4_06_Tropical_Companies_LLC.html">View full dossier →</a>
         </div>
@@ -684,10 +807,11 @@ body {
         <div class="lead-header">
           <h3><a href="dossier_v4_07_Around_The_Sun_Heating_and_Cooling_Inc.html">Around The Sun Heating and Cooling Inc</a></h3>
           <div class="lead-badges">
+            <span class="score-badge" data-tip="Total score across 7 weighted dimensions. Top score in the current pool: 59. Higher means a louder buying signal.">Score 39</span>
             <span class="tier-badge tier-strong">STRONG INTENT</span>
           </div>
         </div>
-        <div class="chips"><span class="chip chip-growth">GROWTH<span class="chip-val">13</span></span><span class="chip chip-demand">DEMAND PULL<span class="chip-val">15</span></span><span class="chip chip-nofsm">NO FSM</span></div>
+        <div class="chips"><span class="chip chip-growth" data-tip="Business is scaling faster than its infrastructure can handle — ops hiring, review velocity acceleration, momentum language." title="Business is scaling faster than its infrastructure can handle — ops hiring, review velocity acceleration, momentum language.">GROWTH<span class="chip-val">13</span><span class="chip-help" aria-hidden="true">?</span></span><span class="chip chip-demand" data-tip="Customers switching from competitors, or one person personally handling the work. The capacity-ceiling pattern that forces a software decision." title="Customers switching from competitors, or one person personally handling the work. The capacity-ceiling pattern that forces a software decision.">DEMAND PULL<span class="chip-val">15</span><span class="chip-help" aria-hidden="true">?</span></span><span class="chip chip-nofsm" data-tip="No field service management platform detected on their website. By definition, they&#x27;re a prospect — not someone else&#x27;s customer." title="No field service management platform detected on their website. By definition, they&#x27;re a prospect — not someone else&#x27;s customer.">NO FSM<span class="chip-help" aria-hidden="true">?</span></span></div>
         <div class="call-sheet">
           <div class="cs-row"><span class="cs-icon">📋</span>20 yrs licensed · Dual-scope (CR-39)</div>
           <div class="cs-row"><span class="cs-icon">📍</span>150 N William Dillard Dr Ste D121, Gilbert, AZ, 85233</div>
@@ -695,7 +819,7 @@ body {
           <div class="cs-row"><span class="cs-icon">🔗</span><a href="http://www.aroundthesunaz.com/?utm_source=organic&amp;utm_medium=gbp" target="_blank">Website</a> · <a href="https://www.google.com/maps/place/?q=place_id:ChIJE4al6bepK4cRlsLd28jpFno" target="_blank">Google (52 reviews, 5.0★)</a> · <a href="https://www.facebook.com/61575306077381/" target="_blank">Facebook</a></div>
           <div class="cs-row"><span class="cs-icon">💰</span><strong>$150K–$500K</strong> est. revenue · <span class="no-fsm">No FSM detected</span></div>
         </div>
-        <div class="pitches"><div class="pitch"><span class="pitch-label">DEMAND</span><p class="pitch-text">"At least 5 of your recent reviews mention customers who switched from another HVAC company to yours. That&#x27;s a strong signal — people are choosing you over the competition. The right systems can help you capture that demand without burning out your team."</p></div><div class="pitch"><span class="pitch-label">TEAM</span><p class="pitch-text">"I see Keith, Freddie and Tiffany are getting great reviews from your customers. Our software can free up their time on paperwork, scheduling, and follow-ups — so they spend more time in the field doing what they&#x27;re best at."</p></div><div class="pitch"><span class="pitch-label">GROWTH</span><p class="pitch-text">"I noticed your review volume surged — 21 reviews in the last 90 days versus 7 in the prior 90. That&#x27;s 3x growth. To help you keep up with that momentum, I&#x27;d love to show you how our platform can help you scale operations without adding overhead."</p></div></div>
+        <p class="card-label" style="margin-top:14px;">Suggested openers</p><div class="pitches"><div class="pitch"><span class="pitch-label">DEMAND</span><p class="pitch-text">"5 of your recent reviews are from customers who left another HVAC company to come to you. We&#x27;ve watched this exact pattern with our clients — contractors winning on reputation eventually break when the inbound catches up. Our platform is what most of them wish they&#x27;d had before they needed it."</p></div><div class="pitch"><span class="pitch-label">TEAM</span><p class="pitch-text">"Your customers keep name-dropping Keith, Freddie and Tiffany in reviews — that kind of loyalty is rare. The shops we work with in that spot usually find their best techs are stuck on admin instead of in the field. Our platform takes the paperwork and scheduling off their plate."</p></div><div class="pitch"><span class="pitch-label">GROWTH</span><p class="pitch-text">"Your Google reviews jumped from 7 to 21 in the last 90 days — 3x growth. We see this surge pattern a lot with contractors whose demand is outpacing their ops capacity. Our platform is built to absorb that volume without you having to hire ahead of it."</p></div></div>
         <div class="lead-footer">
           <a class="view-link" href="dossier_v4_07_Around_The_Sun_Heating_and_Cooling_Inc.html">View full dossier →</a>
         </div>
@@ -708,10 +832,11 @@ body {
         <div class="lead-header">
           <h3><a href="dossier_v4_08_Cooling_Plumbing_Co_LLC.html">Cooling &amp; Plumbing Co LLC</a></h3>
           <div class="lead-badges">
+            <span class="score-badge" data-tip="Total score across 7 weighted dimensions. Top score in the current pool: 59. Higher means a louder buying signal.">Score 38</span>
             <span class="tier-badge tier-strong">STRONG INTENT</span>
           </div>
         </div>
-        <div class="chips"><span class="chip chip-growth">GROWTH<span class="chip-val">16</span></span><span class="chip chip-demand">DEMAND PULL<span class="chip-val">10</span></span><span class="chip chip-nofsm">NO FSM</span></div>
+        <div class="chips"><span class="chip chip-growth" data-tip="Business is scaling faster than its infrastructure can handle — ops hiring, review velocity acceleration, momentum language." title="Business is scaling faster than its infrastructure can handle — ops hiring, review velocity acceleration, momentum language.">GROWTH<span class="chip-val">16</span><span class="chip-help" aria-hidden="true">?</span></span><span class="chip chip-demand" data-tip="Customers switching from competitors, or one person personally handling the work. The capacity-ceiling pattern that forces a software decision." title="Customers switching from competitors, or one person personally handling the work. The capacity-ceiling pattern that forces a software decision.">DEMAND PULL<span class="chip-val">10</span><span class="chip-help" aria-hidden="true">?</span></span><span class="chip chip-nofsm" data-tip="No field service management platform detected on their website. By definition, they&#x27;re a prospect — not someone else&#x27;s customer." title="No field service management platform detected on their website. By definition, they&#x27;re a prospect — not someone else&#x27;s customer.">NO FSM<span class="chip-help" aria-hidden="true">?</span></span></div>
         <div class="call-sheet">
           <div class="cs-row"><span class="cs-icon">📋</span>7 yrs licensed · Dual-scope (CR-39)</div>
           <div class="cs-row"><span class="cs-icon">📍</span>PO Box 42064, Mesa, AZ, 85274</div>
@@ -719,7 +844,7 @@ body {
           <div class="cs-row"><span class="cs-icon">🔗</span><a href="https://azcpg.com/?utm_source=google&amp;utm_medium=organic&amp;utm_campaign=gbp" target="_blank">Website</a> · <a href="https://www.google.com/maps/place/?q=place_id:ChIJ__-_RcKnK4cR7YaGyPxS6GY" target="_blank">Google (382 reviews, 5.0★)</a> · <a href="https://www.facebook.com/TheCoolingPlumbingCo/" target="_blank">Facebook</a> · <a href="https://www.linkedin.com/company/the-cooling-plumbing-co" target="_blank">LinkedIn</a></div>
           <div class="cs-row"><span class="cs-icon">💰</span><strong>$500K–$1.5M</strong> est. revenue · <span class="no-fsm">No FSM detected</span></div>
         </div>
-        <div class="pitches"><div class="pitch"><span class="pitch-label">TEAM</span><p class="pitch-text">"I see Jay, Patrick and Damian are getting great reviews from your customers. Our software can free up their time on paperwork, scheduling, and follow-ups — so they spend more time in the field doing what they&#x27;re best at."</p></div><div class="pitch"><span class="pitch-label">TECH GAP</span><p class="pitch-text">"With 382 Google reviews and a 5.0 rating, you&#x27;ve clearly built something customers trust. From what I can see, you&#x27;re managing all of that without a field service platform — which is impressive, but it usually means there&#x27;s a ceiling coming. I&#x27;d love to show you how the right tools can help you keep growing without the growing pains."</p></div><div class="pitch"><span class="pitch-label">CAPACITY</span><p class="pitch-text">"Your customers clearly love working with Jeramy — that personal touch is what sets you apart. The challenge is that it doesn&#x27;t scale past one person. Our software can systematize the parts that don&#x27;t need Jeramy&#x27;s personal attention, so the quality stays high as you grow."</p></div></div>
+        <p class="card-label" style="margin-top:14px;">Suggested openers</p><div class="pitches"><div class="pitch"><span class="pitch-label">TEAM</span><p class="pitch-text">"Your customers keep name-dropping Jay, Patrick and Damian in reviews — that kind of loyalty is rare. The shops we work with in that spot usually find their best techs are stuck on admin instead of in the field. Our platform takes the paperwork and scheduling off their plate."</p></div><div class="pitch"><span class="pitch-label">TECH GAP</span><p class="pitch-text">"382 Google reviews at 5.0★ and no field service platform on the backend yet. Every contractor we work with at your scale hits the same wall — spreadsheets and notebooks stop working around 5–10 trucks. Our platform is designed to take you from where you are now to 50+ without rebuilding twice."</p></div><div class="pitch"><span class="pitch-label">CAPACITY</span><p class="pitch-text">"Jeramy is showing up personally in most of your reviews. Most of our successful customers started exactly there — the owner carries the brand until the ops catch up. Our platform is what lets the personal touch stay even after Jeramy&#x27;s calendar stops being the bottleneck."</p></div></div>
         <div class="lead-footer">
           <a class="view-link" href="dossier_v4_08_Cooling_Plumbing_Co_LLC.html">View full dossier →</a>
         </div>
@@ -732,10 +857,11 @@ body {
         <div class="lead-header">
           <h3><a href="dossier_v4_09_Arizona_Cooling_and_Heating_Specialists_LLC.html">Arizona Cooling and Heating Specialists LLC</a></h3>
           <div class="lead-badges">
+            <span class="score-badge" data-tip="Total score across 7 weighted dimensions. Top score in the current pool: 59. Higher means a louder buying signal.">Score 36</span>
             <span class="tier-badge tier-strong">STRONG INTENT</span>
           </div>
         </div>
-        <div class="chips"><span class="chip chip-growth">GROWTH<span class="chip-val">10</span></span><span class="chip chip-demand">DEMAND PULL<span class="chip-val">10</span></span><span class="chip chip-nofsm">NO FSM</span></div>
+        <div class="chips"><span class="chip chip-growth" data-tip="Business is scaling faster than its infrastructure can handle — ops hiring, review velocity acceleration, momentum language." title="Business is scaling faster than its infrastructure can handle — ops hiring, review velocity acceleration, momentum language.">GROWTH<span class="chip-val">10</span><span class="chip-help" aria-hidden="true">?</span></span><span class="chip chip-demand" data-tip="Customers switching from competitors, or one person personally handling the work. The capacity-ceiling pattern that forces a software decision." title="Customers switching from competitors, or one person personally handling the work. The capacity-ceiling pattern that forces a software decision.">DEMAND PULL<span class="chip-val">10</span><span class="chip-help" aria-hidden="true">?</span></span><span class="chip chip-nofsm" data-tip="No field service management platform detected on their website. By definition, they&#x27;re a prospect — not someone else&#x27;s customer." title="No field service management platform detected on their website. By definition, they&#x27;re a prospect — not someone else&#x27;s customer.">NO FSM<span class="chip-help" aria-hidden="true">?</span></span></div>
         <div class="call-sheet">
           <div class="cs-row"><span class="cs-icon">📋</span>12 yrs licensed · Residential (R-39R)</div>
           <div class="cs-row"><span class="cs-icon">📍</span>2565 W Goldmine Mtn Cv, Queen Creek, AZ, 85142</div>
@@ -743,7 +869,7 @@ body {
           <div class="cs-row"><span class="cs-icon">🔗</span><a href="https://arizonacoolingandheatingspecialistsllc.com/" target="_blank">Website</a> · <a href="https://www.google.com/maps/place/?q=place_id:ChIJC8MDgvRPKocRRVrzSOePnPs" target="_blank">Google (266 reviews, 5.0★)</a></div>
           <div class="cs-row"><span class="cs-icon">💰</span><strong>$150K–$500K</strong> est. revenue · <span class="no-fsm">No FSM detected</span></div>
         </div>
-        <div class="pitches"><div class="pitch"><span class="pitch-label">GROWTH</span><p class="pitch-text">"I noticed your review volume surged — 31 reviews in the last 90 days versus 12 in the prior 90. That&#x27;s 3x growth. To help you keep up with that momentum, I&#x27;d love to show you how our platform can help you scale operations without adding overhead."</p></div><div class="pitch"><span class="pitch-label">TEAM</span><p class="pitch-text">"I see Tomas, Josh and Joshua are getting great reviews from your customers. Our software can free up their time on paperwork, scheduling, and follow-ups — so they spend more time in the field doing what they&#x27;re best at."</p></div><div class="pitch"><span class="pitch-label">TECH GAP</span><p class="pitch-text">"With 31 reviews in just the last 90 days, it&#x27;s clear your business is picking up momentum. From what I can see, you&#x27;re managing all of that without a field service platform — which is impressive, but it usually means there&#x27;s a ceiling coming. I&#x27;d love to show you how the right tools can help you keep growing without the growing pains."</p></div></div>
+        <p class="card-label" style="margin-top:14px;">Suggested openers</p><div class="pitches"><div class="pitch"><span class="pitch-label">GROWTH</span><p class="pitch-text">"Your Google reviews jumped from 12 to 31 in the last 90 days — 3x growth. We see this surge pattern a lot with contractors whose demand is outpacing their ops capacity. Our platform is built to absorb that volume without you having to hire ahead of it."</p></div><div class="pitch"><span class="pitch-label">TEAM</span><p class="pitch-text">"Your customers keep name-dropping Tomas, Josh and Joshua in reviews — that kind of loyalty is rare. The shops we work with in that spot usually find their best techs are stuck on admin instead of in the field. Our platform takes the paperwork and scheduling off their plate."</p></div><div class="pitch"><span class="pitch-label">TECH GAP</span><p class="pitch-text">"31 reviews in the last 90 days and no field service platform on the backend yet. Every contractor we work with at your scale hits the same wall — spreadsheets and notebooks stop working around 5–10 trucks. Our platform is designed to take you from where you are now to 50+ without rebuilding twice."</p></div></div>
         <div class="lead-footer">
           <a class="view-link" href="dossier_v4_09_Arizona_Cooling_and_Heating_Specialists_LLC.html">View full dossier →</a>
         </div>
@@ -756,10 +882,11 @@ body {
         <div class="lead-header">
           <h3><a href="dossier_v4_10_True_Home_Maintenance_Air_Conditioning_Heating_LLC.html">True Home Maintenance Air Conditioning &amp; Heating LLC</a></h3>
           <div class="lead-badges">
+            <span class="score-badge" data-tip="Total score across 7 weighted dimensions. Top score in the current pool: 59. Higher means a louder buying signal.">Score 34</span>
             <span class="tier-badge tier-strong">STRONG INTENT</span>
           </div>
         </div>
-        <div class="chips"><span class="chip chip-growth">GROWTH<span class="chip-val">13</span></span><span class="chip chip-nofsm">NO FSM</span></div>
+        <div class="chips"><span class="chip chip-growth" data-tip="Business is scaling faster than its infrastructure can handle — ops hiring, review velocity acceleration, momentum language." title="Business is scaling faster than its infrastructure can handle — ops hiring, review velocity acceleration, momentum language.">GROWTH<span class="chip-val">13</span><span class="chip-help" aria-hidden="true">?</span></span><span class="chip chip-nofsm" data-tip="No field service management platform detected on their website. By definition, they&#x27;re a prospect — not someone else&#x27;s customer." title="No field service management platform detected on their website. By definition, they&#x27;re a prospect — not someone else&#x27;s customer.">NO FSM<span class="chip-help" aria-hidden="true">?</span></span></div>
         <div class="call-sheet">
           <div class="cs-row"><span class="cs-icon">📋</span>13 yrs licensed · Dual-scope (CR-39)</div>
           <div class="cs-row"><span class="cs-icon">📍</span>4611 East Virginia Street, Mesa, AZ, 85215</div>
@@ -767,7 +894,7 @@ body {
           <div class="cs-row"><span class="cs-icon">🔗</span><a href="https://truehomeac.com/" target="_blank">Website</a> · <a href="https://www.google.com/maps/place/?q=place_id:ChIJCwr5A8OoK4cRUPhQ8cpor60" target="_blank">Google (325 reviews, 4.8★)</a> · <a href="https://www.facebook.com/truehomeac/" target="_blank">Facebook</a> · <a href="https://www.instagram.com/truehomeac/" target="_blank">Instagram</a></div>
           <div class="cs-row"><span class="cs-icon">💰</span><strong>$150K–$500K</strong> est. revenue · <span class="no-fsm">No FSM detected</span></div>
         </div>
-        <div class="pitches"><div class="pitch"><span class="pitch-label">GROWTH</span><p class="pitch-text">"I noticed your review volume surged — 12 reviews in the last 90 days versus 3 in the prior 90. That&#x27;s 4x growth. To help you keep up with that momentum, I&#x27;d love to show you how our platform can help you scale operations without adding overhead."</p></div><div class="pitch"><span class="pitch-label">TEAM</span><p class="pitch-text">"I see Sammi, Scott and Jared are getting great reviews from your customers. Our software can free up their time on paperwork, scheduling, and follow-ups — so they spend more time in the field doing what they&#x27;re best at."</p></div><div class="pitch"><span class="pitch-label">TECH GAP</span><p class="pitch-text">"With 12 reviews in just the last 90 days, it&#x27;s clear your business is picking up momentum. From what I can see, you&#x27;re managing all of that without a field service platform — which is impressive, but it usually means there&#x27;s a ceiling coming. I&#x27;d love to show you how the right tools can help you keep growing without the growing pains."</p></div></div>
+        <p class="card-label" style="margin-top:14px;">Suggested openers</p><div class="pitches"><div class="pitch"><span class="pitch-label">GROWTH</span><p class="pitch-text">"Your Google reviews jumped from 3 to 12 in the last 90 days — 4x growth. We see this surge pattern a lot with contractors whose demand is outpacing their ops capacity. Our platform is built to absorb that volume without you having to hire ahead of it."</p></div><div class="pitch"><span class="pitch-label">TEAM</span><p class="pitch-text">"Your customers keep name-dropping Sammi, Scott and Jared in reviews — that kind of loyalty is rare. The shops we work with in that spot usually find their best techs are stuck on admin instead of in the field. Our platform takes the paperwork and scheduling off their plate."</p></div><div class="pitch"><span class="pitch-label">TECH GAP</span><p class="pitch-text">"12 reviews in the last 90 days and no field service platform on the backend yet. Every contractor we work with at your scale hits the same wall — spreadsheets and notebooks stop working around 5–10 trucks. Our platform is designed to take you from where you are now to 50+ without rebuilding twice."</p></div></div>
         <div class="lead-footer">
           <a class="view-link" href="dossier_v4_10_True_Home_Maintenance_Air_Conditioning_Heating_LLC.html">View full dossier →</a>
         </div>
@@ -780,10 +907,11 @@ body {
         <div class="lead-header">
           <h3><a href="dossier_v4_11_Seabreeze_Cooling_LLC.html">Seabreeze Cooling LLC</a></h3>
           <div class="lead-badges">
+            <span class="score-badge" data-tip="Total score across 7 weighted dimensions. Top score in the current pool: 59. Higher means a louder buying signal.">Score 34</span>
             <span class="tier-badge tier-strong">STRONG INTENT</span>
           </div>
         </div>
-        <div class="chips"><span class="chip chip-growth">GROWTH<span class="chip-val">13</span></span><span class="chip chip-demand">DEMAND PULL<span class="chip-val">11</span></span><span class="chip chip-nofsm">NO FSM</span></div>
+        <div class="chips"><span class="chip chip-growth" data-tip="Business is scaling faster than its infrastructure can handle — ops hiring, review velocity acceleration, momentum language." title="Business is scaling faster than its infrastructure can handle — ops hiring, review velocity acceleration, momentum language.">GROWTH<span class="chip-val">13</span><span class="chip-help" aria-hidden="true">?</span></span><span class="chip chip-demand" data-tip="Customers switching from competitors, or one person personally handling the work. The capacity-ceiling pattern that forces a software decision." title="Customers switching from competitors, or one person personally handling the work. The capacity-ceiling pattern that forces a software decision.">DEMAND PULL<span class="chip-val">11</span><span class="chip-help" aria-hidden="true">?</span></span><span class="chip chip-nofsm" data-tip="No field service management platform detected on their website. By definition, they&#x27;re a prospect — not someone else&#x27;s customer." title="No field service management platform detected on their website. By definition, they&#x27;re a prospect — not someone else&#x27;s customer.">NO FSM<span class="chip-help" aria-hidden="true">?</span></span></div>
         <div class="call-sheet">
           <div class="cs-row"><span class="cs-icon">📋</span>7 yrs licensed · Dual-scope (CR-39)</div>
           <div class="cs-row"><span class="cs-icon">📍</span>17972 W Cardinal Dr, Goodyear, AZ, 85338</div>
@@ -791,7 +919,7 @@ body {
           <div class="cs-row"><span class="cs-icon">🔗</span><a href="http://seabreezecooling.com/" target="_blank">Website</a> · <a href="https://www.google.com/maps/place/?q=place_id:ChIJxWvW_DwxK4cRoe_YsXRJpCs" target="_blank">Google (311 reviews, 4.1★)</a> · <a href="https://www.facebook.com/seabreezecooling/" target="_blank">Facebook</a></div>
           <div class="cs-row"><span class="cs-icon">💰</span><strong>$150K–$500K</strong> est. revenue · <span class="no-fsm">No FSM detected</span></div>
         </div>
-        <div class="pitches"><div class="pitch"><span class="pitch-label">GROWTH</span><p class="pitch-text">"I noticed your review volume surged — 73 reviews in the last 90 days versus 0 in the prior 90. That&#x27;s 73x growth. To help you keep up with that momentum, I&#x27;d love to show you how our platform can help you scale operations without adding overhead."</p></div><div class="pitch"><span class="pitch-label">TECH GAP</span><p class="pitch-text">"With 73 reviews in just the last 90 days, it&#x27;s clear your business is picking up momentum. From what I can see, you&#x27;re managing all of that without a field service platform — which is impressive, but it usually means there&#x27;s a ceiling coming. I&#x27;d love to show you how the right tools can help you keep growing without the growing pains."</p></div><div class="pitch"><span class="pitch-label">CAPACITY</span><p class="pitch-text">"Your customers clearly love working with Ahsan — that personal touch is what sets you apart. The challenge is that it doesn&#x27;t scale past one person. Our software can systematize the parts that don&#x27;t need Ahsan&#x27;s personal attention, so the quality stays high as you grow."</p></div></div>
+        <p class="card-label" style="margin-top:14px;">Suggested openers</p><div class="pitches"><div class="pitch"><span class="pitch-label">GROWTH</span><p class="pitch-text">"Your Google reviews jumped from 0 to 73 in the last 90 days — 73x growth. We see this surge pattern a lot with contractors whose demand is outpacing their ops capacity. Our platform is built to absorb that volume without you having to hire ahead of it."</p></div><div class="pitch"><span class="pitch-label">TECH GAP</span><p class="pitch-text">"73 reviews in the last 90 days and no field service platform on the backend yet. Every contractor we work with at your scale hits the same wall — spreadsheets and notebooks stop working around 5–10 trucks. Our platform is designed to take you from where you are now to 50+ without rebuilding twice."</p></div><div class="pitch"><span class="pitch-label">CAPACITY</span><p class="pitch-text">"Ahsan is showing up personally in most of your reviews. Most of our successful customers started exactly there — the owner carries the brand until the ops catch up. Our platform is what lets the personal touch stay even after Ahsan&#x27;s calendar stops being the bottleneck."</p></div></div>
         <div class="lead-footer">
           <a class="view-link" href="dossier_v4_11_Seabreeze_Cooling_LLC.html">View full dossier →</a>
         </div>
@@ -804,10 +932,11 @@ body {
         <div class="lead-header">
           <h3><a href="dossier_v4_12_HVAC_Enterprises_LLC.html">HVAC Enterprises LLC</a></h3>
           <div class="lead-badges">
+            <span class="score-badge" data-tip="Total score across 7 weighted dimensions. Top score in the current pool: 59. Higher means a louder buying signal.">Score 32</span>
             <span class="tier-badge tier-strong">STRONG INTENT</span>
           </div>
         </div>
-        <div class="chips"><span class="chip chip-growth">GROWTH<span class="chip-val">12</span></span><span class="chip chip-demand">DEMAND PULL<span class="chip-val">7</span></span><span class="chip chip-nofsm">NO FSM</span></div>
+        <div class="chips"><span class="chip chip-growth" data-tip="Business is scaling faster than its infrastructure can handle — ops hiring, review velocity acceleration, momentum language." title="Business is scaling faster than its infrastructure can handle — ops hiring, review velocity acceleration, momentum language.">GROWTH<span class="chip-val">12</span><span class="chip-help" aria-hidden="true">?</span></span><span class="chip chip-demand" data-tip="Customers switching from competitors, or one person personally handling the work. The capacity-ceiling pattern that forces a software decision." title="Customers switching from competitors, or one person personally handling the work. The capacity-ceiling pattern that forces a software decision.">DEMAND PULL<span class="chip-val">7</span><span class="chip-help" aria-hidden="true">?</span></span><span class="chip chip-nofsm" data-tip="No field service management platform detected on their website. By definition, they&#x27;re a prospect — not someone else&#x27;s customer." title="No field service management platform detected on their website. By definition, they&#x27;re a prospect — not someone else&#x27;s customer.">NO FSM<span class="chip-help" aria-hidden="true">?</span></span></div>
         <div class="call-sheet">
           <div class="cs-row"><span class="cs-icon">📋</span>9 yrs licensed · Dual-scope (CR-39)</div>
           <div class="cs-row"><span class="cs-icon">📍</span>1530 Williams Field Rd #201, Gilbert, AZ, 85295</div>
@@ -815,7 +944,7 @@ body {
           <div class="cs-row"><span class="cs-icon">🔗</span><a href="https://www.simplythebestac.com/" target="_blank">Website</a> · <a href="https://www.google.com/maps/place/?q=place_id:ChIJuaYkBwOpK4cROWxlHD0y8sE" target="_blank">Google (195 reviews, 4.5★)</a></div>
           <div class="cs-row"><span class="cs-icon">💰</span><strong>$150K–$500K</strong> est. revenue · <span class="no-fsm">No FSM detected</span></div>
         </div>
-        <div class="pitches"><div class="pitch"><span class="pitch-label">GROWTH</span><p class="pitch-text">"I noticed your review volume surged — 15 reviews in the last 90 days versus 6 in the prior 90. That&#x27;s 2x growth. To help you keep up with that momentum, I&#x27;d love to show you how our platform can help you scale operations without adding overhead."</p></div><div class="pitch"><span class="pitch-label">TEAM</span><p class="pitch-text">"I see Octavio and Octavia are getting great reviews from your customers. Our software can free up their time on paperwork, scheduling, and follow-ups — so they spend more time in the field doing what they&#x27;re best at."</p></div><div class="pitch"><span class="pitch-label">TECH GAP</span><p class="pitch-text">"With 15 reviews in just the last 90 days, it&#x27;s clear your business is picking up momentum. From what I can see, you&#x27;re managing all of that without a field service platform — which is impressive, but it usually means there&#x27;s a ceiling coming. I&#x27;d love to show you how the right tools can help you keep growing without the growing pains."</p></div></div>
+        <p class="card-label" style="margin-top:14px;">Suggested openers</p><div class="pitches"><div class="pitch"><span class="pitch-label">GROWTH</span><p class="pitch-text">"Your Google reviews jumped from 6 to 15 in the last 90 days — 2x growth. We see this surge pattern a lot with contractors whose demand is outpacing their ops capacity. Our platform is built to absorb that volume without you having to hire ahead of it."</p></div><div class="pitch"><span class="pitch-label">TEAM</span><p class="pitch-text">"Your customers keep name-dropping Octavio and Octavia in reviews — that kind of loyalty is rare. The shops we work with in that spot usually find their best techs are stuck on admin instead of in the field. Our platform takes the paperwork and scheduling off their plate."</p></div><div class="pitch"><span class="pitch-label">TECH GAP</span><p class="pitch-text">"15 reviews in the last 90 days and no field service platform on the backend yet. Every contractor we work with at your scale hits the same wall — spreadsheets and notebooks stop working around 5–10 trucks. Our platform is designed to take you from where you are now to 50+ without rebuilding twice."</p></div></div>
         <div class="lead-footer">
           <a class="view-link" href="dossier_v4_12_HVAC_Enterprises_LLC.html">View full dossier →</a>
         </div>
@@ -828,10 +957,11 @@ body {
         <div class="lead-header">
           <h3><a href="dossier_v4_13_All_Day_Heating_Air_Conditioning_LLC.html">All Day Heating &amp; Air Conditioning LLC</a></h3>
           <div class="lead-badges">
+            <span class="score-badge" data-tip="Total score across 7 weighted dimensions. Top score in the current pool: 59. Higher means a louder buying signal.">Score 30</span>
             <span class="tier-badge tier-strong">STRONG INTENT</span>
           </div>
         </div>
-        <div class="chips"><span class="chip chip-growth">GROWTH<span class="chip-val">8</span></span><span class="chip chip-demand">DEMAND PULL<span class="chip-val">8</span></span><span class="chip chip-nofsm">NO FSM</span><span class="chip chip-warn">THIN SAMPLE (9)</span></div>
+        <div class="chips"><span class="chip chip-growth" data-tip="Business is scaling faster than its infrastructure can handle — ops hiring, review velocity acceleration, momentum language." title="Business is scaling faster than its infrastructure can handle — ops hiring, review velocity acceleration, momentum language.">GROWTH<span class="chip-val">8</span><span class="chip-help" aria-hidden="true">?</span></span><span class="chip chip-demand" data-tip="Customers switching from competitors, or one person personally handling the work. The capacity-ceiling pattern that forces a software decision." title="Customers switching from competitors, or one person personally handling the work. The capacity-ceiling pattern that forces a software decision.">DEMAND PULL<span class="chip-val">8</span><span class="chip-help" aria-hidden="true">?</span></span><span class="chip chip-nofsm" data-tip="No field service management platform detected on their website. By definition, they&#x27;re a prospect — not someone else&#x27;s customer." title="No field service management platform detected on their website. By definition, they&#x27;re a prospect — not someone else&#x27;s customer.">NO FSM<span class="chip-help" aria-hidden="true">?</span></span><span class="chip chip-warn" data-tip="Only 9 reviews were LLM-analyzed. Pain and growth scores are discounted proportionally; treat signal strength with caution." title="Only 9 reviews were LLM-analyzed. Pain and growth scores are discounted proportionally; treat signal strength with caution.">THIN SAMPLE (9)<span class="chip-help" aria-hidden="true">?</span></span></div>
         <div class="call-sheet">
           <div class="cs-row"><span class="cs-icon">📋</span>7 yrs licensed · Dual-scope (CR-39)</div>
           <div class="cs-row"><span class="cs-icon">📍</span>10249 E Carmel Ave, Mesa, AZ, 85208</div>
@@ -839,7 +969,7 @@ body {
           <div class="cs-row"><span class="cs-icon">🔗</span><a href="https://alldayac.com/" target="_blank">Website</a> · <a href="https://www.google.com/maps/place/?q=place_id:ChIJ90tmiq6xK4cRWXcdlTq4aS0" target="_blank">Google (59 reviews, 4.9★)</a> · <a href="https://www.facebook.com/alldayheatingandairconditioning/" target="_blank">Facebook</a></div>
           <div class="cs-row"><span class="cs-icon">💰</span><strong>$150K–$500K</strong> est. revenue · <span class="no-fsm">No FSM detected</span></div>
         </div>
-        <div class="pitches"><div class="pitch"><span class="pitch-label">GROWTH</span><p class="pitch-text">"I noticed your review volume surged — 11 reviews in the last 90 days versus 3 in the prior 90. That&#x27;s 4x growth. To help you keep up with that momentum, I&#x27;d love to show you how our platform can help you scale operations without adding overhead."</p></div><div class="pitch"><span class="pitch-label">TECH GAP</span><p class="pitch-text">"With 11 reviews in just the last 90 days, it&#x27;s clear your business is picking up momentum. From what I can see, you&#x27;re managing all of that without a field service platform — which is impressive, but it usually means there&#x27;s a ceiling coming. I&#x27;d love to show you how the right tools can help you keep growing without the growing pains."</p></div><div class="pitch"><span class="pitch-label">CAPACITY</span><p class="pitch-text">"Your customers clearly love working with Steven — that personal touch is what sets you apart. The challenge is that it doesn&#x27;t scale past one person. Our software can systematize the parts that don&#x27;t need Steven&#x27;s personal attention, so the quality stays high as you grow."</p></div></div>
+        <p class="card-label" style="margin-top:14px;">Suggested openers</p><div class="pitches"><div class="pitch"><span class="pitch-label">GROWTH</span><p class="pitch-text">"Your Google reviews jumped from 3 to 11 in the last 90 days — 4x growth. We see this surge pattern a lot with contractors whose demand is outpacing their ops capacity. Our platform is built to absorb that volume without you having to hire ahead of it."</p></div><div class="pitch"><span class="pitch-label">TECH GAP</span><p class="pitch-text">"11 reviews in the last 90 days and no field service platform on the backend yet. Every contractor we work with at your scale hits the same wall — spreadsheets and notebooks stop working around 5–10 trucks. Our platform is designed to take you from where you are now to 50+ without rebuilding twice."</p></div><div class="pitch"><span class="pitch-label">CAPACITY</span><p class="pitch-text">"Steven is showing up personally in most of your reviews. Most of our successful customers started exactly there — the owner carries the brand until the ops catch up. Our platform is what lets the personal touch stay even after Steven&#x27;s calendar stops being the bottleneck."</p></div></div>
         <div class="lead-footer">
           <a class="view-link" href="dossier_v4_13_All_Day_Heating_Air_Conditioning_LLC.html">View full dossier →</a>
         </div>
@@ -852,10 +982,11 @@ body {
         <div class="lead-header">
           <h3><a href="dossier_v4_14_Clark_Heating_and_Cooling_LLC.html">Clark Heating and Cooling LLC</a></h3>
           <div class="lead-badges">
+            <span class="score-badge" data-tip="Total score across 7 weighted dimensions. Top score in the current pool: 59. Higher means a louder buying signal.">Score 29</span>
             <span class="tier-badge tier-strong">STRONG INTENT</span>
           </div>
         </div>
-        <div class="chips"><span class="chip chip-growth">GROWTH<span class="chip-val">13</span></span><span class="chip chip-demand">DEMAND PULL<span class="chip-val">6</span></span><span class="chip chip-nofsm">NO FSM</span></div>
+        <div class="chips"><span class="chip chip-growth" data-tip="Business is scaling faster than its infrastructure can handle — ops hiring, review velocity acceleration, momentum language." title="Business is scaling faster than its infrastructure can handle — ops hiring, review velocity acceleration, momentum language.">GROWTH<span class="chip-val">13</span><span class="chip-help" aria-hidden="true">?</span></span><span class="chip chip-demand" data-tip="Customers switching from competitors, or one person personally handling the work. The capacity-ceiling pattern that forces a software decision." title="Customers switching from competitors, or one person personally handling the work. The capacity-ceiling pattern that forces a software decision.">DEMAND PULL<span class="chip-val">6</span><span class="chip-help" aria-hidden="true">?</span></span><span class="chip chip-nofsm" data-tip="No field service management platform detected on their website. By definition, they&#x27;re a prospect — not someone else&#x27;s customer." title="No field service management platform detected on their website. By definition, they&#x27;re a prospect — not someone else&#x27;s customer.">NO FSM<span class="chip-help" aria-hidden="true">?</span></span></div>
         <div class="call-sheet">
           <div class="cs-row"><span class="cs-icon">📋</span>15 yrs licensed · Residential (R-39R)</div>
           <div class="cs-row"><span class="cs-icon">📍</span>14050 N 83rd Ave Suite 290, Peoria, AZ, 85381</div>
@@ -863,7 +994,7 @@ body {
           <div class="cs-row"><span class="cs-icon">🔗</span><a href="http://www.clarkheatandcool.com/" target="_blank">Website</a> · <a href="https://www.google.com/maps/place/?q=place_id:ChIJu-mmg9hpK4cRM8d2NbMMJ58" target="_blank">Google (427 reviews, 4.9★)</a> · <a href="https://www.facebook.com/clarkheatingandcooling/" target="_blank">Facebook</a> · <a href="https://www.linkedin.com/company/clark-heating-and-cooling" target="_blank">LinkedIn</a></div>
           <div class="cs-row"><span class="cs-icon">💰</span><strong>$500K–$1.5M</strong> est. revenue · <span class="no-fsm">No FSM detected</span></div>
         </div>
-        <div class="pitches"><div class="pitch"><span class="pitch-label">GROWTH</span><p class="pitch-text">"I noticed your review volume surged — 20 reviews in the last 90 days versus 7 in the prior 90. That&#x27;s 3x growth. To help you keep up with that momentum, I&#x27;d love to show you how our platform can help you scale operations without adding overhead."</p></div><div class="pitch"><span class="pitch-label">TEAM</span><p class="pitch-text">"I see Eric, Gabe and Robert are getting great reviews from your customers. Our software can free up their time on paperwork, scheduling, and follow-ups — so they spend more time in the field doing what they&#x27;re best at."</p></div><div class="pitch"><span class="pitch-label">TECH GAP</span><p class="pitch-text">"With 20 reviews in just the last 90 days, it&#x27;s clear your business is picking up momentum. From what I can see, you&#x27;re managing all of that without a field service platform — which is impressive, but it usually means there&#x27;s a ceiling coming. I&#x27;d love to show you how the right tools can help you keep growing without the growing pains."</p></div></div>
+        <p class="card-label" style="margin-top:14px;">Suggested openers</p><div class="pitches"><div class="pitch"><span class="pitch-label">GROWTH</span><p class="pitch-text">"Your Google reviews jumped from 7 to 20 in the last 90 days — 3x growth. We see this surge pattern a lot with contractors whose demand is outpacing their ops capacity. Our platform is built to absorb that volume without you having to hire ahead of it."</p></div><div class="pitch"><span class="pitch-label">TEAM</span><p class="pitch-text">"Your customers keep name-dropping Eric, Gabe and Robert in reviews — that kind of loyalty is rare. The shops we work with in that spot usually find their best techs are stuck on admin instead of in the field. Our platform takes the paperwork and scheduling off their plate."</p></div><div class="pitch"><span class="pitch-label">TECH GAP</span><p class="pitch-text">"20 reviews in the last 90 days and no field service platform on the backend yet. Every contractor we work with at your scale hits the same wall — spreadsheets and notebooks stop working around 5–10 trucks. Our platform is designed to take you from where you are now to 50+ without rebuilding twice."</p></div></div>
         <div class="lead-footer">
           <a class="view-link" href="dossier_v4_14_Clark_Heating_and_Cooling_LLC.html">View full dossier →</a>
         </div>
@@ -876,10 +1007,11 @@ body {
         <div class="lead-header">
           <h3><a href="dossier_v4_15_Sun_Devil_Heating_and_Cooling_Inc.html">Sun Devil Heating and Cooling Inc</a></h3>
           <div class="lead-badges">
+            <span class="score-badge" data-tip="Total score across 7 weighted dimensions. Top score in the current pool: 59. Higher means a louder buying signal.">Score 28</span>
             <span class="tier-badge tier-strong">STRONG INTENT</span>
           </div>
         </div>
-        <div class="chips"><span class="chip chip-growth">GROWTH<span class="chip-val">14</span></span><span class="chip chip-nofsm">NO FSM</span></div>
+        <div class="chips"><span class="chip chip-growth" data-tip="Business is scaling faster than its infrastructure can handle — ops hiring, review velocity acceleration, momentum language." title="Business is scaling faster than its infrastructure can handle — ops hiring, review velocity acceleration, momentum language.">GROWTH<span class="chip-val">14</span><span class="chip-help" aria-hidden="true">?</span></span><span class="chip chip-nofsm" data-tip="No field service management platform detected on their website. By definition, they&#x27;re a prospect — not someone else&#x27;s customer." title="No field service management platform detected on their website. By definition, they&#x27;re a prospect — not someone else&#x27;s customer.">NO FSM<span class="chip-help" aria-hidden="true">?</span></span></div>
         <div class="call-sheet">
           <div class="cs-row"><span class="cs-icon">📋</span>18 yrs licensed · Dual-scope (CR-39)</div>
           <div class="cs-row"><span class="cs-icon">📍</span>3033 N 35th Ave #3, Phoenix, AZ, 85017</div>
@@ -887,7 +1019,7 @@ body {
           <div class="cs-row"><span class="cs-icon">🔗</span><a href="https://sundevilaz.com/" target="_blank">Website</a> · <a href="https://www.google.com/maps/place/?q=place_id:ChIJq6pq_HoTK4cRhuJvqJ4-6iY" target="_blank">Google (142 reviews, 4.8★)</a> · <a href="https://www.facebook.com/sundevilaz.hvac/" target="_blank">Facebook</a></div>
           <div class="cs-row"><span class="cs-icon">💰</span><strong>$500K–$1.5M</strong> est. revenue · <span class="no-fsm">No FSM detected</span></div>
         </div>
-        <div class="pitches"><div class="pitch"><span class="pitch-label">GROWTH</span><p class="pitch-text">"I noticed your review volume surged — 29 reviews in the last 90 days versus 2 in the prior 90. That&#x27;s 14x growth. To help you keep up with that momentum, I&#x27;d love to show you how our platform can help you scale operations without adding overhead."</p></div><div class="pitch"><span class="pitch-label">TEAM</span><p class="pitch-text">"I see Kevin, Frank and Rudy are getting great reviews from your customers. Our software can free up their time on paperwork, scheduling, and follow-ups — so they spend more time in the field doing what they&#x27;re best at."</p></div><div class="pitch"><span class="pitch-label">TECH GAP</span><p class="pitch-text">"With 29 reviews in just the last 90 days, it&#x27;s clear your business is picking up momentum. From what I can see, you&#x27;re managing all of that without a field service platform — which is impressive, but it usually means there&#x27;s a ceiling coming. I&#x27;d love to show you how the right tools can help you keep growing without the growing pains."</p></div></div>
+        <p class="card-label" style="margin-top:14px;">Suggested openers</p><div class="pitches"><div class="pitch"><span class="pitch-label">GROWTH</span><p class="pitch-text">"Your Google reviews jumped from 2 to 29 in the last 90 days — 14x growth. We see this surge pattern a lot with contractors whose demand is outpacing their ops capacity. Our platform is built to absorb that volume without you having to hire ahead of it."</p></div><div class="pitch"><span class="pitch-label">TEAM</span><p class="pitch-text">"Your customers keep name-dropping Kevin, Frank and Rudy in reviews — that kind of loyalty is rare. The shops we work with in that spot usually find their best techs are stuck on admin instead of in the field. Our platform takes the paperwork and scheduling off their plate."</p></div><div class="pitch"><span class="pitch-label">TECH GAP</span><p class="pitch-text">"29 reviews in the last 90 days and no field service platform on the backend yet. Every contractor we work with at your scale hits the same wall — spreadsheets and notebooks stop working around 5–10 trucks. Our platform is designed to take you from where you are now to 50+ without rebuilding twice."</p></div></div>
         <div class="lead-footer">
           <a class="view-link" href="dossier_v4_15_Sun_Devil_Heating_and_Cooling_Inc.html">View full dossier →</a>
         </div>
@@ -900,10 +1032,11 @@ body {
         <div class="lead-header">
           <h3><a href="dossier_v4_16_AZ_Trusted_Air_LLC.html">AZ Trusted Air LLC</a></h3>
           <div class="lead-badges">
+            <span class="score-badge" data-tip="Total score across 7 weighted dimensions. Top score in the current pool: 59. Higher means a louder buying signal.">Score 25</span>
             <span class="tier-badge tier-strong">STRONG INTENT</span>
           </div>
         </div>
-        <div class="chips"><span class="chip chip-growth">GROWTH<span class="chip-val">6</span></span><span class="chip chip-demand">DEMAND PULL<span class="chip-val">11</span></span><span class="chip chip-nofsm">NO FSM</span><span class="chip chip-warn">THIN SAMPLE (4)</span></div>
+        <div class="chips"><span class="chip chip-growth" data-tip="Business is scaling faster than its infrastructure can handle — ops hiring, review velocity acceleration, momentum language." title="Business is scaling faster than its infrastructure can handle — ops hiring, review velocity acceleration, momentum language.">GROWTH<span class="chip-val">6</span><span class="chip-help" aria-hidden="true">?</span></span><span class="chip chip-demand" data-tip="Customers switching from competitors, or one person personally handling the work. The capacity-ceiling pattern that forces a software decision." title="Customers switching from competitors, or one person personally handling the work. The capacity-ceiling pattern that forces a software decision.">DEMAND PULL<span class="chip-val">11</span><span class="chip-help" aria-hidden="true">?</span></span><span class="chip chip-nofsm" data-tip="No field service management platform detected on their website. By definition, they&#x27;re a prospect — not someone else&#x27;s customer." title="No field service management platform detected on their website. By definition, they&#x27;re a prospect — not someone else&#x27;s customer.">NO FSM<span class="chip-help" aria-hidden="true">?</span></span><span class="chip chip-warn" data-tip="Only 4 reviews were LLM-analyzed. Pain and growth scores are discounted proportionally; treat signal strength with caution." title="Only 4 reviews were LLM-analyzed. Pain and growth scores are discounted proportionally; treat signal strength with caution.">THIN SAMPLE (4)<span class="chip-help" aria-hidden="true">?</span></span></div>
         <div class="call-sheet">
           <div class="cs-row"><span class="cs-icon">📋</span>8 yrs licensed · Dual-scope (CR-39)</div>
           <div class="cs-row"><span class="cs-icon">📍</span>15677 N Cave Creek Rd, Phoenix, AZ, 85032</div>
@@ -911,7 +1044,7 @@ body {
           <div class="cs-row"><span class="cs-icon">🔗</span><a href="http://www.aztrusted.com/" target="_blank">Website</a> · <a href="https://www.google.com/maps/place/?q=place_id:ChIJicDsWy9rK4cRYCXLYnN42M8" target="_blank">Google (68 reviews, 4.4★)</a> · <a href="https://www.facebook.com/aztrustedair/" target="_blank">Facebook</a> · <a href="https://www.linkedin.com/company/az-trusted-air" target="_blank">LinkedIn</a></div>
           <div class="cs-row"><span class="cs-icon">💰</span><strong>$150K–$500K</strong> est. revenue · <span class="no-fsm">No FSM detected</span></div>
         </div>
-        <div class="pitches"><div class="pitch"><span class="pitch-label">CAPACITY</span><p class="pitch-text">"Your customers clearly love working with Brian — that personal touch is what sets you apart. The challenge is that it doesn&#x27;t scale past one person. Our software can systematize the parts that don&#x27;t need Brian&#x27;s personal attention, so the quality stays high as you grow."</p></div></div>
+        <p class="card-label" style="margin-top:14px;">Suggested openers</p><div class="pitches"><div class="pitch"><span class="pitch-label">CAPACITY</span><p class="pitch-text">"Brian is showing up personally in most of your reviews. Most of our successful customers started exactly there — the owner carries the brand until the ops catch up. Our platform is what lets the personal touch stay even after Brian&#x27;s calendar stops being the bottleneck."</p></div></div>
         <div class="lead-footer">
           <a class="view-link" href="dossier_v4_16_AZ_Trusted_Air_LLC.html">View full dossier →</a>
         </div>
@@ -924,10 +1057,11 @@ body {
         <div class="lead-header">
           <h3><a href="dossier_v4_17_Martin_Air_LLC.html">Martin Air LLC</a></h3>
           <div class="lead-badges">
+            <span class="score-badge" data-tip="Total score across 7 weighted dimensions. Top score in the current pool: 59. Higher means a louder buying signal.">Score 24</span>
             <span class="tier-badge tier-emerging">EMERGING</span>
           </div>
         </div>
-        <div class="chips"><span class="chip chip-growth">GROWTH<span class="chip-val">12</span></span><span class="chip chip-nofsm">NO FSM</span></div>
+        <div class="chips"><span class="chip chip-growth" data-tip="Business is scaling faster than its infrastructure can handle — ops hiring, review velocity acceleration, momentum language." title="Business is scaling faster than its infrastructure can handle — ops hiring, review velocity acceleration, momentum language.">GROWTH<span class="chip-val">12</span><span class="chip-help" aria-hidden="true">?</span></span><span class="chip chip-nofsm" data-tip="No field service management platform detected on their website. By definition, they&#x27;re a prospect — not someone else&#x27;s customer." title="No field service management platform detected on their website. By definition, they&#x27;re a prospect — not someone else&#x27;s customer.">NO FSM<span class="chip-help" aria-hidden="true">?</span></span></div>
         <div class="call-sheet">
           <div class="cs-row"><span class="cs-icon">📋</span>8 yrs licensed · Dual-scope (CR-39)</div>
           <div class="cs-row"><span class="cs-icon">📍</span>431 S Stapley Dr Unit 28, Mesa, AZ, 85204</div>
@@ -935,7 +1069,7 @@ body {
           <div class="cs-row"><span class="cs-icon">🔗</span><a href="https://www.martinairhvac.com/" target="_blank">Website</a> · <a href="https://www.google.com/maps/place/?q=place_id:ChIJ76sBvwqvK4cRRNmEU3u4L3A" target="_blank">Google (304 reviews, 5.0★)</a> · <a href="https://www.facebook.com/martinairhvac/" target="_blank">Facebook</a> · <a href="https://www.linkedin.com/company/martin-air-heating-cooling" target="_blank">LinkedIn</a></div>
           <div class="cs-row"><span class="cs-icon">💰</span><strong>$150K–$500K</strong> est. revenue · <span class="no-fsm">No FSM detected</span></div>
         </div>
-        <div class="pitches"><div class="pitch"><span class="pitch-label">TEAM</span><p class="pitch-text">"I see Colter, Dave and Jake are getting great reviews from your customers. Our software can free up their time on paperwork, scheduling, and follow-ups — so they spend more time in the field doing what they&#x27;re best at."</p></div><div class="pitch"><span class="pitch-label">TECH GAP</span><p class="pitch-text">"With 304 Google reviews and a 5.0 rating, you&#x27;ve clearly built something customers trust. From what I can see, you&#x27;re managing all of that without a field service platform — which is impressive, but it usually means there&#x27;s a ceiling coming. I&#x27;d love to show you how the right tools can help you keep growing without the growing pains."</p></div></div>
+        <p class="card-label" style="margin-top:14px;">Suggested openers</p><div class="pitches"><div class="pitch"><span class="pitch-label">TEAM</span><p class="pitch-text">"Your customers keep name-dropping Colter, Dave and Jake in reviews — that kind of loyalty is rare. The shops we work with in that spot usually find their best techs are stuck on admin instead of in the field. Our platform takes the paperwork and scheduling off their plate."</p></div><div class="pitch"><span class="pitch-label">TECH GAP</span><p class="pitch-text">"304 Google reviews at 5.0★ and no field service platform on the backend yet. Every contractor we work with at your scale hits the same wall — spreadsheets and notebooks stop working around 5–10 trucks. Our platform is designed to take you from where you are now to 50+ without rebuilding twice."</p></div></div>
         <div class="lead-footer">
           <a class="view-link" href="dossier_v4_17_Martin_Air_LLC.html">View full dossier →</a>
         </div>
@@ -948,10 +1082,11 @@ body {
         <div class="lead-header">
           <h3><a href="dossier_v4_18_Hil_Co_Mechanical_Corporation.html">Hil-Co Mechanical Corporation</a></h3>
           <div class="lead-badges">
+            <span class="score-badge" data-tip="Total score across 7 weighted dimensions. Top score in the current pool: 59. Higher means a louder buying signal.">Score 23</span>
             <span class="tier-badge tier-emerging">EMERGING</span>
           </div>
         </div>
-        <div class="chips"><span class="chip chip-growth">GROWTH<span class="chip-val">10</span></span><span class="chip chip-nofsm">NO FSM</span></div>
+        <div class="chips"><span class="chip chip-growth" data-tip="Business is scaling faster than its infrastructure can handle — ops hiring, review velocity acceleration, momentum language." title="Business is scaling faster than its infrastructure can handle — ops hiring, review velocity acceleration, momentum language.">GROWTH<span class="chip-val">10</span><span class="chip-help" aria-hidden="true">?</span></span><span class="chip chip-nofsm" data-tip="No field service management platform detected on their website. By definition, they&#x27;re a prospect — not someone else&#x27;s customer." title="No field service management platform detected on their website. By definition, they&#x27;re a prospect — not someone else&#x27;s customer.">NO FSM<span class="chip-help" aria-hidden="true">?</span></span></div>
         <div class="call-sheet">
           <div class="cs-row"><span class="cs-icon">📋</span>19 yrs licensed · Dual-scope (CR-39)</div>
           <div class="cs-row"><span class="cs-icon">📍</span>11780 N 91st Ave. #1, Peoria, AZ, 85345</div>
@@ -959,7 +1094,7 @@ body {
           <div class="cs-row"><span class="cs-icon">🔗</span><a href="http://www.hilcoac.com/" target="_blank">Website</a> · <a href="https://www.google.com/maps/place/?q=place_id:ChIJrWwTWZhDK4cRgkxoMrMySx0" target="_blank">Google (222 reviews, 5.0★)</a> · <a href="https://www.facebook.com/HilCoAC/" target="_blank">Facebook</a></div>
           <div class="cs-row"><span class="cs-icon">💰</span><strong>$500K–$1.5M</strong> est. revenue · <span class="no-fsm">No FSM detected</span></div>
         </div>
-        <div class="pitches"><div class="pitch"><span class="pitch-label">GROWTH</span><p class="pitch-text">"I noticed your review volume surged — 15 reviews in the last 90 days versus 2 in the prior 90. That&#x27;s 8x growth. To help you keep up with that momentum, I&#x27;d love to show you how our platform can help you scale operations without adding overhead."</p></div><div class="pitch"><span class="pitch-label">TECH GAP</span><p class="pitch-text">"With 15 reviews in just the last 90 days, it&#x27;s clear your business is picking up momentum. From what I can see, you&#x27;re managing all of that without a field service platform — which is impressive, but it usually means there&#x27;s a ceiling coming. I&#x27;d love to show you how the right tools can help you keep growing without the growing pains."</p></div></div>
+        <p class="card-label" style="margin-top:14px;">Suggested openers</p><div class="pitches"><div class="pitch"><span class="pitch-label">GROWTH</span><p class="pitch-text">"Your Google reviews jumped from 2 to 15 in the last 90 days — 8x growth. We see this surge pattern a lot with contractors whose demand is outpacing their ops capacity. Our platform is built to absorb that volume without you having to hire ahead of it."</p></div><div class="pitch"><span class="pitch-label">TECH GAP</span><p class="pitch-text">"15 reviews in the last 90 days and no field service platform on the backend yet. Every contractor we work with at your scale hits the same wall — spreadsheets and notebooks stop working around 5–10 trucks. Our platform is designed to take you from where you are now to 50+ without rebuilding twice."</p></div></div>
         <div class="lead-footer">
           <a class="view-link" href="dossier_v4_18_Hil_Co_Mechanical_Corporation.html">View full dossier →</a>
         </div>
@@ -972,10 +1107,11 @@ body {
         <div class="lead-header">
           <h3><a href="dossier_v4_19_Second_Opinion_Plumbing_LLC.html">Second Opinion Plumbing LLC</a></h3>
           <div class="lead-badges">
+            <span class="score-badge" data-tip="Total score across 7 weighted dimensions. Top score in the current pool: 59. Higher means a louder buying signal.">Score 23</span>
             <span class="tier-badge tier-emerging">EMERGING</span>
           </div>
         </div>
-        <div class="chips"><span class="chip chip-demand">DEMAND PULL<span class="chip-val">9</span></span><span class="chip chip-nofsm">NO FSM</span></div>
+        <div class="chips"><span class="chip chip-demand" data-tip="Customers switching from competitors, or one person personally handling the work. The capacity-ceiling pattern that forces a software decision." title="Customers switching from competitors, or one person personally handling the work. The capacity-ceiling pattern that forces a software decision.">DEMAND PULL<span class="chip-val">9</span><span class="chip-help" aria-hidden="true">?</span></span><span class="chip chip-nofsm" data-tip="No field service management platform detected on their website. By definition, they&#x27;re a prospect — not someone else&#x27;s customer." title="No field service management platform detected on their website. By definition, they&#x27;re a prospect — not someone else&#x27;s customer.">NO FSM<span class="chip-help" aria-hidden="true">?</span></span></div>
         <div class="call-sheet">
           <div class="cs-row"><span class="cs-icon">📋</span>7 yrs licensed · Dual-scope (CR-39)</div>
           <div class="cs-row"><span class="cs-icon">📍</span>410 E. Scott Ave, Gilbert, AZ, 85234</div>
@@ -983,7 +1119,7 @@ body {
           <div class="cs-row"><span class="cs-icon">🔗</span><a href="https://secondopinionplumbingaz.com/?utm_source=GMB&amp;utm_medium=local" target="_blank">Website</a> · <a href="https://www.google.com/maps/place/?q=place_id:ChIJpQMgiTSsK4cR32ClQHGSaaw" target="_blank">Google (271 reviews, 4.9★)</a> · <a href="https://www.facebook.com/secondopinionplumbingandair/" target="_blank">Facebook</a> · <a href="https://www.instagram.com/2ndopllc/" target="_blank">Instagram</a></div>
           <div class="cs-row"><span class="cs-icon">💰</span><strong>$150K–$500K</strong> est. revenue · <span class="no-fsm">No FSM detected</span></div>
         </div>
-        <div class="pitches"><div class="pitch"><span class="pitch-label">TEAM</span><p class="pitch-text">"I see Joe, Charles and Kyle are getting great reviews from your customers. Our software can free up their time on paperwork, scheduling, and follow-ups — so they spend more time in the field doing what they&#x27;re best at."</p></div><div class="pitch"><span class="pitch-label">DEMAND</span><p class="pitch-text">"At least 2 of your recent reviews mention customers who switched from another HVAC company to yours. That&#x27;s a strong signal — people are choosing you over the competition. The right systems can help you capture that demand without burning out your team."</p></div><div class="pitch"><span class="pitch-label">TECH GAP</span><p class="pitch-text">"With 271 Google reviews and a 4.9 rating, you&#x27;ve clearly built something customers trust. From what I can see, you&#x27;re managing all of that without a field service platform — which is impressive, but it usually means there&#x27;s a ceiling coming. I&#x27;d love to show you how the right tools can help you keep growing without the growing pains."</p></div></div>
+        <p class="card-label" style="margin-top:14px;">Suggested openers</p><div class="pitches"><div class="pitch"><span class="pitch-label">TEAM</span><p class="pitch-text">"Your customers keep name-dropping Joe, Charles and Kyle in reviews — that kind of loyalty is rare. The shops we work with in that spot usually find their best techs are stuck on admin instead of in the field. Our platform takes the paperwork and scheduling off their plate."</p></div><div class="pitch"><span class="pitch-label">DEMAND</span><p class="pitch-text">"2 of your recent reviews are from customers who left another HVAC company to come to you. We&#x27;ve watched this exact pattern with our clients — contractors winning on reputation eventually break when the inbound catches up. Our platform is what most of them wish they&#x27;d had before they needed it."</p></div><div class="pitch"><span class="pitch-label">TECH GAP</span><p class="pitch-text">"271 Google reviews at 4.9★ and no field service platform on the backend yet. Every contractor we work with at your scale hits the same wall — spreadsheets and notebooks stop working around 5–10 trucks. Our platform is designed to take you from where you are now to 50+ without rebuilding twice."</p></div></div>
         <div class="lead-footer">
           <a class="view-link" href="dossier_v4_19_Second_Opinion_Plumbing_LLC.html">View full dossier →</a>
         </div>
@@ -996,10 +1132,11 @@ body {
         <div class="lead-header">
           <h3><a href="dossier_v4_20_Cardinal_Heating_Cooling_LLC.html">Cardinal Heating &amp; Cooling LLC</a></h3>
           <div class="lead-badges">
+            <span class="score-badge" data-tip="Total score across 7 weighted dimensions. Top score in the current pool: 59. Higher means a louder buying signal.">Score 23</span>
             <span class="tier-badge tier-emerging">EMERGING</span>
           </div>
         </div>
-        <div class="chips"><span class="chip chip-growth">GROWTH<span class="chip-val">5</span></span><span class="chip chip-demand">DEMAND PULL<span class="chip-val">6</span></span><span class="chip chip-nofsm">NO FSM</span><span class="chip chip-warn">THIN SAMPLE (6)</span></div>
+        <div class="chips"><span class="chip chip-growth" data-tip="Business is scaling faster than its infrastructure can handle — ops hiring, review velocity acceleration, momentum language." title="Business is scaling faster than its infrastructure can handle — ops hiring, review velocity acceleration, momentum language.">GROWTH<span class="chip-val">5</span><span class="chip-help" aria-hidden="true">?</span></span><span class="chip chip-demand" data-tip="Customers switching from competitors, or one person personally handling the work. The capacity-ceiling pattern that forces a software decision." title="Customers switching from competitors, or one person personally handling the work. The capacity-ceiling pattern that forces a software decision.">DEMAND PULL<span class="chip-val">6</span><span class="chip-help" aria-hidden="true">?</span></span><span class="chip chip-nofsm" data-tip="No field service management platform detected on their website. By definition, they&#x27;re a prospect — not someone else&#x27;s customer." title="No field service management platform detected on their website. By definition, they&#x27;re a prospect — not someone else&#x27;s customer.">NO FSM<span class="chip-help" aria-hidden="true">?</span></span><span class="chip chip-warn" data-tip="Only 6 reviews were LLM-analyzed. Pain and growth scores are discounted proportionally; treat signal strength with caution." title="Only 6 reviews were LLM-analyzed. Pain and growth scores are discounted proportionally; treat signal strength with caution.">THIN SAMPLE (6)<span class="chip-help" aria-hidden="true">?</span></span></div>
         <div class="call-sheet">
           <div class="cs-row"><span class="cs-icon">📋</span>13 yrs licensed · Dual-scope (CR-39)</div>
           <div class="cs-row"><span class="cs-icon">📍</span>3653 N 35th Ave, Phoenix, AZ, 85017</div>
@@ -1007,7 +1144,7 @@ body {
           <div class="cs-row"><span class="cs-icon">🔗</span><a href="http://www.cardinalairaz.com/" target="_blank">Website</a> · <a href="https://www.google.com/maps/place/?q=place_id:ChIJ81QpSoEUK4cRmSg4ya6BXKg" target="_blank">Google (106 reviews, 4.3★)</a> · <a href="https://www.facebook.com/cardinalheating/" target="_blank">Facebook</a></div>
           <div class="cs-row"><span class="cs-icon">💰</span><strong>$150K–$500K</strong> est. revenue · <span class="no-fsm">No FSM detected</span></div>
         </div>
-        <div class="pitches"><div class="pitch"><span class="pitch-label">GROWTH</span><p class="pitch-text">"I noticed your review volume surged — 7 reviews in the last 90 days versus 0 in the prior 90. That&#x27;s 7x growth. To help you keep up with that momentum, I&#x27;d love to show you how our platform can help you scale operations without adding overhead."</p></div><div class="pitch"><span class="pitch-label">TECH GAP</span><p class="pitch-text">"With 7 reviews in just the last 90 days, it&#x27;s clear your business is picking up momentum. From what I can see, you&#x27;re managing all of that without a field service platform — which is impressive, but it usually means there&#x27;s a ceiling coming. I&#x27;d love to show you how the right tools can help you keep growing without the growing pains."</p></div></div>
+        <p class="card-label" style="margin-top:14px;">Suggested openers</p><div class="pitches"><div class="pitch"><span class="pitch-label">GROWTH</span><p class="pitch-text">"Your Google reviews jumped from 0 to 7 in the last 90 days — 7x growth. We see this surge pattern a lot with contractors whose demand is outpacing their ops capacity. Our platform is built to absorb that volume without you having to hire ahead of it."</p></div><div class="pitch"><span class="pitch-label">TECH GAP</span><p class="pitch-text">"7 reviews in the last 90 days and no field service platform on the backend yet. Every contractor we work with at your scale hits the same wall — spreadsheets and notebooks stop working around 5–10 trucks. Our platform is designed to take you from where you are now to 50+ without rebuilding twice."</p></div></div>
         <div class="lead-footer">
           <a class="view-link" href="dossier_v4_20_Cardinal_Heating_Cooling_LLC.html">View full dossier →</a>
         </div>
@@ -1020,10 +1157,11 @@ body {
         <div class="lead-header">
           <h3><a href="dossier_v4_21_AA_Mechanical_And_HVAC_LLC.html">A&amp;A Mechanical And HVAC, LLC</a></h3>
           <div class="lead-badges">
+            <span class="score-badge" data-tip="Total score across 7 weighted dimensions. Top score in the current pool: 59. Higher means a louder buying signal.">Score 22</span>
             <span class="tier-badge tier-emerging">EMERGING</span>
           </div>
         </div>
-        <div class="chips"><span class="chip chip-growth">GROWTH<span class="chip-val">14</span></span><span class="chip chip-nofsm">NO FSM</span></div>
+        <div class="chips"><span class="chip chip-growth" data-tip="Business is scaling faster than its infrastructure can handle — ops hiring, review velocity acceleration, momentum language." title="Business is scaling faster than its infrastructure can handle — ops hiring, review velocity acceleration, momentum language.">GROWTH<span class="chip-val">14</span><span class="chip-help" aria-hidden="true">?</span></span><span class="chip chip-nofsm" data-tip="No field service management platform detected on their website. By definition, they&#x27;re a prospect — not someone else&#x27;s customer." title="No field service management platform detected on their website. By definition, they&#x27;re a prospect — not someone else&#x27;s customer.">NO FSM<span class="chip-help" aria-hidden="true">?</span></span></div>
         <div class="call-sheet">
           <div class="cs-row"><span class="cs-icon">📋</span>6 yrs licensed · Dual-scope (CR-39)</div>
           <div class="cs-row"><span class="cs-icon">📍</span>10634 E Balmoral Ave, Mesa, AZ, 85208</div>
@@ -1031,7 +1169,7 @@ body {
           <div class="cs-row"><span class="cs-icon">🔗</span><a href="https://www.aacoolingaz.com/?utm_source=google&amp;utm_medium=organic&amp;utm_campaign=gbp" target="_blank">Website</a> · <a href="https://www.google.com/maps/place/?q=place_id:ChIJnQWaIJu2K4cRoBsSbFa7C4Y" target="_blank">Google (191 reviews, 4.8★)</a> · <a href="https://www.linkedin.com/company/a-a-cooling-heating-llc" target="_blank">LinkedIn</a></div>
           <div class="cs-row"><span class="cs-icon">💰</span><strong>$150K–$500K</strong> est. revenue · <span class="no-fsm">No FSM detected</span></div>
         </div>
-        <div class="pitches"><div class="pitch"><span class="pitch-label">TEAM</span><p class="pitch-text">"I see Chris, Gabriel and Casey are getting great reviews from your customers. Our software can free up their time on paperwork, scheduling, and follow-ups — so they spend more time in the field doing what they&#x27;re best at."</p></div><div class="pitch"><span class="pitch-label">HIRING</span><p class="pitch-text">"I see you recently posted for a HVAC Office Manager. With your growth trajectory, I&#x27;m sure demand is picking up fast. I can show you how our software handles dispatching and scheduling at a fraction of the cost of a new hire — and it scales with you as you grow."</p></div></div>
+        <p class="card-label" style="margin-top:14px;">Suggested openers</p><div class="pitches"><div class="pitch"><span class="pitch-label">TEAM</span><p class="pitch-text">"Your customers keep name-dropping Chris, Gabriel and Casey in reviews — that kind of loyalty is rare. The shops we work with in that spot usually find their best techs are stuck on admin instead of in the field. Our platform takes the paperwork and scheduling off their plate."</p></div><div class="pitch"><span class="pitch-label">HIRING</span><p class="pitch-text">"Saw your posting for a HVAC Office Manager. Most of our customers who add that role are hitting a scheduling ceiling before they realize it. Our platform solves the same bottleneck at a fraction of the fully-loaded cost of the hire."</p></div></div>
         <div class="lead-footer">
           <a class="view-link" href="dossier_v4_21_AA_Mechanical_And_HVAC_LLC.html">View full dossier →</a>
         </div>
@@ -1044,10 +1182,11 @@ body {
         <div class="lead-header">
           <h3><a href="dossier_v4_22_JDL_Refrigeration_LLC.html">JDL Refrigeration LLC</a></h3>
           <div class="lead-badges">
+            <span class="score-badge" data-tip="Total score across 7 weighted dimensions. Top score in the current pool: 59. Higher means a louder buying signal.">Score 22</span>
             <span class="tier-badge tier-emerging">EMERGING</span>
           </div>
         </div>
-        <div class="chips"><span class="chip chip-nofsm">NO FSM</span><span class="chip chip-warn">THIN SAMPLE (5)</span></div>
+        <div class="chips"><span class="chip chip-nofsm" data-tip="No field service management platform detected on their website. By definition, they&#x27;re a prospect — not someone else&#x27;s customer." title="No field service management platform detected on their website. By definition, they&#x27;re a prospect — not someone else&#x27;s customer.">NO FSM<span class="chip-help" aria-hidden="true">?</span></span><span class="chip chip-warn" data-tip="Only 5 reviews were LLM-analyzed. Pain and growth scores are discounted proportionally; treat signal strength with caution." title="Only 5 reviews were LLM-analyzed. Pain and growth scores are discounted proportionally; treat signal strength with caution.">THIN SAMPLE (5)<span class="chip-help" aria-hidden="true">?</span></span></div>
         <div class="call-sheet">
           <div class="cs-row"><span class="cs-icon">📋</span>11 yrs licensed · Dual-scope (CR-39)</div>
           <div class="cs-row"><span class="cs-icon">📍</span>627 W 2nd Ave, Mesa, AZ, 85210</div>
@@ -1055,7 +1194,7 @@ body {
           <div class="cs-row"><span class="cs-icon">🔗</span><a href="https://jdlrefrigeration.com/?utm_source=google&amp;utm_medium=organic&amp;utm_campaign=gmb" target="_blank">Website</a> · <a href="https://www.google.com/maps/place/?q=place_id:ChIJqdRo8pS7K4cRycTRIH93l5M" target="_blank">Google (222 reviews, 4.9★)</a> · <a href="https://www.linkedin.com/company/jdl-refrigeration" target="_blank">LinkedIn</a></div>
           <div class="cs-row"><span class="cs-icon">💰</span><strong>$1.5M–$5M</strong> est. revenue · <span class="no-fsm">No FSM detected</span></div>
         </div>
-        <div class="pitches"><div class="pitch"><span class="pitch-label">GROWTH</span><p class="pitch-text">"I noticed your review volume surged — 5 reviews in the last 90 days versus 0 in the prior 90. That&#x27;s 5x growth. To help you keep up with that momentum, I&#x27;d love to show you how our platform can help you scale operations without adding overhead."</p></div><div class="pitch"><span class="pitch-label">TEAM</span><p class="pitch-text">"I see Rueben and Francisco are getting great reviews from your customers. Our software can free up their time on paperwork, scheduling, and follow-ups — so they spend more time in the field doing what they&#x27;re best at."</p></div><div class="pitch"><span class="pitch-label">TECH GAP</span><p class="pitch-text">"With 5 reviews in just the last 90 days, it&#x27;s clear your business is picking up momentum. From what I can see, you&#x27;re managing all of that without a field service platform — which is impressive, but it usually means there&#x27;s a ceiling coming. I&#x27;d love to show you how the right tools can help you keep growing without the growing pains."</p></div></div>
+        <p class="card-label" style="margin-top:14px;">Suggested openers</p><div class="pitches"><div class="pitch"><span class="pitch-label">GROWTH</span><p class="pitch-text">"Your Google reviews jumped from 0 to 5 in the last 90 days — 5x growth. We see this surge pattern a lot with contractors whose demand is outpacing their ops capacity. Our platform is built to absorb that volume without you having to hire ahead of it."</p></div><div class="pitch"><span class="pitch-label">TEAM</span><p class="pitch-text">"Your customers keep name-dropping Rueben and Francisco in reviews — that kind of loyalty is rare. The shops we work with in that spot usually find their best techs are stuck on admin instead of in the field. Our platform takes the paperwork and scheduling off their plate."</p></div><div class="pitch"><span class="pitch-label">TECH GAP</span><p class="pitch-text">"5 reviews in the last 90 days and no field service platform on the backend yet. Every contractor we work with at your scale hits the same wall — spreadsheets and notebooks stop working around 5–10 trucks. Our platform is designed to take you from where you are now to 50+ without rebuilding twice."</p></div></div>
         <div class="lead-footer">
           <a class="view-link" href="dossier_v4_22_JDL_Refrigeration_LLC.html">View full dossier →</a>
         </div>
@@ -1068,10 +1207,11 @@ body {
         <div class="lead-header">
           <h3><a href="dossier_v4_23_All_Area_AC_Heating_Inc.html">All Area A/C &amp; Heating Inc</a></h3>
           <div class="lead-badges">
+            <span class="score-badge" data-tip="Total score across 7 weighted dimensions. Top score in the current pool: 59. Higher means a louder buying signal.">Score 22</span>
             <span class="tier-badge tier-emerging">EMERGING</span>
           </div>
         </div>
-        <div class="chips"><span class="chip chip-demand">DEMAND PULL<span class="chip-val">11</span></span><span class="chip chip-nofsm">NO FSM</span><span class="chip chip-warn">THIN SAMPLE (7)</span></div>
+        <div class="chips"><span class="chip chip-demand" data-tip="Customers switching from competitors, or one person personally handling the work. The capacity-ceiling pattern that forces a software decision." title="Customers switching from competitors, or one person personally handling the work. The capacity-ceiling pattern that forces a software decision.">DEMAND PULL<span class="chip-val">11</span><span class="chip-help" aria-hidden="true">?</span></span><span class="chip chip-nofsm" data-tip="No field service management platform detected on their website. By definition, they&#x27;re a prospect — not someone else&#x27;s customer." title="No field service management platform detected on their website. By definition, they&#x27;re a prospect — not someone else&#x27;s customer.">NO FSM<span class="chip-help" aria-hidden="true">?</span></span><span class="chip chip-warn" data-tip="Only 7 reviews were LLM-analyzed. Pain and growth scores are discounted proportionally; treat signal strength with caution." title="Only 7 reviews were LLM-analyzed. Pain and growth scores are discounted proportionally; treat signal strength with caution.">THIN SAMPLE (7)<span class="chip-help" aria-hidden="true">?</span></span></div>
         <div class="call-sheet">
           <div class="cs-row"><span class="cs-icon">📋</span>8 yrs licensed · Dual-scope (CR-39)</div>
           <div class="cs-row"><span class="cs-icon">📍</span>7109 S. 19th Drive, Phoenix, AZ, 85041</div>
@@ -1079,7 +1219,7 @@ body {
           <div class="cs-row"><span class="cs-icon">🔗</span><a href="https://allareaacandheating.com/" target="_blank">Website</a> · <a href="https://www.google.com/maps/place/?q=place_id:ChIJ2f8aj_cQK4cRWpQ0vW6IpD0" target="_blank">Google (214 reviews, 5.0★)</a> · <a href="https://www.facebook.com/allareaac/" target="_blank">Facebook</a></div>
           <div class="cs-row"><span class="cs-icon">💰</span><strong>$150K–$500K</strong> est. revenue · <span class="no-fsm">No FSM detected</span></div>
         </div>
-        <div class="pitches"><div class="pitch"><span class="pitch-label">TECH GAP</span><p class="pitch-text">"With 214 Google reviews and a 5.0 rating, you&#x27;ve clearly built something customers trust. From what I can see, you&#x27;re managing all of that without a field service platform — which is impressive, but it usually means there&#x27;s a ceiling coming. I&#x27;d love to show you how the right tools can help you keep growing without the growing pains."</p></div><div class="pitch"><span class="pitch-label">CAPACITY</span><p class="pitch-text">"Your customers clearly love working with Oscar — that personal touch is what sets you apart. The challenge is that it doesn&#x27;t scale past one person. Our software can systematize the parts that don&#x27;t need Oscar&#x27;s personal attention, so the quality stays high as you grow."</p></div></div>
+        <p class="card-label" style="margin-top:14px;">Suggested openers</p><div class="pitches"><div class="pitch"><span class="pitch-label">TECH GAP</span><p class="pitch-text">"214 Google reviews at 5.0★ and no field service platform on the backend yet. Every contractor we work with at your scale hits the same wall — spreadsheets and notebooks stop working around 5–10 trucks. Our platform is designed to take you from where you are now to 50+ without rebuilding twice."</p></div><div class="pitch"><span class="pitch-label">CAPACITY</span><p class="pitch-text">"Oscar is showing up personally in most of your reviews. Most of our successful customers started exactly there — the owner carries the brand until the ops catch up. Our platform is what lets the personal touch stay even after Oscar&#x27;s calendar stops being the bottleneck."</p></div></div>
         <div class="lead-footer">
           <a class="view-link" href="dossier_v4_23_All_Area_AC_Heating_Inc.html">View full dossier →</a>
         </div>
@@ -1092,10 +1232,11 @@ body {
         <div class="lead-header">
           <h3><a href="dossier_v4_24_SG_Mechanical_LLC.html">SG Mechanical LLC</a></h3>
           <div class="lead-badges">
+            <span class="score-badge" data-tip="Total score across 7 weighted dimensions. Top score in the current pool: 59. Higher means a louder buying signal.">Score 20</span>
             <span class="tier-badge tier-emerging">EMERGING</span>
           </div>
         </div>
-        <div class="chips"><span class="chip chip-growth">GROWTH<span class="chip-val">7</span></span><span class="chip chip-nofsm">NO FSM</span></div>
+        <div class="chips"><span class="chip chip-growth" data-tip="Business is scaling faster than its infrastructure can handle — ops hiring, review velocity acceleration, momentum language." title="Business is scaling faster than its infrastructure can handle — ops hiring, review velocity acceleration, momentum language.">GROWTH<span class="chip-val">7</span><span class="chip-help" aria-hidden="true">?</span></span><span class="chip chip-nofsm" data-tip="No field service management platform detected on their website. By definition, they&#x27;re a prospect — not someone else&#x27;s customer." title="No field service management platform detected on their website. By definition, they&#x27;re a prospect — not someone else&#x27;s customer.">NO FSM<span class="chip-help" aria-hidden="true">?</span></span></div>
         <div class="call-sheet">
           <div class="cs-row"><span class="cs-icon">📋</span>13 yrs licensed · Dual-scope (CR-39)</div>
           <div class="cs-row"><span class="cs-icon">📍</span>3446 N 29th Ave, Phoenix, AZ, 85017</div>
@@ -1103,7 +1244,7 @@ body {
           <div class="cs-row"><span class="cs-icon">🔗</span><a href="https://www.sgmechanicalair.com/" target="_blank">Website</a> · <a href="https://www.google.com/maps/place/?q=place_id:ChIJh8g4MPZBK4cRY9-fxB7OPLs" target="_blank">Google (425 reviews, 4.9★)</a> · <a href="https://www.linkedin.com/company/sg-mechanical" target="_blank">LinkedIn</a> · <a href="https://www.instagram.com/sgmechanicalair/" target="_blank">Instagram</a></div>
           <div class="cs-row"><span class="cs-icon">💰</span><strong>$1.5M–$5M</strong> est. revenue · <span class="no-fsm">No FSM detected</span></div>
         </div>
-        <div class="pitches"><div class="pitch"><span class="pitch-label">GROWTH</span><p class="pitch-text">"I noticed your review volume surged — 13 reviews in the last 90 days versus 2 in the prior 90. That&#x27;s 6x growth. To help you keep up with that momentum, I&#x27;d love to show you how our platform can help you scale operations without adding overhead."</p></div><div class="pitch"><span class="pitch-label">TEAM</span><p class="pitch-text">"I see Matt, Jeff and Andy are getting great reviews from your customers. Our software can free up their time on paperwork, scheduling, and follow-ups — so they spend more time in the field doing what they&#x27;re best at."</p></div><div class="pitch"><span class="pitch-label">TECH GAP</span><p class="pitch-text">"With 13 reviews in just the last 90 days, it&#x27;s clear your business is picking up momentum. From what I can see, you&#x27;re managing all of that without a field service platform — which is impressive, but it usually means there&#x27;s a ceiling coming. I&#x27;d love to show you how the right tools can help you keep growing without the growing pains."</p></div></div>
+        <p class="card-label" style="margin-top:14px;">Suggested openers</p><div class="pitches"><div class="pitch"><span class="pitch-label">GROWTH</span><p class="pitch-text">"Your Google reviews jumped from 2 to 13 in the last 90 days — 6x growth. We see this surge pattern a lot with contractors whose demand is outpacing their ops capacity. Our platform is built to absorb that volume without you having to hire ahead of it."</p></div><div class="pitch"><span class="pitch-label">TEAM</span><p class="pitch-text">"Your customers keep name-dropping Matt, Jeff and Andy in reviews — that kind of loyalty is rare. The shops we work with in that spot usually find their best techs are stuck on admin instead of in the field. Our platform takes the paperwork and scheduling off their plate."</p></div><div class="pitch"><span class="pitch-label">TECH GAP</span><p class="pitch-text">"13 reviews in the last 90 days and no field service platform on the backend yet. Every contractor we work with at your scale hits the same wall — spreadsheets and notebooks stop working around 5–10 trucks. Our platform is designed to take you from where you are now to 50+ without rebuilding twice."</p></div></div>
         <div class="lead-footer">
           <a class="view-link" href="dossier_v4_24_SG_Mechanical_LLC.html">View full dossier →</a>
         </div>
@@ -1116,10 +1257,11 @@ body {
         <div class="lead-header">
           <h3><a href="dossier_v4_25_Desert_Sun_Air_LLC.html">Desert Sun Air LLC</a></h3>
           <div class="lead-badges">
+            <span class="score-badge" data-tip="Total score across 7 weighted dimensions. Top score in the current pool: 59. Higher means a louder buying signal.">Score 19</span>
             <span class="tier-badge tier-emerging">EMERGING</span>
           </div>
         </div>
-        <div class="chips"><span class="chip chip-nofsm">NO FSM</span></div>
+        <div class="chips"><span class="chip chip-nofsm" data-tip="No field service management platform detected on their website. By definition, they&#x27;re a prospect — not someone else&#x27;s customer." title="No field service management platform detected on their website. By definition, they&#x27;re a prospect — not someone else&#x27;s customer.">NO FSM<span class="chip-help" aria-hidden="true">?</span></span></div>
         <div class="call-sheet">
           <div class="cs-row"><span class="cs-icon">📋</span>12 yrs licensed · Dual-scope (CR-39)</div>
           <div class="cs-row"><span class="cs-icon">📍</span>11255 W Hidago, Tolleson, AZ, 85353</div>
@@ -1127,7 +1269,7 @@ body {
           <div class="cs-row"><span class="cs-icon">🔗</span><a href="http://www.desertsunhvac.com/" target="_blank">Website</a> · <a href="https://www.google.com/maps/place/?q=place_id:ChIJQS1obfZrKocRtDq32sCgjE8" target="_blank">Google (441 reviews, 4.7★)</a> · <a href="https://www.facebook.com/DesertSunHVAC/" target="_blank">Facebook</a></div>
           <div class="cs-row"><span class="cs-icon">💰</span><strong>$500K–$1.5M</strong> est. revenue · <span class="no-fsm">No FSM detected</span></div>
         </div>
-        <div class="pitches"><div class="pitch"><span class="pitch-label">TEAM</span><p class="pitch-text">"I see Keith and Alberto are getting great reviews from your customers. Our software can free up their time on paperwork, scheduling, and follow-ups — so they spend more time in the field doing what they&#x27;re best at."</p></div><div class="pitch"><span class="pitch-label">TECH GAP</span><p class="pitch-text">"With 441 Google reviews and a 4.7 rating, you&#x27;ve clearly built something customers trust. From what I can see, you&#x27;re managing all of that without a field service platform — which is impressive, but it usually means there&#x27;s a ceiling coming. I&#x27;d love to show you how the right tools can help you keep growing without the growing pains."</p></div></div>
+        <p class="card-label" style="margin-top:14px;">Suggested openers</p><div class="pitches"><div class="pitch"><span class="pitch-label">TEAM</span><p class="pitch-text">"Your customers keep name-dropping Keith and Alberto in reviews — that kind of loyalty is rare. The shops we work with in that spot usually find their best techs are stuck on admin instead of in the field. Our platform takes the paperwork and scheduling off their plate."</p></div><div class="pitch"><span class="pitch-label">TECH GAP</span><p class="pitch-text">"441 Google reviews at 4.7★ and no field service platform on the backend yet. Every contractor we work with at your scale hits the same wall — spreadsheets and notebooks stop working around 5–10 trucks. Our platform is designed to take you from where you are now to 50+ without rebuilding twice."</p></div></div>
         <div class="lead-footer">
           <a class="view-link" href="dossier_v4_25_Desert_Sun_Air_LLC.html">View full dossier →</a>
         </div>
@@ -1136,7 +1278,7 @@ body {
     
 
   <div class="page-footer">
-    Generated 2026-04-23 · HVAC Signals pipeline · 25 contractors
+    Generated 2026-04-24 · HVAC Signals pipeline · 25 contractors
   </div>
 
 </div>
