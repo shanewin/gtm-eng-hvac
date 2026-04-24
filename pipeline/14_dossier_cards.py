@@ -970,6 +970,7 @@ body {
   box-shadow: 0 4px 16px rgba(0,0,0,0.18);
 }
 .score-badge[data-tip]:hover::after { opacity: 1; }
+.score-badge[data-tip]:hover .chip-help { opacity: 1; }
 
 .badge-stack {
   display: flex;
@@ -1820,6 +1821,7 @@ body {
   box-shadow: 0 4px 16px rgba(0,0,0,0.18);
 }
 .lead-badges .score-badge[data-tip]:hover::after { opacity: 1; }
+.lead-badges .score-badge[data-tip]:hover .chip-help { opacity: 1; }
 .tier-high { background: #e6f4ea; color: #14532d; }
 .tier-strong { background: #fff4d6; color: #8a5a00; }
 .tier-emerging { background: #e6f2ff; color: #003b7a; }
@@ -2221,7 +2223,7 @@ def render_header(row: pd.Series, jobs: list[dict] | None = None) -> str:
     bond_amount = row.get("bond_amount")
 
     badges_html = [
-        f'<span class="score-badge" data-tip="Total score across 7 weighted dimensions. Top score in the current pool: 59. Higher means a louder buying signal.">Score {score:.0f}</span>',
+        f'<span class="score-badge" data-tip="Total score across 7 weighted dimensions. Top score in the current pool: 59. Higher means a louder buying signal.">Score {score:.0f}<span class="chip-help" aria-hidden="true">?</span></span>',
         f'<span class="tier-badge {tier_class}">{tier_label}</span>',
     ]
     if revenue_band and revenue_band != "Unknown":
@@ -3991,7 +3993,7 @@ def render_lead_row(row: pd.Series, contact: pd.Series) -> tuple[str, dict]:
         <div class="lead-header">
           <h3><a href="{esc(dossier_path)}">{esc(biz)}</a></h3>
           <div class="lead-badges">
-            <span class="score-badge" data-tip="Total score across 7 weighted dimensions. Top score in the current pool: 59. Higher means a louder buying signal.">Score {score:.0f}</span>
+            <span class="score-badge" data-tip="Total score across 7 weighted dimensions. Top score in the current pool: 59. Higher means a louder buying signal.">Score {score:.0f}<span class="chip-help" aria-hidden="true">?</span></span>
             <span class="tier-badge {tier_class}">{tier_label}</span>
           </div>
         </div>
